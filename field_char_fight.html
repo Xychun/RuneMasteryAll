@@ -8,10 +8,14 @@
 		<link rel="stylesheet" href="style_charSheet.css">
 		<link rel="stylesheet" href="style_kampf.css">
 		<!-- async sorgt dafür, dass js-Datei geladen wird ohne das Laden der HTML-Seite zu unterbrechen-->
-		<script src="JQuery.js" charset="utf-8" async> </script>
-		<script src="functions_field_char_fight_11-05-1941.js" charset="utf-8"> </script>
-		<script src="jquery.easing.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<!-- // <script src="jquery.easing.min.js"></script> -->
+		<script src="functions_field_char_fight_11-05-1941.js" charset="utf-8"> </script>		
 		<script src="charSheet_jq-functions.js"></script>
+
+		<!-- NODE JS -->
+		<script src="http://localhost:9000/socket.io/socket.io.js"></script>
+		<script src="client.js"></script>
 	</head>
 	
 	<body onload="document.getElementById('reihenAnzahl').value='', document.getElementById('monsterAnzahl').value='', document.getElementById('reihenLänge').value=''" >	
@@ -53,7 +57,7 @@
 
 				</div>
 		
-				<div id="endTurnButton" class="endTurnButton" onClick="showMovementPhaseAnimation()"> </div>
+				<div id="endTurnButton" class="endTurnButton" onClick="showMovementPhaseAnimation(); clixxx(0)"> </div>
 
 			</div>
 			
@@ -92,7 +96,7 @@
 						</div>
 
 						<img id="charImg">
-						<img id="LvlUpMarker" onclick="LevelUp()">
+						<img id="LvlUpMarker" onclick="LevelUp(); clixxx(1)">
 						<div id="levelCounter">10</div>
 						<div id="LvlUpBar"> <span id="LvlUpBarFill" style="width: 0%"> </span> </div>
 
@@ -165,16 +169,16 @@
 
 					<div id="lvl">
 
-						<div id="lvlSword" class="plusPrime" style="left: 25px;" onclick="statsIncrement(0); update(0);"> </div>
-						<div id="lvlBow" class="plusPrime" style="left: 83px" onclick="statsIncrement(2); update(2);"> </div>
-						<div id="lvlMagic" class="plusPrime" style="left: 140px" onclick="statsIncrement(4); update(4);"> </div>
-						<div id="lvlLife" class="plusPrime" style="left: 195px" onclick="statsIncrement(7); update(7);"> </div>
+						<div id="lvlSword" class="plusPrime" style="left: 25px;" onclick="statsIncrement(0); update(0); clixxx(2)"> </div>
+						<div id="lvlBow" class="plusPrime" style="left: 83px" onclick="statsIncrement(2); update(2); clixxx(3)"> </div>
+						<div id="lvlMagic" class="plusPrime" style="left: 140px" onclick="statsIncrement(4); update(4); clixxx(4)"> </div>
+						<div id="lvlLife" class="plusPrime" style="left: 195px" onclick="statsIncrement(7); update(7); clixx(5)"> </div>
 
-						<div id="lvlMove" class="plusSecondary" style="top: 342px;" onclick="statsIncrement(9); update(9);"> </div>
-						<div id="lvlTrack" class="plusSecondary" style="top: 400px;" onclick="statsIncrement(11); update(11);"> </div>
-						<div id="lvlHeal" class="plusSecondary" style="top: 458px;" onclick="statsIncrement(13); update(13);"> </div>
-						<div id="lvlBoost" class="plusSecondary" style="top: 515px;" onclick="statsIncrement(15); update(15);"> </div>
-						<div id="lvlStrike" class="plusSecondary" style="top: 574px;" onclick="statsIncrement(17); update(17);"> </div>
+						<div id="lvlMove" class="plusSecondary" style="top: 342px;" onclick="statsIncrement(9); update(9); clixxx(6)"> </div>
+						<div id="lvlTrack" class="plusSecondary" style="top: 400px;" onclick="statsIncrement(11); update(11); clixxx(7)"> </div>
+						<div id="lvlHeal" class="plusSecondary" style="top: 458px;" onclick="statsIncrement(13); update(13); clixxx(8)"> </div>
+						<div id="lvlBoost" class="plusSecondary" style="top: 515px;" onclick="statsIncrement(15); update(15); clixxx(9)"> </div>
+						<div id="lvlStrike" class="plusSecondary" style="top: 574px;" onclick="statsIncrement(17); update(17); clixxx(10)"> </div>
 
 						<div class = "plusPrime" style="top: 100px; margin-left: 100px;"> <span> <a class="18" id="lvlUpPrime"></a></span> 
 						</div>
@@ -219,12 +223,12 @@
 		<div class="leftFight">
         	<div id="buttonsLeft">
                 <img src="Bilddaten/Kampf/defence.png" name="defence" class="button defence" id="img_defence" 
-                onClick="check(name)" onMouseDown="pressed(name)" 
-                onMouseUp="released(name)">
+                onClick="check(name); clixxx(11,{ele_name: name})" onMouseDown="pressed(name); clixxx(12, {ele_name: name})" 
+                onMouseUp="released(name); clixxx(13, {ele_name: name})">		
                     <p class="text top75 defence"><a id="dmin">0</a> / <a id="dmax">0</a></p>
                 <img src="Bilddaten/Kampf/attack.png" name="attack" class="button attack" id="img_attack"
-                onClick="check(name)" onMouseDown="pressed(name)" 
-                onMouseUp="released(name)">
+                onClick="check(name); clixxx(14, {ele_name: name})" onMouseDown="pressed(name); clixxx(15, {ele_name: name})" 
+                onMouseUp="released(name); clixxx(16, {ele_name: name})">
                     <p class="text top395 attack">
                     	<a id="amin">0</a> / <a id="amax">0</a>
                     </p>
@@ -236,7 +240,7 @@
 
 
 			<div id="monster">
-					<div>
+					<div>			
 						<div class="statsCharSheet primeMonsterSheet" style="margin-left: -3px">
 							<span class="tLeft"><a class="0" id="me_attack_m"></a></span>
 							<span class="tRight"><a class="1" id="me_dmg_m"></a></span>
@@ -273,15 +277,15 @@
 		<div class="rightFight">
         	<div id="buttonsRight">
             	<img src="Bilddaten/Kampf/attackBoost.png" name="attackBoost" class="button attackboost" 
-                id="img_attackBoost" onClick="check(name)" onMouseDown="pressed(name)" 
-                onMouseUp="released(name)">
+                id="img_attackBoost" onClick="check(name); clixxx(17, {ele_name: name})" onMouseDown="pressed(name); clixxx(18, {ele_name: name})" 
+                onMouseUp="released(name); clixxx(19, {ele_name: name})">
                 	<p class="text top75 attackboost">
                     	<a id="abmin">0</a> / <a id="abmax">0</a>
                   	</p>
                 <img src="Bilddaten/Kampf/extraStrike.png" name="extraStrike" class="button extrastrike"
                 id="img_extraStrike" 
-                onClick="check(name)" onMouseDown="pressed(name)" 
-                onMouseUp="released(name)">
+                onClick="check(name); clixxx(20, {ele_name: name})" onMouseDown="pressed(name); clixxx(21, {ele_name: name})" 
+                onMouseUp="released(name); clixxx(22, {ele_name: name})">
                     <p class="text top395 extrastrike">
                     	<a id="esmin">0</a> / <a id="esmax">0</a>
                 	</p>
@@ -358,35 +362,35 @@
 		<div style="position:absolute; left: 0px">
 				<form>
 				<p style="color:white"> Reihenanzahl angeben (nur ungerade Werte) </p>
-				<input id="reihenAnzahl" name="columns" type="text" maxlenghth="2" onBlur="setFieldParas1(document.getElementById('reihenAnzahl').value)">  <p id="warning1">  </p> 
+				<input id="reihenAnzahl" name="columns" type="text" maxlenghth="2" onBlur="setFieldParas1(document.getElementById('reihenAnzahl').value); clixxx(23, {reihenAnzahl: document.getElementById('reihenAnzahl').value})">  <p id="warning1">  </p> 
 
 				<p style="color:white"> Reihenlänge angeben </p>
-				<input id="reihenLänge" name="columns" type="text" maxlenghth="2" onBlur="setFieldParas3(document.getElementById('reihenLänge').value)">  <p id="warning3">  </p> 
+				<input id="reihenLänge" name="columns" type="text" maxlenghth="2" onBlur="setFieldParas3(document.getElementById('reihenLänge').value); clixxx(24, {reihenLaenge: document.getElementById('reihenLänge').value})">  <p id="warning3">  </p> 
 
 				<p style="color:white"> Monsteranzahl angeben </p>
-				<input id="monsterAnzahl" name="monster" type="text" maxlenghth="2" onBlur="setFieldParas2(document.getElementById('monsterAnzahl').value)">  <p id="warning2">  </p> 
+				<input id="monsterAnzahl" name="monster" type="text" maxlenghth="2" onBlur="setFieldParas2(document.getElementById('monsterAnzahl').value; clixxx(25, {monsterAnzahl: document.getElementById('monsterAnzahl'}))">  <p id="warning2">  </p> 
 
 				</form>
 
-				<button type="button" onclick="startGame()">Create Field</button> <br>
+				<button type="button" onclick="startGame(); clixxx(26)">Create Field</button> <br>
 
-				<button type="button" onclick="window.location.reload(), document.getElementById('reihenAnzahl').value='', document.getElementById('monsterAnzahl').value='', document.getElementById('reihenLänge').value=''" >Refresh Field</button> <br>
+				<button type="button" onclick="window.location.reload(), document.getElementById('reihenAnzahl').value='', document.getElementById('monsterAnzahl').value='', document.getElementById('reihenLänge').value=''; clixxx(27)" >Refresh Field</button> <br>
 
-				<button type="button" id="bla" onclick="showMovementPhaseAnimation()">Starte Bewegung</button> <br>
+				<button type="button" id="bla" onclick="showMovementPhaseAnimation(); clixxx(28)">Starte Bewegung</button> <br>
 
-				<button type="button" id="bla" onclick="showMonsterChooser()">MonsterChooserAusfahren</button> <br>
+				<button type="button" id="bla" onclick="showMonsterChooser(); clixxx(29)">MonsterChooserAusfahren</button> <br>
 
-				<button type="button" id="bla" onclick="hideMonsterChooser()">MonsterChooserEinfahren</button> <br>
+				<button type="button" id="bla" onclick="hideMonsterChooser(); clixxx(30)">MonsterChooserEinfahren</button> <br>
 
-				<button type="button" id="bla" onclick="load_stats()">Kampf-Stats laden</button> <br>
+				<button type="button" id="bla" onclick="load_stats(); clixxx(31)">Kampf-Stats laden</button> <br>
 
 				<p style="color:white"> Übrige Bewegungspunkte: </p> <p style="color:white" id="movementPoints"> </p> <br>
 
-				<button id="levelUp" type="button" onclick="lvl()">Aufleveln!</button>
+				<button id="levelUp" type="button" onclick="lvl(); clixxx(32)">Aufleveln!</button>
 
-				<button id="EXPUp" type="button" onclick="EXPGain(70)">EXP!</button> <br>
+				<button id="EXPUp" type="button" onclick="EXPGain(70); clixxx(33, {exp: 70})">EXP!</button> <br>
 
-				<button type="button" onclick="blockAction()">Block Actions</button>
+				<button type="button" onclick="blockAction(); clixxx(34)">Block Actions</button>
 
 		</div>
 

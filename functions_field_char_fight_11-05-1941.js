@@ -1874,7 +1874,6 @@ function startFight() {
 
 
 function startFightRoutine(index, clickedTile) {
-
 	showMonsterChooser();
 
 }
@@ -2509,6 +2508,7 @@ function checkClickedTile() {
 
 									startFightRoutine(idClickedTile, clickedTile);
 									//Kämpfen
+									clixxx(1000);
 
 							}
 
@@ -3415,8 +3415,7 @@ $(document).ready(function(){
 		});
 
 		allButtonsMonsterDifficulty.click(function() {
-			
 			startFight();
-			
+			clixxx(2000);
 		});
 })
