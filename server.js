@@ -1,196 +1,254 @@
+// NODE
+// socket.emit - SINGLE BACK
+// socket.broadcast.emit - MULTI ohne BACK
+// io.sockets.emit - MULTI mit BACK
+
+
 //Start auf port 9000
 var io = require('socket.io').listen(9000);
-
+var $ = require('jquery').create();
 //wenn eine neue verbindung mit einem neuen client entsteht
 io.sockets.on('connection', function (socket) {
-  //wenn server gesagt bekommt 'newmessage' ist da 
-  //function(message) = message übergabe
+  
   socket.on('0',function(anonym){
-  	socket.broadcast.emit('0');
+  	initshowMovementPhaseAnimation();
+    io.sockets.emit('0', {pCurrentPlayerNumber: currentPlayerNumber});
   });
 
   socket.on('1',function(anonym){
-  	socket.broadcast.emit('1');
+  	io.sockets.emit('1');
   });
 
   socket.on('3',function(anonym){
-  	socket.broadcast.emit('3');
+  	io.sockets.emit('3');
   });
 
   socket.on('4',function(anonym){
-    socket.broadcast.emit('4');
+    io.sockets.emit('4');
   });
 
   socket.on('5',function(anonym){
-    socket.broadcast.emit('5');
+    io.sockets.emit('5');
   });
 
   socket.on('6',function(anonym){
-    socket.broadcast.emit('6');
+    io.sockets.emit('6');
   });
 
   socket.on('7',function(anonym){
-    socket.broadcast.emit('7');
+    io.sockets.emit('7');
   });
 
   socket.on('8',function(anonym){
-    socket.broadcast.emit('8');
+    io.sockets.emit('8');
   });
 
   socket.on('9',function(anonym){
-    socket.broadcast.emit('9');
+    io.sockets.emit('9');
   });
 
   socket.on('10',function(anonym){
-    socket.broadcast.emit('10');
+    io.sockets.emit('10');
   });
 
   socket.on('11',function(anonym){
-    socket.broadcast.emit('11');
+    io.sockets.emit('11');
   });
 
   socket.on('12',function(anonym){
-    socket.broadcast.emit('12');
+    io.sockets.emit('12');
   });
 
   socket.on('13',function(anonym){
-    socket.broadcast.emit('13');
+    io.sockets.emit('13');
   });
 
   socket.on('14',function(anonym){
-    socket.broadcast.emit('14');
+    io.sockets.emit('14');
   });
 
   socket.on('15',function(anonym){
-    socket.broadcast.emit('15');
+    io.sockets.emit('15');
   });
 
   socket.on('16',function(anonym){
-    socket.broadcast.emit('16');
+    io.sockets.emit('16');
   });
 
   socket.on('17',function(anonym){
-    socket.broadcast.emit('17', anonym);
+    io.sockets.emit('17', anonym);
   });
 
   socket.on('18',function(anonym){
-    socket.broadcast.emit('18', anonym);
+    io.sockets.emit('18', anonym);
   });
 
   socket.on('19',function(anonym){
-    socket.broadcast.emit('19', anonym);
+    io.sockets.emit('19', anonym);
   });
 
   socket.on('20',function(anonym){
-    socket.broadcast.emit('20', anonym);
+    io.sockets.emit('20', anonym);
   });
 
   socket.on('21',function(anonym){
-    socket.broadcast.emit('21', anonym);
+    io.sockets.emit('21', anonym);
   });
 
   socket.on('22',function(anonym){
-    socket.broadcast.emit('22', anonym);
+    io.sockets.emit('22', anonym);
   });
 
   socket.on('23',function(anonym){
-    socket.broadcast.emit('23', anonym);
+    io.sockets.emit('23', anonym);
   });
 
   socket.on('24',function(anonym){
-    socket.broadcast.emit('24', anonym);
+    io.sockets.emit('24', anonym);
   });
 
   socket.on('25',function(anonym){
-    socket.broadcast.emit('25', anonym);
+    console.log('SOCKET.ON: 25');
+    io.sockets.emit('25', anonym);
   });
 
   socket.on('26',function(anonym){
-    socket.broadcast.emit('26');
+    console.log('SOCKET.ON (OUT IF): 26; gameOn: ' + gameOn);
+    if(gameOn == 0){
+      gameOn = 1;
+      //Spiellogik aufbauen      
+      initField();
+      //Befehl zum Rendern an alle Clients senden
+      var number = amountTiles*7 + 500 + amountMonsters*100 + 250 + 4*250 + 500 + 3500;
+      console.log(number);
+      io.sockets.emit('26', {a: number});
+    }    
   });
 
   socket.on('27',function(anonym){
-    socket.broadcast.emit('27');
+    io.sockets.emit('27');
   });
 
   socket.on('28',function(anonym){
-    socket.broadcast.emit('28');
+    io.sockets.emit('28', {pCurrentPlayerNumber: currentPlayerNumber});
   });
 
   socket.on('29',function(anonym){
-    socket.broadcast.emit('29');
+    io.sockets.emit('29');
   });
 
   socket.on('30',function(anonym){
-    socket.broadcast.emit('30');
+    io.sockets.emit('30');
   });
 
   socket.on('31',function(anonym){
-    socket.broadcast.emit('31');
+    io.sockets.emit('31');
   });
 
   socket.on('32',function(anonym){
-    socket.broadcast.emit('32');
+    io.sockets.emit('32');
   });
 
   socket.on('33',function(anonym){
-    socket.broadcast.emit('33', anonym);
+    io.sockets.emit('33', anonym);
   });
 
   socket.on('34',function(anonym){
-    socket.broadcast.emit('34');
+    io.sockets.emit('34');
   });
 
   socket.on('35',function(anonym){
-    socket.broadcast.emit('35');
+    setAmountFieldColumns(anonym.amountFieldColumns);
   });
 
   socket.on('36',function(anonym){
-    socket.broadcast.emit('36');
+    setColumnLength(anonym.columnLength);
   });
 
   socket.on('37',function(anonym){
-    socket.broadcast.emit('37');
+    setAmountMonsters(anonym.amountMonsters);
   });
 
   socket.on('38',function(anonym){
-    socket.broadcast.emit('38');
+    initshowMovementPhaseAnimation;
   });
 
   socket.on('39',function(anonym){
-    socket.broadcast.emit('39');
+    showMovementRange();
   });
 
-  socket.on('40',function(anonym){
-    socket.broadcast.emit('40');
+  // SOCKET 40 - ActionEvent/MethodeEmit
+
+  // SOCKET 41 - ActionEvent/MethodeEmit
+
+  // SOCKET 42 - ActionEvent/MethodeEmit
+
+  // SOCKET 43 - ActionEvent/MethodeEmit
+
+  // SOCKET 44 - ActionEvent/MethodeEmit
+
+  // SOCKET 45 - ActionEvent/MethodeEmit
+
+  // SOCKET 46 - ActionEvent/MethodeEmit
+
+  // SOCKET 47 - ActionEvent/MethodeEmit
+
+  // SOCKET 48 - ActionEvent/MethodeEmit
+
+  socket.on('49',function(anonym){
+    showMovementRange();
   });
 
-  socket.on('41',function(anonym){
-    socket.broadcast.emit('41');
+  socket.on('50',function(anonym){
+    showMovementRange();
   });
 
-  socket.on('42',function(anonym){
-    socket.broadcast.emit('42');
+  socket.on('51',function(anonym){
+    showMovementRange();
   });
 
-  socket.on('43',function(anonym){
-    socket.broadcast.emit('43');
+  socket.on('52',function(anonym){
+    showMovementRange();
   });
 
-  socket.on('44',function(anonym){
-    socket.broadcast.emit('44');
+  socket.on('53',function(anonym){
+    showMovementRange();
   });
 
-  socket.on('45',function(anonym){
-    socket.broadcast.emit('45');
+  socket.on('54',function(anonym){
+    showMovementRange();
+  });
+
+  socket.on('55',function(anonym){
+    showMovementRange();
+  });
+
+  socket.on('56',function(anonym){
+    showMovementRange();
+  });
+
+  socket.on('57',function(anonym){
+    showMovementRange();
+  });
+
+  socket.on('58',function(anonym){
+    showMovementRange();
+  });
+
+  socket.on('59',function(anonym){
+    showMovementRange();
+  });
+
+  socket.on('60',function(anonym){
+    showMovementRange();
   });
 
   socket.on('1000',function(anonym){
-    socket.broadcast.emit('1000');
+    io.sockets.emit('1000');
   });
 
   socket.on('2000',function(anonym){
-    socket.broadcast.emit('2000');
+    io.sockets.emit('2000');
   });
 });
 
@@ -231,77 +289,6 @@ io.sockets.on('connection', function (socket) {
 
 /* GLOBALE DATENFELDER */
 
-
-//////////////////////
-// Benötigte Bilder //
-//////////////////////
-
-//Spieler CharBilder
-var charIMGs = new Array();
-
-charIMGs[1] = new Image(); charIMGs[1].src = "Bilddaten/CharSheet/Spieler1.jpg";
-charIMGs[2] = new Image(); charIMGs[2].src = "Bilddaten/CharSheet/Spieler2.jpg";
-charIMGs[3] = new Image(); charIMGs[3].src = "Bilddaten/CharSheet/Spieler3.jpg";
-charIMGs[4] = new Image(); charIMGs[4].src = "Bilddaten/CharSheet/Spieler4.jpg";
-
-//Spieler Bilder
-var players = new Array();
-
-players[1] = new Image(); players[1].src = "Bilddaten/Spielfeld/player1.png";
-players[2] = new Image(); players[2].src = "Bilddaten/Spielfeld/player2.png";
-players[3] = new Image(); players[3].src = "Bilddaten/Spielfeld/player3.png";
-players[4] = new Image(); players[4].src = "Bilddaten/Spielfeld/player4.png";
-
-/*//Monster Bilder
-var monster = new Array();
-
-monster[0] = new Image(); monster[0].src = "Monster7.png";
-monster[1] = new Image(); monster[1].src = "Monster7.png";
-monster[2] = new Image(); monster[2].src = "Monster7.png";
-monster[3] = new Image(); monster[3].src = "Monster7.png";*/
-
-
-//Ebenen Bilder
-var terrains = new Array();
-
-terrains[0] = new Image(); terrains[0].src = "Bilddaten/Spielfeld/Weg.png";
-terrains[1] = new Image(); terrains[1].src = "Bilddaten/Spielfeld/Gras.png";
-terrains[2] = new Image(); terrains[2].src = "Bilddaten/Spielfeld/Wald.png";
-terrains[3] = new Image(); terrains[3].src = "Bilddaten/Spielfeld/Sand.png";
-terrains[4] = new Image(); terrains[4].src = "Bilddaten/Spielfeld/Sumpf.png";
-terrains[5] = new Image(); terrains[5].src = "Bilddaten/Spielfeld/Berg.png";
-
-//Ebenen Bilder, wenn ausgewählt
-var terrainsAktuell = new Array();
-
-terrainsAktuell[0] = new Image(); terrainsAktuell[0].src = "Bilddaten/Spielfeld/WegAktuell.png";
-terrainsAktuell[1] = new Image(); terrainsAktuell[1].src = "Bilddaten/Spielfeld/GrasAktuell.png";
-terrainsAktuell[2] = new Image(); terrainsAktuell[2].src = "Bilddaten/Spielfeld/WaldAktuell.png";
-terrainsAktuell[3] = new Image(); terrainsAktuell[3].src = "Bilddaten/Spielfeld/SandAktuell.png";
-terrainsAktuell[4] = new Image(); terrainsAktuell[4].src = "Bilddaten/Spielfeld/SumpfAktuell.png";
-terrainsAktuell[5] = new Image(); terrainsAktuell[5].src = "Bilddaten/Spielfeld/BergAktuell.png";
-
-//Bilder von Zahlen stellvertretend für die Bewegungsschwierigkeit der Ebenen
-var terrainsDifficulties = new Array();
-
-terrainsDifficulties[0] = new Image(); terrainsDifficulties[0].src = "Bilddaten/Spielfeld/Eins.png";
-terrainsDifficulties[1] = new Image(); terrainsDifficulties[1].src = "Bilddaten/Spielfeld/Zwei.png";
-terrainsDifficulties[2] = new Image(); terrainsDifficulties[2].src = "Bilddaten/Spielfeld/Drei.png";
-terrainsDifficulties[3] = new Image(); terrainsDifficulties[3].src = "Bilddaten/Spielfeld/Vier.png";
-terrainsDifficulties[4] = new Image(); terrainsDifficulties[4].src = "Bilddaten/Spielfeld/Fünf.png";
-terrainsDifficulties[5] = new Image(); terrainsDifficulties[5].src = "Bilddaten/Spielfeld/Sechs.png";
-
-/*//Monster Icon
-var MonsterSRC = new Image(); MonsterSRC.src = "Monster1.png";*/
-var TempSRC = new Image(); TempSRC.src = "Bilddaten/Spielfeld/temp.png";
-
-
-
-
-
-
-
-
 //////////////////////////////
 // Benötigt für Spiel-Logik //
 //////////////////////////////
@@ -340,6 +327,14 @@ zwischenSpeicherRahmen = 0;
 currentPlayerNumber = 0;
 currentMovementPoints = 0;
 currentPlayerPosition = 0;
+
+//////////////////////////////
+// Node benötigte Variablen //
+//////////////////////////////
+
+//Abfrage, ob Spiel gestartet wurde
+var gameOn = 0;
+
 
 
 ////////////////////
@@ -404,64 +399,63 @@ function Player(number) {
 
 Player.prototype.setPlayerStatsArray = function(newPlayerStatsArray) {
 
-    this.playerStatsArray = newPlayerStatsArray;
+  this.playerStatsArray = newPlayerStatsArray;
 
 }
 
 Player.prototype.getPlayerStatsArray = function() {
 
-    return this.playerStatsArray;
+  return this.playerStatsArray;
 
 }
 
 
 Player.prototype.setPlayerName = function(newPlayerName) {
 
-    this.playerName = newPlayerName;
+  this.playerName = newPlayerName;
 
 }
 
 Player.prototype.getPlayerName = function() {
 
-    return this.playerName;
+  return this.playerName;
 
 }
 
 Player.prototype.setPlayerCharImg = function(newPlayerCharImg) {
 
-    this.playerCharImg = new Image();
-    this.playerCharImg.src = newplayerCharImg;
-    
+  this.playerCharImg = new Image();
+  this.playerCharImg.src = newplayerCharImg;
 
 }
 
 Player.prototype.getPlayerCharImg = function() {
 
-    return this.playerCharImg.src;
+  return this.playerCharImg.src;
 
 }
 
 Player.prototype.setPlayerEXP = function(newPlayerEXP) {
 
-    this.playerEXP = newPlayerEXP;
+  this.playerEXP = newPlayerEXP;
 
 }
 
 Player.prototype.getPlayerEXP = function() {
 
-    return this.playerEXP;
+  return this.playerEXP;
 
 }
 
 Player.prototype.setPlayerLvl = function(newPlayerLvl) {
 
-    this.playerLvl = newPlayerLvl;
+  this.playerLvl = newPlayerLvl;
 
 }
 
 Player.prototype.getPlayerLvl = function() {
 
-    return this.playerLvl;
+  return this.playerLvl;
 
 }
 
@@ -469,97 +463,97 @@ Player.prototype.getPlayerLvl = function() {
 
 Player.prototype.setPlayerLifeMax = function(newPlayerLifeMax) {
 
-    this.playerLifeMax = newPlayerLifeMax;
+  this.playerLifeMax = newPlayerLifeMax;
 
 }
 
 Player.prototype.getPlayerLifeMax = function() {
 
-    return this.playerLifeMax;
+  return this.playerLifeMax;
 
 }
 
 Player.prototype.setPlayerLife = function(newPlayerLife) {
 
-    this.playerLife = newPlayerLife;
+  this.playerLife = newPlayerLife;
 
 }
 
 Player.prototype.getPlayerLife = function() {
 
-    return this.playerLife;
+  return this.playerLife;
 
 }
 
 Player.prototype.setPlayerMagicDmg = function(newPlayerMagicDmg) {
 
-    this.playerMagicDmg = newPlayerMagicDmg;
+  this.playerMagicDmg = newPlayerMagicDmg;
 
 }
 
 Player.prototype.getPlayerMagicDmg = function() {
 
-    return this.playerMagicDmg;
+  return this.playerMagicDmg;
 
 }
 
 Player.prototype.setPlayerMagic = function(newPlayerMagic) {
 
-    this.playerMagic = newPlayerMagic;
+  this.playerMagic = newPlayerMagic;
 
 }
 
 Player.prototype.getPlayerMagic = function() {
 
-    return this.playerMagic;
+  return this.playerMagic;
 
 }
 
 Player.prototype.setPlayerBowDmg = function(newPlayerBowDmg) {
 
-    this.playerBowDmg = newPlayerBowDmg;
+  this.playerBowDmg = newPlayerBowDmg;
 
 }
 
 Player.prototype.getPlayerBowDmg = function() {
 
-    return this.playerBowDmg;
+  return this.playerBowDmg;
 
 }
 
 Player.prototype.setPlayerBow = function(newPlayerBow) {
 
-    this.playerBow = newPlayerBow;
+  this.playerBow = newPlayerBow;
 
 }
 
 Player.prototype.getPlayerBow = function() {
 
-    return this.playerBow;
+  return this.playerBow;
 
 }
 
 Player.prototype.setPlayerSwordDmg = function(newPlayerSwordDmg) {
 
-    this.playerSwordDmg = newPlayerSwordDmg;
+  this.playerSwordDmg = newPlayerSwordDmg;
 
 }
 
 Player.prototype.getPlayerSwordDmg = function() {
 
-    return this.playerSwordDmg;
+  return this.playerSwordDmg;
 
 }
 
 Player.prototype.setPlayerSword = function(newPlayerSword) {
 
-    this.playerSword = newPlayerSword;
+  this.playerSword = newPlayerSword;
 
 }
 
 Player.prototype.getPlayerSword = function() {
 
-    return this.playerSword;
+  return this.playerSword;
 
 }
 
@@ -570,121 +564,121 @@ Player.prototype.getPlayerSword = function() {
 
 Player.prototype.setPlayerBoost = function(newPlayerBoost) {
 
-    this.playerBoost = newPlayerBoost;
+  this.playerBoost = newPlayerBoost;
 
 }
 
 Player.prototype.getPlayerBoost = function() {
 
-    return this.playerBoost;
+  return this.playerBoost;
 
 }
 
 Player.prototype.setPlayerBoostMax = function(newPlayerBoostMax) {
 
-    this.playerBoostMax = newPlayerBoostMax;
+  this.playerBoostMax = newPlayerBoostMax;
 
 }
 
 Player.prototype.getPlayerBoostMax = function() {
 
-    return this.playerBoostMax;
+  return this.playerBoostMax;
 
 }
 
 Player.prototype.setPlayerMovementPoints = function(newPlayerMovementPoints) {
 
-    this.playerMovementPoints = newPlayerMovementPoints;
+  this.playerMovementPoints = newPlayerMovementPoints;
 
 }
 
 Player.prototype.getPlayerMovementPoints = function() {
 
-    return this.playerMovementPoints;
+  return this.playerMovementPoints;
 
 }
 
 Player.prototype.setPlayerMovementPointsMax = function(newPlayerMovementPointsMax) {
 
-    this.playerMovementPointsMax = newPlayerMovementPointsMax;
+  this.playerMovementPointsMax = newPlayerMovementPointsMax;
 
 }
 
 Player.prototype.getPlayerMovementPointsMax = function() {
 
-    return this.playerMovementPointsMax;
+  return this.playerMovementPointsMax;
 
 }
 
 Player.prototype.setPlayerTrackingPoints = function(newPlayerTrackingPoints) {
 
-    this.playerTrackingPoints = newPlayerTrackingPoints;
+  this.playerTrackingPoints = newPlayerTrackingPoints;
 
 }
 
 Player.prototype.getPlayerTrackingPoints = function() {
 
-    return this.playerTrackingPoints;
+  return this.playerTrackingPoints;
 
 }
 
 Player.prototype.setPlayerTrackingPointsMax = function(newPlayerTrackingPointsMax) {
 
-    this.playerTrackingPointsMax = newPlayerTrackingPointsMax;
+  this.playerTrackingPointsMax = newPlayerTrackingPointsMax;
 
 }
 
 Player.prototype.getPlayerTrackingPointsMax = function() {
 
-    return this.playerTrackingPointsMax;
+  return this.playerTrackingPointsMax;
 
 }
 
 Player.prototype.setPlayerXStrikePoints = function(newPlayerXStrikePoints) {
 
-    this.playerXStrikePoints = newPlayerXStrikePoints;
+  this.playerXStrikePoints = newPlayerXStrikePoints;
 
 }
 
 Player.prototype.getPlayerXStrikePoints = function() {
 
-    return this.playerXStrikePoints;
+  return this.playerXStrikePoints;
 
 }
 
 Player.prototype.setPlayerXStrikePointsMax = function(newPlayerXStrikePointsMax) {
 
-    this.playerXStrikePointsMax = newPlayerXStrikePointsMax;
+  this.playerXStrikePointsMax = newPlayerXStrikePointsMax;
 
 }
 
 Player.prototype.getPlayerXStrikePointsMax = function() {
 
-    return this.playerXStrikePointsMax;
+  return this.playerXStrikePointsMax;
 
 }
 
 Player.prototype.setPlayerHealPoints = function(newPlayerHealPoints) {
 
-    this.playerHealPoints = newPlayerHealPoints;
+  this.playerHealPoints = newPlayerHealPoints;
 
 }
 
 Player.prototype.getPlayerHealPoints = function() {
 
-    return this.playerHealPoints;
+  return this.playerHealPoints;
 
 }
 
 Player.prototype.setPlayerHealPointsMax = function(newPlayerHealPointsMax) {
 
-    this.playerHealPointsMax = newPlayerHealPointsMax;
+  this.playerHealPointsMax = newPlayerHealPointsMax;
 
 }
 
 Player.prototype.getPlayerHealPointsMax = function() {
 
-    return this.playerHealPointsMax;
+  return this.playerHealPointsMax;
 
 }
 
@@ -695,50 +689,50 @@ Player.prototype.getPlayerHealPointsMax = function() {
 
 Player.prototype.setIsPlaying = function(isPlaying) {
 
-    this.isPlaying = isPlaying;
+  this.isPlaying = isPlaying;
 
 }
 
 Player.prototype.getIsPlaying = function() {
 
-    return this.isPlaying;
+  return this.isPlaying;
 
 }
 
 Player.prototype.setPlayerImg = function(newPlayerImg) {
 
-    this.playerImg = new Image();
-    this.playerImg.src = newPlayerImg;
+  this.playerImg = new Image();
+  this.playerImg.src = newPlayerImg;
 
 }
 
 Player.prototype.getPlayerImg = function() {
 
-    return this.playerImg.src;
+  return this.playerImg.src;
 
 }
 
 Player.prototype.setPlayerPosition = function(newPlayerPosition) {
 
-    this.playerPosition = newPlayerPosition;
+  this.playerPosition = newPlayerPosition;
 
 }
 
 Player.prototype.getPlayerPosition = function() {
 
-    return this.playerPosition;
+  return this.playerPosition;
 
 }
 
 Player.prototype.setPlayerNumber = function(newPlayerNumber) {
 
-    this.playerNumber = newPlayerNumber;
+  this.playerNumber = newPlayerNumber;
 
 }
 
 Player.prototype.getPlayerNumber = function() {
 
-    return this.playerNumber;
+  return this.playerNumber;
 
 }
 
@@ -764,8 +758,10 @@ function Tile(id) {
   this.YPosition = 0;
   this.ID = id;
   this.terrainDifficulty = Math.floor(Math.random() * 6);
-  this.terrain = terrains[this.terrainDifficulty];
-  
+  // TERRAIN MUSS CLIENT BEIM RENDERN SUCHEN
+  // this.terrain = terrains[this.terrainDifficulty]; CLIENT(40)
+  this.terrain = null;
+
   this.hasMonsters = false;
   this.hasPlayer = false;
   this.isSelected = false;
@@ -778,7 +774,7 @@ function Tile(id) {
 
 Tile.prototype.setXPosition = function(newXPosition) {
 
-    this.XPosition = newXPosition;
+  this.XPosition = newXPosition;
 
 }
 
@@ -790,7 +786,7 @@ Tile.prototype.getXPosition = function() {
 
 Tile.prototype.setYPosition = function(newYPosition) {
 
-    this.YPosition = newYPosition;
+  this.YPosition = newYPosition;
 
 }
 
@@ -802,7 +798,7 @@ Tile.prototype.getYPosition = function() {
 
 Tile.prototype.setID = function(newID) {
 
-    this.ID = newID;
+  this.ID = newID;
 
 }
 
@@ -814,7 +810,7 @@ Tile.prototype.getID = function() {
 
 Tile.prototype.setTerrainDifficulty = function(newTerrainDifficulty) {
 
-    this.terrainDifficulty = newTerrainDifficulty;
+  this.terrainDifficulty = newTerrainDifficulty;
 
 }
 
@@ -861,89 +857,77 @@ Tile.prototype.getHasMonsters = function () {
 
 }
 
+///////////////////
+// CLASS - Templates //
+///////////////////
 
+function Template(id) {
 
-
-
-
-
-
-
-
-
-///////////////////////////////////
-// Methods for Initializing Game //
-///////////////////////////////////
-
-function setFieldParas1(newReihenAnzahl) {
-
-  //Falls die Angabe 16 Reihen übersteigt
-  if(newReihenAnzahl > 16) {
-    document.getElementById ("warning1").innerHTML = "o_O Du spinnst doch. Ich setz das mal auf 16.";
-    document.getElementById ("warning1").style.color = "red";
-    document.getElementById ("reihenAnzahl").value = "16";
-    amountFieldColumns = 16;
-  }
-
-  else {
-
-      //Falls die Angabe nicht durch 2 teilbar ist
-      if(newReihenAnzahl % 2 == 0) {
-
-        document.getElementById ("warning1").innerHTML = "Ne ungerade Zahl is schöner. Ich pass das mal an.";
-        document.getElementById ("warning1").style.color = "red";
-        document.getElementById ("reihenAnzahl").value = newReihenAnzahl-1;
-        //Die ", 10" im parseInt stehen für das Zahlensystem. Könnte sonst Probleme geben, wenn JS das Oktalsystem nimmt statt das Dezimalsystem
-        amountFieldColumns = parseInt(newReihenAnzahl-1, 10); 
-
-      }
-
-      else{
-        document.getElementById ("warning1").innerHTML = newReihenAnzahl+" Reihen. Viel Spaß";
-        document.getElementById ("warning1").style.color = "green";
-        amountFieldColumns = parseInt(newReihenAnzahl, 10);
-      }
-  }
+  this.ID = id;
+  this.IMG = null;
+ 
 }
 
-function setFieldParas2(newMonsterAnzahl) {
+////////////////////////////
+// Methods of class Templates //
+///////////////////////////
 
-  if(newMonsterAnzahl > 100) {
+Tile.prototype.setID = function(newID) {
 
-    document.getElementById ("warning2").innerHTML = "Lebensmüde? 100 reichen auch...";
-    document.getElementById ("warning2").style.color = "red";
-    document.getElementById ("monsterAnzahl").value = "100";
-    amountMonsters = 100;
-  }
-
-  else {
-    
-    document.getElementById ("warning2").innerHTML = newMonsterAnzahl+" Monster. Viel Glück";
-    document.getElementById ("warning2").style.color = "green";
-    amountMonsters = parseInt(newMonsterAnzahl,10);
-  }
+    this.ID = newID;
 
 }
 
-function setFieldParas3(newReihenLänge) {
+Tile.prototype.getID = function() {
 
-  if(newReihenLänge > 24) {
-
-    document.getElementById ("warning3").innerHTML = "Nope...";
-    document.getElementById ("warning3").style.color = "red";
-    document.getElementById ("reihenLänge").value = "24";
-    columnLength = 24;
-  }
-
-  else {
-    
-    document.getElementById ("warning3").innerHTML = "Reihenlänge von "+newReihenLänge;
-    document.getElementById ("warning3").style.color = "green";
-    columnLength = parseInt(newReihenLänge,10);
-  }
+  return this.ID;
 
 }
 
+Tile.prototype.setIMG = function(newIMG) {
+
+  this.IMG = newIMG;
+
+}
+
+Tile.prototype.getIMG = function() {
+
+  return this.IMG;
+
+}
+
+///////////////////// setFieldParas1 ////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+// aufgerufen von 35
+function setAmountFieldColumns(param){
+  amountFieldColumns = param;
+}
+
+///////////////////// END setFieldParas1 ////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+///////////////////// setFieldParas2 ////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+// aufgerufen von 37
+function setAmountMonsters(param){
+  amountMonsters = param;
+}
+
+///////////////////// END setFieldParas2 ////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+///////////////////// setFieldParas3 ////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+// aufgerufen von 36
+function setColumnLength(param){
+  columnLength = param;
+}
+
+///////////////////// END setFieldParas3 ////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 
 function calculateFieldParas () {
 
@@ -961,8 +945,8 @@ function calculateFieldParas () {
         amountTiles = amountTiles+columnLength;
 
       }
+    }
   }
-}
 
 //Erzeugt das Array BorderTilesID, das für die Bewegungsberechnung benötigt wird
 function calculateBorderTileIDs() {
@@ -1043,7 +1027,7 @@ function calculateBorderTileIDs() {
 
 
 var numberArrayTiles = new Array()
-  
+
 //erzeugt ein Array mit Zahlen
 function initNumberArrayTiles() {
 
@@ -1061,27 +1045,13 @@ function shuffleTilesArray() {
 
   for(var i = 0; i <=amountTiles; i++) {
 
-  rand = Math.floor(Math.random() * (amountTiles+1));
-  tmp = numberArrayTiles[i]; 
-  numberArrayTiles[i] = numberArrayTiles[rand]; 
-  numberArrayTiles[rand] = tmp;
+    rand = Math.floor(Math.random() * (amountTiles+1));
+    tmp = numberArrayTiles[i]; 
+    numberArrayTiles[i] = numberArrayTiles[rand]; 
+    numberArrayTiles[rand] = tmp;
 
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1094,212 +1064,35 @@ function shuffleTilesArray() {
 ///////////////////////////////////
 
 // Erzeugt alle Spielfeld-Kacheln
+
+var tilesArray = new Array();
+
 function createTiles() {
 
-  //xCounter und yCounter bezeichnen die absoluten Positionen der Elemente
-  var xCounter = 0;
-  var yCounter = 0;
-  //Das Element, zu dem die Kacheln hinzugefügt werden
-  var field = document.getElementById("field");
+  for(i=0; i <=amountTiles; i++) {
 
-  // Schleife, die schrittweise alle Kacheln erzeugt
-
-  var evenColumn = true;
-  var currentTileSum = columnLength-1;
-  for(i=0; i<=amountTiles; i++) {
-      
     var tile = new Tile(i);
-    tile.setXPosition(xCounter);
-    tile.setYPosition(yCounter);
-    // tileIMG ist die Variable für das jeweils in den tiles enthaltene img
-    // Muss hier deklariert werden, damit dessen style etc. beeinflusst werden kann
-    // CloneNode erlaubt es dasselbe Bild mehrmals zu laden. Sonst würden die Bilder immer überschrieben
-    tileIMG = tile.getTerrain().cloneNode(true);
-    tileIMG.id = i;
-    tileIMG.className = "tiles";
-    tileIMG.style.position="absolute";
-    // Setzt die Position der jeweiligen Kachel. "+px" ist nötig, damit der Befehl syntaktisch richtig ausgeführt wird
-    tileIMG.style.left = tile.getXPosition()+"px";
-    tileIMG.style.top = tile.getYPosition()+"px";
-    // fügt die Kachel dem Feld hinzu
-    field.appendChild(tileIMG); 
-    // Macht die Kacheln zunächst unsichtbar, damit sie später per Random-Funktion sichtbar gemacht werden können
-    tileIMG.style.visibility = "hidden";
-    //"tileIMG.onmouseover = bewegeRahmen;" ausgeladert auf die Templates, weil diese über den Kacheln liegen und mouseover somit bei den Kacheln nicht möglich ist
+    
+    random = Math.floor(Math.random() * 6);
+    tile.setTerrainDifficulty(random);
+
+    tilesArray[i] = random;
+
     AllTiles[i] = tile;
-
-    if(evenColumn == true) {
-
-        //Falls Laufindex modulo 19 ungleich 0 --> Man befindet sich noch in der ersten Zeile
-        //Falls Laufindex modulo 19 gleich 0 --> Ende der Zeile erreicht
-        //19 ist an dieser Stelle vllt verwirrend, aber effektiv sind es 20 Kacheln, da die erste bei 0 anfängt
-        if(i == 0 || i%currentTileSum != 0) {
-
-          xCounter = xCounter+40;
-
-        }
-
-        //else-Teil initialisiert Zeilenwechsel
-        else {
-
-          //um 20 einrücken und 34 nach unten verschieben
-          xCounter = 20;
-          yCounter = yCounter+34;
-
-          //Wechsel zwischen geraden (20 Kacheln) und ungeraden (19 Kacheln) Zeilen
-          evenColumn = false;
-          //Erste 19er - Reihe gefüllt, currentTileSum um die zugefügt Anzahl erhöhen
-          currentTileSum = currentTileSum+(columnLength-1);
-
-        }
-
-
-        }
-    
-
-    else {
-
-        if(i%currentTileSum != 0) {
-
-          xCounter = xCounter+40;
-
-        }
-
-        //else-Teil initialisiert Zeilenwechsel
-        else {
-
-          //wieder ausrücken und 34 nach unten verschieben
-          xCounter = 0;
-          yCounter = yCounter+34;
-
-          //Wechsel zwischen geraden (20 Kacheln) und ungeraden (19 Kacheln) Zeilen
-          evenColumn = true;
-          currentTileSum = currentTileSum+columnLength;
-
-        }
-  
-    }
-    
   }
-
-}
-
-//Erzeugt die austauschbaren Templates über jeder Kachel
-function initTemplates() {
-
-  var xCounter = 0;
-  var yCounter = 0;
-  var field = document.getElementById("field");
-
-  var evenColumn = true;
-  var currentTileSum = columnLength-1;
-  for(i=0; i<=amountTiles; i++) {
-      
-    var template = new Image(); template.src = "Bilddaten/Spielfeld/temp.png";
-    template.id = amountTiles+1+i;
-    template.className = "templates";
-    template.style.position="absolute";
-    template.style.left = xCounter+"px";
-    template.style.top = yCounter+"px";
-    field.appendChild(template); 
-    template.onclick = checkClickedTile;
-    template.onmouseover = bewegeRahmen;
-    AllTemplates[i] = template;
-
-    if(evenColumn == true) {
-
-        //Falls Laufindex modulo 19 ungleich 0 --> Man befindet sich noch in einer ungeraden Zeile
-        //Falls Laufindex modulo 19 gleich 0 --> Ende der Zeile erreicht
-        if(i == 0 || i%currentTileSum != 0) {
-
-          xCounter = xCounter+40;
-
-        }
-
-        //else-Teil initialisiert Zeilenwechsel
-        else {
-
-          //um 20 einrücken und 34 nach unten verschieben
-          xCounter = 20;
-          yCounter = yCounter+34;
-
-          //Wechsel zwischen geraden (20 Kacheln) und ungeraden (19 Kacheln) Zeilen
-          evenColumn = false;
-          //Erste 19er - Reihe gefüllt, currentTileSum um die zugefügt Anzahl erhöhen
-          currentTileSum = currentTileSum+(columnLength-1);
-
-        }
-    }
-
-    else {
-
-        if(i%currentTileSum != 0) {
-
-          xCounter = xCounter+40;
-
-        }
-
-        //else-Teil initialisiert Zeilenwechsel
-        else {
-
-          //wieder ausrücken und 34 nach unten verschieben
-          xCounter = 0;
-          yCounter = yCounter+34;
-
-          //Wechsel zwischen geraden (20 Kacheln) und ungeraden (19 Kacheln) Zeilen
-          evenColumn = true;
-          currentTileSum = currentTileSum+columnLength;
-
-        }
-  
-    }
-  }
-
-}
-
-//Funktion, die schrittweise die Kacheln sichtbar macht
-var timeShowTiles = 7
-function showTiles() {
-
-  for (var i = 0; i <= amountTiles; i++) {
-
-      timeShowTiles += 7;
-
-      setTimeout(function(j) {
-
-          return function() {
-
-              document.getElementById(numberArrayTiles[j]).style.visibility = "visible";
-/*              if(j%10 == 0) {moveSound();}*/
-
-          }
-
-      }(i), timeShowTiles);
-  }
-  timeShowTiles = 0;
+  io.sockets.emit('40', {a: tilesArray, b: numberArrayTiles, c: columnLength, d: amountTiles});
 }
 
 
+// function createTemplates() {
 
+//   for(i=0; i <=amountTiles; i++) {
 
+//     var template = new Template(i);
+//     AllTemplates[amountTiles+1+i] = template;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//   }
+// }
 
 
 ///////////////////////////////////
@@ -1308,7 +1101,7 @@ function showTiles() {
 
 
 var numberArrayMonsters = new Array()
-  
+
 //erzeugt ein Array mit Zahlen
 function initNumberArrayMonsters() {
 
@@ -1320,7 +1113,7 @@ function initNumberArrayMonsters() {
     //Falls die erzeute Zahl noch nicht im MonsterArray vorkommt, kann sie einfach hinzugefügt werden
     if($.inArray(randomNumber, numberArrayMonsters) == -1) {
 
-    numberArrayMonsters.push(randomNumber);
+      numberArrayMonsters.push(randomNumber);
 
     }
 
@@ -1353,9 +1146,11 @@ function summonMonsters () {
 
           // Der Kachel sagen, dass sie ein Monster hat
           AllTiles[numberArrayMonsters[j]].setHasMonsters(true);
-          StabSound();
-
-          document.getElementById(numberArrayMonsters[j]+amountTiles+1).src = "Bilddaten/Spielfeld/MonsterImg.png"
+          
+          var eNumb = numberArrayMonsters[j]+amountTiles+1;
+          //StabSound(); CLIENT(46)
+          //document.getElementById(numberArrayMonsters[j]+amountTiles+1).src = "Bilddaten/Spielfeld/MonsterImg.png"; CLIENT(46)
+          io.sockets.emit('46', {elementNumber: eNumb});
 
           // "1+" ist notwendig, weil die Random-Fkt. Werte zwischen 0 und Obergrenze erzeugen würde
           // wir benötigen aber für den switch-case Werte zwischen 1 und 4. So kann man die 0 aussparen.
@@ -1386,12 +1181,12 @@ function summonMonsters () {
 
             default:
           }*/
-      }
+        }
 
-    } (i), timeSummonMonsters);
-  } 
+      } (i), timeSummonMonsters);
+} 
 
-  timeSummonMonsters = 0;
+timeSummonMonsters = 0;
 }
 
 
@@ -1400,7 +1195,7 @@ function createPlayers() {
   for(i = 1; i <= 4; i++) {
 
     player = new Player(i);
-    player.setPlayerImg(players[i].src);
+    // player.setPlayerImg(players[i].src);
     stats = player.getPlayerStatsArray();
 
     //Stats initialisieren
@@ -1409,7 +1204,7 @@ function createPlayers() {
 
       case 1:
 
-          player.setPlayerName("SENJU");
+      player.setPlayerName("SENJU");
 
           //STATS
           player.setPlayerSword(5); 
@@ -1473,7 +1268,7 @@ function createPlayers() {
 
           break;
 
-      case 2:
+          case 2:
 
           player.setPlayerName("MISCHA");
 
@@ -1539,7 +1334,7 @@ function createPlayers() {
 
           break;
 
-      case 3:
+          case 3:
 
           player.setPlayerName("JULIAN");
 
@@ -1605,7 +1400,7 @@ function createPlayers() {
 
           break;
 
-      case 4:
+          case 4:
 
           player.setPlayerName("JACKY");
 
@@ -1671,9 +1466,9 @@ function createPlayers() {
 
           break;
 
-    }
+        }
 
-  }
+      }
 
   //Start Movement Points von Spieler 1 übernehmen
   currentMovementPoints = AllPlayers[1].getPlayerMovementPoints();
@@ -1714,8 +1509,10 @@ function summonPlayers() {
         currentPlayerPosition = AllPlayers[1].getPlayerPosition();
 
         //Tausche Template an Stelle des Spielers mit Spielerbild aus
-        AllTemplates[randomPosition].src = players[j].src;
-        swordSound();
+        //AllTemplates[randomPosition].src = players[j].src;
+        io.sockets.emit('50', {position: randomPosition, source: null, difficultyValue: null, playersValue: j});
+        //swordSound(); CLIENT(49)
+        io.sockets.emit('49');
 
         //Sage der Kachel, dass sie einen Spieler hat
         AllTiles[randomPosition].setHasPlayer(true);
@@ -1723,7 +1520,7 @@ function summonPlayers() {
 
     } (i), timeSummonPlayers);
 
-  }
+}
 }
 
 var currentPlayer;
@@ -1783,61 +1580,68 @@ function blockAction() {
 
     $("#blocker").css("visibility", "visible");
     actionsBlocked = true;
-  
+
   }
 
 }
 
+///////////////////// showMovementPhaseAnimation ////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 
-var timeShowMovePhaseAnim = 0;
-function showMovementPhaseAnimation () {    
-
+// aufgerufen von 38
+function initshowMovementPhaseAnimation(){
   changePlayer(currentPlayerNumber);
   resetMovementRange();
+}
 
-  for(i=0; i <= 5; i++) {
+///////////////////// END showMovementPhaseAnimation ////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 
-    timeShowMovePhaseAnim += 100;
 
-    setTimeout(function(j) {
 
-      return function() {
+//Anzeigeelemente und stats für neuen Player laden
+function changePlayer () {
 
-          var movementMarker = document.createElement("div");
-          movementMarker.innerHTML = "PLAYER "+currentPlayerNumber+" - YOUR TURN!";
-          //notwendig, damit alles VOR dem Spielfeld angezeigt wird.
-          movementMarker.style.zIndex = "2";
-          movementMarker.className = "phaseMarker";
-          movementMarker.id = "phaseMarker";
-          document.getElementById("field").appendChild(movementMarker);
+  if(currentPlayerNumber != 0) { AllPlayers[currentPlayerNumber].setIsPlaying(false);}
 
-          setTimeout(function() {
+  if(currentPlayerNumber < 4) {
 
-          document.getElementById("endTurnButton").style.visibility = "visible";
-
-          }, 3000);
-
-          setTimeout(function() {document.getElementById("field").removeChild(document.getElementById("phaseMarker"))}, 3000);
-
-          }
-      
-
-    } (i), timeShowMovePhaseAnim);
+    currentPlayerNumber = currentPlayerNumber +1;
 
   }
 
-  timeShowMovePhaseAnim = 0;
-  setTimeout(function() { showMovementRange(); }, 3600);
+  else {
 
-} 
+    currentPlayerNumber = 1;
+
+  }
+
+  //In jeder neuen Runde werden Runen wieder aufgeladen
+  refreshRunes();
+  //Die Status-Werte des aktuellen Spielers reinladen
+  loadStats();
+  //Spielerbild wechseln
+  document.images.charImg.src = "Bilddaten/CharSheet/Spieler"+currentPlayerNumber+".jpg";
+  document.images.charImg2.src = "Bilddaten/CharSheet/Spieler"+currentPlayerNumber+".jpg";
+  //Spielername wechseln
+  document.getElementById('playerName').innerHTML = AllPlayers[currentPlayerNumber].getPlayerName();
+  document.getElementById('playerName2').innerHTML = AllPlayers[currentPlayerNumber].getPlayerName();
+  //Daten des jeweiligen Spielers reinladen
+  updateCharSheet();
+
+  currentMovementPoints = AllPlayers[currentPlayerNumber].getPlayerMovementPoints();
+  currentPlayerPosition = AllPlayers[currentPlayerNumber].getPlayerPosition();
+
+  AllPlayers[currentPlayerNumber].setIsPlaying(true);
+}
 
 function showMonsterChooser () {    
 
 
   $(document).ready(function(){
 
-  $("#monsterChooser").animate({top: '-20px'}, 1000);
-  chainSound();
+    $("#monsterChooser").animate({top: '-20px'}, 1000);
+    chainSound();
 
   });
 }
@@ -1846,48 +1650,11 @@ function hideMonsterChooser () {
 
   $(document).ready(function(){
 
-  $("#monsterChooser").animate({top: '-325px'}, 1000);
-  chainSound();
+    $("#monsterChooser").animate({top: '-325px'}, 1000);
+    chainSound();
 
   });
 }
-
-
-
-var timeShowGameStartAnim = 100;
-function showGameStartAnimation () {    
-
-  monsterGrowlSound();
-  var gameStartMarkerBackground = document.createElement("div");
-  gameStartMarkerBackground.className = "gameStartMarkerBackground"
-  gameStartMarkerBackground.id = "gameStartMarkerBackground";
-  document.getElementById("field").appendChild(gameStartMarkerBackground);
-
-
-  for(i=0; i <= 2; i++) {
-
-    timeShowGameStartAnim += 200;
-
-    setTimeout(function(j) {
-
-      return function() {
-
-          var gameStartMarker = document.createElement("div");
-          gameStartMarker.innerHTML = "GAME START";
-          gameStartMarker.style.index = "2";
-          gameStartMarker.className = "gameStartMarker";
-          gameStartMarker.id = "gameStartMarker";
-          document.getElementById("gameStartMarkerBackground").appendChild(gameStartMarker);
-      }
-
-    } (i), timeShowGameStartAnim);
-
-  }
-
-  timeShowGameStartAnim= 0;
-  setTimeout(function() {document.getElementById("field").removeChild(document.getElementById("gameStartMarkerBackground"))}, 5000);
-}
-
 
 function showFightAnimation (Text) {
 
@@ -1921,11 +1688,11 @@ function showReincarnationAnimation () {
 
       return function() {
 
-          var grimReaperText = document.createElement("div");
-          grimReaperText.innerHTML = "SECOND CHANCE";
-          grimReaperText.className = "grimReaperText";
-          grimReaperText.id = "grimReaperText";
-          document.getElementById("field").appendChild(grimReaperText);
+        var grimReaperText = document.createElement("div");
+        grimReaperText.innerHTML = "SECOND CHANCE";
+        grimReaperText.className = "grimReaperText";
+        grimReaperText.id = "grimReaperText";
+        document.getElementById("field").appendChild(grimReaperText);
       }
 
     } (i), timeShowReincarnate);
@@ -1965,19 +1732,19 @@ function showFieldWinAnimation (clickedTile) {
 
       return function() {
 
-          if(j%2 != 0) {
+        if(j%2 != 0) {
 
-            $("#winFrame1").css("visibility", "visible");
-            $("#winFrame2").css("visibility", "hidden");
+          $("#winFrame1").css("visibility", "visible");
+          $("#winFrame2").css("visibility", "hidden");
 
-          }
+        }
 
-          else {
+        else {
 
-            $("#winFrame2").css("visibility", "visible");
-            $("#winFrame1").css("visibility", "hidden");
+          $("#winFrame2").css("visibility", "visible");
+          $("#winFrame1").css("visibility", "hidden");
 
-          }
+        }
       }
 
     } (i), timeShowFieldWinAnim);
@@ -2055,26 +1822,20 @@ function startFight() {
   hideMonsterChooser()
   setTimeout(function() {
 
-      metalClashSound();
-      loadStats();
-      writeStats();
-      $("#fight").css("visibility", "visible");
+    metalClashSound();
+    loadStats();
+    writeStats();
+    $("#fight").css("visibility", "visible");
 
-      $(".leftFight").hide();
-      $(".rightFight").hide();
-      $(".rightFight").animate({width:'toggle'}, 2500, "easeOutBounce");
-      $(".leftFight").animate({width:'toggle'}, 2500, "easeOutBounce");
-      setTimeout(function() {$("#phaseFrame").css("visibility", "visible");}, 2500);
+    $(".leftFight").hide();
+    $(".rightFight").hide();
+    $(".rightFight").animate({width:'toggle'}, 2500, "easeOutBounce");
+    $(".leftFight").animate({width:'toggle'}, 2500, "easeOutBounce");
+    setTimeout(function() {$("#phaseFrame").css("visibility", "visible");}, 2500);
 
   }, 1000);
 }
 
-
-
-function startFightRoutine(index, clickedTile) {
-  showMonsterChooser();
-
-}
 
 function reincarnatePlayer() {
 
@@ -2128,7 +1889,7 @@ function EXPGain (gainedEXP) {
     //Animation erneut mit überschüssigen EXP ausführen
     showEXPGain(0, overrunEXP);
 
-    }, (100-currentEXP)*15);
+  }, (100-currentEXP)*15);
 
   }
 
@@ -2164,25 +1925,25 @@ function updateStats(currentPlayerArray) {
   //STATS
 
   player.setPlayerSword(currentPlayerArray[0]); 
-/*  player.setPlayerSwordDmg(currentPlayerArray[1]);*/
+  /*  player.setPlayerSwordDmg(currentPlayerArray[1]);*/
   player.setPlayerBow(currentPlayerArray[2]); 
-/*  player.setPlayerBowDmg(currentPlayerArray[3]);*/
+  /*  player.setPlayerBowDmg(currentPlayerArray[3]);*/
   player.setPlayerMagic(currentPlayerArray[4]); 
-/*  player.setPlayerMagicDmg(currentPlayerArray[5]);*/
-/*  player.setPlayerLife(currentPlayerArray[6]); */
+  /*  player.setPlayerMagicDmg(currentPlayerArray[5]);*/
+  /*  player.setPlayerLife(currentPlayerArray[6]); */
   player.setPlayerLifeMax(currentPlayerArray[7]);
 
   //RUNES
 
-/*  player.setPlayerHealPoints(currentPlayerArray[8]); */
+  /*  player.setPlayerHealPoints(currentPlayerArray[8]); */
   player.setPlayerHealPointsMax(currentPlayerArray[9]);
-/*  player.setPlayerBoost(currentPlayerArray[10]); */
+  /*  player.setPlayerBoost(currentPlayerArray[10]); */
   player.setPlayerBoostMax(currentPlayerArray[11]);
-/*  player.setPlayerTrackingPoints(currentPlayerArray[12]);*/ 
+  /*  player.setPlayerTrackingPoints(currentPlayerArray[12]);*/ 
   player.setPlayerTrackingPointsMax(currentPlayerArray[13]);
-/*  player.setPlayerXStrikePoints(currentPlayerArray[14]); */
+  /*  player.setPlayerXStrikePoints(currentPlayerArray[14]); */
   player.setPlayerXStrikePointsMax(currentPlayerArray[15]);
-/*  player.setPlayerMovementPoints(currentPlayerArray[16]); */
+  /*  player.setPlayerMovementPoints(currentPlayerArray[16]); */
   player.setPlayerMovementPointsMax(currentPlayerArray[17]);
 
 }
@@ -2206,64 +1967,6 @@ function updateStats(currentPlayerArray) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Anzeigeelemente und stats für neuen Player laden
-function changePlayer () {
-
-  if(currentPlayerNumber != 0) { AllPlayers[currentPlayerNumber].setIsPlaying(false);}
-
-  if(currentPlayerNumber < 4) {
-
-    currentPlayerNumber = currentPlayerNumber +1;
-
-  }
-
-  else {
-
-    currentPlayerNumber = 1;
-
-  }
-
-  //In jeder neuen Runde werden Runen wieder aufgeladen
-  refreshRunes();
-  //Die Status-Werte des aktuellen Spielers reinladen
-  loadStats();
-  //Spielerbild wechseln
-  document.images.charImg.src = "Bilddaten/CharSheet/Spieler"+currentPlayerNumber+".jpg";
-  document.images.charImg2.src = "Bilddaten/CharSheet/Spieler"+currentPlayerNumber+".jpg";
-  //Spielername wechseln
-  document.getElementById('playerName').innerHTML = AllPlayers[currentPlayerNumber].getPlayerName();
-  document.getElementById('playerName2').innerHTML = AllPlayers[currentPlayerNumber].getPlayerName();
-  //Daten des jeweiligen Spielers reinladen
-  updateCharSheet();
-
-  currentMovementPoints = AllPlayers[currentPlayerNumber].getPlayerMovementPoints();
-  currentPlayerPosition = AllPlayers[currentPlayerNumber].getPlayerPosition();
-
-  AllPlayers[currentPlayerNumber].setIsPlaying(true);
-}
 
 
 function refreshRunes() {
@@ -2324,27 +2027,6 @@ function loadStats() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /////////////////////
 // START THE FIELD //
 /////////////////////
@@ -2353,14 +2035,15 @@ function loadStats() {
 
 function initField() {
 
-  calculateFieldParas();
-  calculateBorderTileIDs();
-  initNumberArrayTiles();
-  shuffleTilesArray();
-  initNumberArrayMonsters();
-  createTiles();
-  initTemplates();
-  showTiles();
+  calculateFieldParas(); //NODE
+  calculateBorderTileIDs(); //NODE
+  initNumberArrayTiles(); //NODE
+  shuffleTilesArray(); //NODE
+  initNumberArrayMonsters(); //NODE
+  createTiles(); //NODE + MethodeEmit(40)
+  //addTemplates(); //CLIENT(41)
+  io.sockets.emit('41', {a: columnLength, b: amountTiles});
+
   createPlayers();
   //Nur durch diese Einschränkung fangen die Monster erst NACH der For-Schleife für die Kachelerzeugung an zu erscheinen
   //Ohne die Wait-Function fangen die Monster immer schon zeitgleich an aufzupoppen
@@ -2368,41 +2051,13 @@ function initField() {
   //Definiert in der "showTiles" - Methode
   setTimeout(function() {summonMonsters(); }, amountTiles*7 + 500);
   setTimeout(function() {summonPlayers(); }, amountTiles*7 + amountMonsters*100 + 500);
-  setTimeout(function() {showGameStartAnimation(); }, amountTiles*7 + 500 + amountMonsters*100 + 250 + 4*250 + 500);
-  setTimeout(function() {$("#characterSheet").css("visibility", "visible") }, amountTiles*7 + 500 + amountMonsters*100 + 250 + 4*250 + 500 + 4000);
-/*  $("#characterSheet").css("visibility", "visible")*/
+  //setTimeout(function() {showGameStartAnimation();}, amountTiles*7 + 500 + amountMonsters*100 + 250 + 4*250 + 500); CLIENT(47)
+  setTimeout(function() {io.sockets.emit('47'); }, amountTiles*7 + 500 + amountMonsters*100 + 250 + 4*250 + 500);
+  //setTimeout(function() {$("#characterSheet").css("visibility", "visible") }, amountTiles*7 + 500 + amountMonsters*100 + 250 + 4*250 + 500 + 4000); CLIENT(48)
+  setTimeout(function() {io.sockets.emit('48'); }, amountTiles*7 + 500 + amountMonsters*100 + 250 + 4*250 + 500 + 4000);
+    // $("#characterSheet").css("visibility", "visible")
 
-}
-
-function startGame() {
-
-  initField();
-  setTimeout(function() {showMovementPhaseAnimation(); }, amountTiles*7 + 500 + amountMonsters*100 + 250 + 4*250 + 500 + 3500);
-/*  showMovementPhaseAnimation();*/
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  }
 
 
 
@@ -2441,62 +2096,62 @@ function getPlayerPosArea() {
       //ist, wird der Ausdruck zu true ausgewertet und dieser case wird ausgeführt.
       case NorthBorderTilesIDs.some(CheckIfEqualsPlayerPosition) :
 
-        playerPosArea = "north";
-        break;
+      playerPosArea = "north";
+      break;
 
       //falls SpielerPosition auf NORTH WEST Ecke
       case CheckIfEqualsPlayerPosition(0) :
 
-        playerPosArea = "northWest";
-        break;
+      playerPosArea = "northWest";
+      break;
 
       //falls SpielerPosition auf NORTH EAST Ecke
       case (CheckIfEqualsPlayerPosition(columnLength-1)) :
 
-        playerPosArea = "northEast";
-        break;
+      playerPosArea = "northEast";
+      break;
 
       //falls SpielerPosition auf SOUTH Border
       case SouthBorderTilesIDs.some(CheckIfEqualsPlayerPosition) :
 
-        playerPosArea = "south";
-        break;
+      playerPosArea = "south";
+      break;
 
       //falls SpielerPosition auf SOUTH WEST Ecke
       case CheckIfEqualsPlayerPosition(amountTiles) :
 
-        playerPosArea = "southEast";
-        break;
+      playerPosArea = "southEast";
+      break;
 
       //falls SpielerPosition auf SOUTH EAST Ecke
       case CheckIfEqualsPlayerPosition(amountTiles-(columnLength-1)) :
 
-        playerPosArea = "southWest";
-        break;
+      playerPosArea = "southWest";
+      break;
 
       //falls SpielerPosition auf EAST Border (uneven)
       case EastBorderUnevenTilesIDs.some(CheckIfEqualsPlayerPosition) :
 
-        playerPosArea = "eastIndented";
-        break;
+      playerPosArea = "eastIndented";
+      break;
 
       //falls SpielerPosition auf EAST Border (even)
       case EastBorderEvenTilesIDs.some(CheckIfEqualsPlayerPosition) :
 
-        playerPosArea = "east";
-        break;
+      playerPosArea = "east";
+      break;
 
       //falls SpielerPosition auf WEST Border (uneven)
       case WestBorderUnevenTilesIDs.some(CheckIfEqualsPlayerPosition) :
 
-        playerPosArea = "westIndented";
-        break;
+      playerPosArea = "westIndented";
+      break;
 
       //falls SpielerPosition auf WEST Border (even)
       case WestBorderEvenTilesIDs.some(CheckIfEqualsPlayerPosition) :
 
-        playerPosArea = "west";
-        break;
+      playerPosArea = "west";
+      break;
 
 
       default: alert("Fehler getPlayerPos - currentPlayerPosition in keinem der Arrays enthalten");
@@ -2538,69 +2193,69 @@ function updateTilesAroundPlayer() {
 
     case "center":
 
-      tilesAroundPlayer.push(AllTiles[left], AllTiles[topleft], AllTiles[topright], AllTiles[right], AllTiles[downright], AllTiles[downleft]);
+    tilesAroundPlayer.push(AllTiles[left], AllTiles[topleft], AllTiles[topright], AllTiles[right], AllTiles[downright], AllTiles[downleft]);
 
-      break;
+    break;
 
     case "north":
 
-      tilesAroundPlayer.push(AllTiles[left], AllTiles[right], AllTiles[downright], AllTiles[downleft]);
+    tilesAroundPlayer.push(AllTiles[left], AllTiles[right], AllTiles[downright], AllTiles[downleft]);
 
-      break;
+    break;
 
     case "northWest":
 
-      tilesAroundPlayer.push(AllTiles[right], AllTiles[downright]);
+    tilesAroundPlayer.push(AllTiles[right], AllTiles[downright]);
 
-      break;
+    break;
 
     case "northEast":
 
-      tilesAroundPlayer.push(AllTiles[left], AllTiles[downleft]);
+    tilesAroundPlayer.push(AllTiles[left], AllTiles[downleft]);
 
-      break;
+    break;
 
     case "south":
 
-      tilesAroundPlayer.push(AllTiles[left], AllTiles[topleft], AllTiles[topright], AllTiles[right]);
+    tilesAroundPlayer.push(AllTiles[left], AllTiles[topleft], AllTiles[topright], AllTiles[right]);
 
-      break;
+    break;
 
     case "southWest":
 
-      tilesAroundPlayer.push(AllTiles[topright], AllTiles[right]);
+    tilesAroundPlayer.push(AllTiles[topright], AllTiles[right]);
 
-      break;
+    break;
 
     case "southEast":
 
-      tilesAroundPlayer.push(AllTiles[left], AllTiles[topleft]);
+    tilesAroundPlayer.push(AllTiles[left], AllTiles[topleft]);
 
-      break;
+    break;
 
     case "eastIndented":
 
-      tilesAroundPlayer.push(AllTiles[left], AllTiles[topleft], AllTiles[topright], AllTiles[downright], AllTiles[downleft]);
+    tilesAroundPlayer.push(AllTiles[left], AllTiles[topleft], AllTiles[topright], AllTiles[downright], AllTiles[downleft]);
 
-      break;
+    break;
 
     case "east":
 
-      tilesAroundPlayer.push(AllTiles[left], AllTiles[topleft], AllTiles[downleft]);
+    tilesAroundPlayer.push(AllTiles[left], AllTiles[topleft], AllTiles[downleft]);
 
-      break;
+    break;
 
     case "westIndented":
 
-      tilesAroundPlayer.push(AllTiles[topleft], AllTiles[topright], AllTiles[right], AllTiles[downright], AllTiles[downleft]);
+    tilesAroundPlayer.push(AllTiles[topleft], AllTiles[topright], AllTiles[right], AllTiles[downright], AllTiles[downleft]);
 
-      break;
+    break;
 
     case "west":
 
-      tilesAroundPlayer.push(AllTiles[topright], AllTiles[right], AllTiles[downright]);
+    tilesAroundPlayer.push(AllTiles[topright], AllTiles[right], AllTiles[downright]);
 
-      break;
+    break;
 
 
     default: alert("Fehler updateTilesAroundPlayer");
@@ -2618,19 +2273,19 @@ function resetMovementRange() {
     //Kachel aus Array holen
     tile = tilesAroundPlayer[i];
     //Das auszutauschende Template über der Kachel holen
-    templateOverTile = AllTemplates[tile.getID()];
+    //templateOverTile = AllTemplates[tile.getID()]; - CLIENT(50)
     
     //Falls die Kachel weder einen Spieler noch ein Monster hat...
     if(tile.getHasPlayer() == false && tile.getHasMonsters() == false) {
 
     //... Die Zahl wieder durch ein Template ersetzen
-    templateOverTile.src = "Bilddaten/Spielfeld/temp.png";
-
-    }
-
+    //templateOverTile.src = "Bilddaten/Spielfeld/temp.png"; - CLIENT(50)
+    io.sockets.emit('50', {position: tile.getID(), source: "Bilddaten/Spielfeld/temp.png", difficultyValue: null, playersValue: null});
   }
 
-  delete(tile, templateOverTile);
+}
+
+delete(tile);
 
 }
 
@@ -2657,22 +2312,24 @@ function showMovementRange() {
     //Schwierigkeit der Kachel holen
     terrainDifficulty = tile.getTerrainDifficulty();
     //Das auszutauschende Template über der Kachel holen
-    templateOverTile = AllTemplates[tile.getID()];
+    //templateOverTile = AllTemplates[tile.getID()];
     
     //Falls die Kachel weder einen Spieler noch ein Monster hat...
     if(tile.getHasPlayer() == false && tile.getHasMonsters() == false) {
 
+    //TO DO - CLIENT?
     //... Das Template durch eine Zahl ersetzen
-    templateOverTile.src = terrainsDifficulties[terrainDifficulty].src;
-
-    }
-
+    // templateOverTile.src = terrainsDifficulties[terrainDifficulty].src;
+    io.sockets.emit('50', {position: tile.getID(), source: null, difficultyValue: terrainDifficulty, playersValue: null});
   }
 
-  delete(tile, templateOverTile, terrainDifficulty);
+}
 
+delete(tile, templateOverTile, terrainDifficulty);
 
 }
+
+
 
 var idClickedTile;
 var clickedTile;
@@ -2694,8 +2351,8 @@ function checkClickedTile() {
         //...Bewegung untersagen
         if(currentMovementPoints < (clickedTile.getTerrainDifficulty()+1) && clickedTile.getHasMonsters() == false) {
 
-          alert("Not enough movementPoints left");
-
+          //alert("Not enough movementPoints left"); - CLIENT(42)
+          io.sockets.emit('42', "Not enough movementPoints left");
         }
 
         //... andernfalls Bewegung potentiell möglich
@@ -2704,51 +2361,54 @@ function checkClickedTile() {
               //Falls die Kachel, auf die geklickt wurde ein Monster hat -> Kampf
               if(clickedTile.getHasMonsters() == true) {
 
-                  startFightRoutine(idClickedTile, clickedTile);
-                  //Kämpfen
-                  clixxx(1000);
-
+                //Kämpfen
+                //startFightRoutine(idClickedTile, clickedTile); CLIENT(1000)
+                io.sockets.emit('1000');
               }
 
               //andernfalls kann es nur eine leere Kachel sein -> Spieler bewegen
               else {
 
                   //MovePlayer nimmt als Argument die geklickte Kachel, sowie den idClickedTile (womit auf das Template geschlossen werden kann)
-                  movePlayer(idClickedTile, clickedTile);
-                  
+                  // movePlayer(idClickedTile, clickedTile); - CLIENT(43)
+                  initMovePlayer(idClickedTile, clickedTile);
+                  io.sockets.emit('43', {pCurrentMovementPoints: currentMovementPoints});
+                }
+
+
 
               }
-
-              
-
-        }
-  }
+            }
 
   //... andernfalls Bewegung nicht erlauben
   else {
 
-        clickSound();
-    
-
+    //clickSound(); - CLIENT(44)
+    io.sockets.emit('44');
 
   }
 
 }
 
-function movePlayer(lastPlayerPosition, clickedTile) {
+///////////////////// movePlayer ////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 
-  moveSound();
+// aufgerufen von XX
+function initMovePlayer(paramIdClickedTile, paramClickedTile){
   //Das Template, auf das geklickt wurde
-  var clickedTemplate = AllTemplates[lastPlayerPosition];
+  //var clickedTemplate = AllTemplates[lastPlayerPosition]; - CLIENT(50)
   //Der Kachel sagen, dass sie jetzt einen Spieler hat
-  clickedTile.setHasPlayer(true);
+  paramClickedTile.setHasPlayer(true);
   //Spielerbild zuweisen
-  clickedTemplate.src = players[currentPlayerNumber].src;
+  //clickedTemplate.src = players[currentPlayerNumber].src; - CLIENT(50)
+  io.sockets.emit('50', {position: lastPlayerPosition, source: null, difficultyValue: null, playersValue: currentPlayerNumber});
+  
   //Der alten Kachel sagen, dass sie keinen Spieler mehr hat
   AllTiles[currentPlayerPosition].setHasPlayer(false);
   //Das Spieler-Symbol der alten Kachel durch Template ersetzen
-  AllTemplates[currentPlayerPosition].src = "Bilddaten/Spielfeld/temp.png";
-  
+  // AllTemplates[currentPlayerPosition].src = "Bilddaten/Spielfeld/temp.png"; - CLIENT(50)
+  io.sockets.emit('50', {position: currentplayerPosition, source: "Bilddaten/Spielfeld/temp.png", difficultyValue: null, playersValue: null});
+
   // Position merken, auf die der Spieler gesprungen ist, damit diese bei der nächsten Bewegung wieder auf Template
   // gesetzt werden kann.
   currentPlayerPosition = lastPlayerPosition;
@@ -2760,15 +2420,10 @@ function movePlayer(lastPlayerPosition, clickedTile) {
   //Dem aktuellen Spieler die neue Position zuweisen, auf die geklickt wurde
   AllPlayers[currentPlayerNumber].setPlayerPosition(currentPlayerPosition);
   
-  document.getElementById("movementPoints").innerHTML = currentMovementPoints; //TESTZWECKE
-  //Die Bewegungspunkte-Anzeige aktualisieren
-  $("#move").html(""+AllPlayers[currentPlayerNumber].getPlayerMovementPoints()); 
-
-  //neuen MovementRange nach Bewegung anzeigen
-  showMovementRange();
-        
-        
 }
+
+///////////////////// END movePlayer ////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 
 
 function bewegeRahmen() {
@@ -2832,7 +2487,7 @@ function healPlayer() {
   else { alert("no heal points left or already healed!")}
 
   //Änderung sichtbar machen
-  updateCharSheet();
+updateCharSheet();
 
 }
 
@@ -2871,7 +2526,7 @@ function healPlayer() {
 
 
 function lvl(){
-    document.getElementById('lvl').style.display = 'block';
+  document.getElementById('lvl').style.display = 'block';
 }
 
 //html-Text
@@ -2881,7 +2536,7 @@ function update(attribute) {
 
   //Falls attribute einen geraden Wert hat (= linke Zahl)
   //Somit levelt nur der Angriff hoch, nicht der Schaden
-/*  if(attribute % 2 == 0 || attribute == 0) {*/
+  /*  if(attribute % 2 == 0 || attribute == 0) {*/
 
     h = attribute;
     hh = "." + attribute;
@@ -2892,19 +2547,19 @@ function update(attribute) {
       hhh = "." + h + "0";
       $(hhh).html(stats[attribute]);
     }
-}
+  }
 
-function statsGet(hate){
-  
-  stats = AllPlayers[currentPlayerNumber].getPlayerStatsArray();
-  return stats[hate];
-}
+  function statsGet(hate){
 
-function statsSet(hate, hater){
-    
+    stats = AllPlayers[currentPlayerNumber].getPlayerStatsArray();
+    return stats[hate];
+  }
+
+  function statsSet(hate, hater){
+
     stats = AllPlayers[currentPlayerNumber].getPlayerStatsArray();
     return stats[hate] = hater;
-}
+  }
 
 /*function statsIncrement(hate){
 
@@ -2918,12 +2573,12 @@ function statsIncrement(hate) {
 //Array des aktuellen Players holen
 stats = AllPlayers[currentPlayerNumber].getPlayerStatsArray();
 
-  if(stats[18] > 0 || stats[19] > 0) {
+if(stats[18] > 0 || stats[19] > 0) {
 
     //Falls bei primary skills geklickt wurde
     if (hate < 8) {
 
-        if (stats[18] > 0) {
+      if (stats[18] > 0) {
 
             //Falls es sich um eine gerade Zahl handelt (= linker Wert)
             if (hate % 2 == 0 || hate == 7) {
@@ -2933,7 +2588,7 @@ stats = AllPlayers[currentPlayerNumber].getPlayerStatsArray();
               //neuen Wert darstellen
               update(18);
 
-           }
+            }
 
           //Wert auch im Array erhöhen
           i = stats[hate]+1;
@@ -2942,20 +2597,20 @@ stats = AllPlayers[currentPlayerNumber].getPlayerStatsArray();
           if(stats[18] == 0 && stats[19] == 0) {updateStats(stats); $("#lvl").css("visibility", "hidden"); blockAction();}
 
         }
-    }
+      }
 
     //Es wurde bei secondary skills geklickt und hierfür noch Punkte übrig sind
     else if (stats[19] > 0) {
 
       //Falls es sich um eine gerade Zahl handelt (=linker Wert)
-        if (hate % 2 != 0) {
+      if (hate % 2 != 0) {
 
           //Einen Punkt abziehen
           stats[19] = stats[19] - 1;
           //neuen Wert darstellen
           update(19);
 
-      }
+        }
 
       //Wert auch im Array erhöhen
       i = stats[hate]+1;
@@ -3052,28 +2707,28 @@ function writeStats()
   //Werte eintragen
   $("#me_attack_c").html( me_attack_c);
   $("#me_dmg_c").html( me_dmg_c);
-    
+
   $("#r_attack_c").html( r_attack_c);
   $("#r_dmg_c").html( r_dmg_c);
-    
+
   $("#ma_attack_c").html( ma_attack_c);
   $("#ma_dmg_c").html( ma_dmg_c);
-    
+
   $("#l_min_c").html( l_min_c);
   $("#l_max_c").html( l_max_c);
-    
+
   $("#me_attack_m").html( me_attack_m);
   $("#me_dmg_m").html( me_dmg_m);
-    
+
   $("#r_attack_m").html( r_attack_m);
   $("#r_dmg_m").html( r_dmg_m);
-    
+
   $("#ma_attack_m").html( ma_attack_m);
   $("#ma_dmg_m").html( ma_dmg_m);
-    
+
   $("#l_min_m").html( l_min_m);
   $("#l_max_m").html( l_max_m);
-    
+
   $("#dmin").html( dmin);
   $("#dmax").html( dmax);
   $("#amin").html( amin);
@@ -3255,11 +2910,11 @@ function fight(status)
   x = x + 60;
   if(x == 660) { x = 480 };
   $("#phaseFrame").css("left", x+"px");
-/*  document.getElementById("rahmen").style.left = x + "%";*/
+  /*  document.getElementById("rahmen").style.left = x + "%";*/
 
   if(l_min_c<=0)
   {
-    
+
     dieSound();
     showFightAnimation("!! LOST !!");
     updateCharSheet();
@@ -3304,316 +2959,13 @@ function fight(status)
   }
 }
 function pressed(name){
-var id = "#img_" + name;
-var src = "Bilddaten/Kampf/"+name + "_pressed.png"; 
-$(id).attr("src", src);
+  var id = "#img_" + name;
+  var src = "Bilddaten/Kampf/"+name + "_pressed.png"; 
+  $(id).attr("src", src);
 
 }
 function released(name){
-var id = "#img_" + name;
-var src = "Bilddaten/Kampf/"+name + ".png";
-$(id).attr("src", src);
+  var id = "#img_" + name;
+  var src = "Bilddaten/Kampf/"+name + ".png";
+  $(id).attr("src", src);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-////////////
-// SOUNDS //
-////////////
-
-
-function moveSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/Crack.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-
-}
-
-function wooshSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/whooosh.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-
-}
-
-function StabSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/SwordStab.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-
-}
-
-function swooshSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/Swoosh.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-
-}
-
-/*function monsterGrowlSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/MonsterGrowl.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-
-}*/
-
-function clickSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/ButtonClick1.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-}
-
-function swordSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/SwordStrike.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-}
-
-function chainSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/ChainSound.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-}
-
-function gotHitSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/PlayerGotHit.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-}
-
-function dieSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/PlayerDies.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-}
-
-function winSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/EpicWin.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-}
-
-function swordDrawSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/SwordDrawShort.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-}
-
-function blockSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/Block2.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-}
-
-function batGotHitSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/BatIsHit.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-}
-
-function metalClashSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/MetalClash6.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-}
-
-function choralSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/Choral1.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-}
-
-function lvlUpSound() {
-
-    var audio = document.createElement("audio");
-    audio.src = "Sounds/LvlUp3.mp3";
-
-    audio.CurrentTime=0;
-    audio.play(); 
-}
-
-
-function monsterGrowlSound() {
-
-    var audio = preloadSound("Sounds/MonsterGrowl.mp3");
-    audio.CurrentTime=0;
-    audio.play(); 
-
-}
-
-
-function preloadSound(src) {
-    var sound = document.createElement("audio");
-    sound.autoPlay = false;
-    sound.src = src;
-    document.body.appendChild(sound);
-    return sound;
-}
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-$(document).ready(function(){
-
-  var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
-
-    allButtonsMonsterDifficulty.mouseenter(function() {
-
-      switch(this.id) {
-
-        case "easyButton":
-
-          $(this).css({"backgroundPosition": "-240px 0px"});
-          break;
-
-        case "moderateButton":
-
-          $(this).css({"backgroundPosition": "-240px -50px"});
-          break;
-
-        case "strongButton":
-
-          $(this).css({"backgroundPosition": "-240px -100px"});
-          break;
-
-        case "insaneButton":
-
-          $(this).css({"backgroundPosition": "-240px -150px"});
-          break;
-
-        default: alert("blubb");
-
-      }
-
-    });
-
-    allButtonsMonsterDifficulty.mouseleave(function() {
-
-      switch(this.id) {
-
-        case "easyButton":
-
-          $(this).css({"backgroundPosition": "0px 0px"});
-          break;
-
-        case "moderateButton":
-
-          $(this).css({"backgroundPosition": "0px -50px"});
-          break;
-
-        case "strongButton":
-
-          $(this).css({"backgroundPosition": "0px -100px"});
-          break;
-
-        case "insaneButton":
-
-          $(this).css({"backgroundPosition": "0px -150px"});
-          break;
-
-        default: alert("blubb");
-
-      }
-      
-    });
-
-    allButtonsMonsterDifficulty.click(function() {
-      startFight();
-      clixxx(2000);
-    });
-})
