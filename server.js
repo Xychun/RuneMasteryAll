@@ -361,6 +361,7 @@ function Player(number) {
 
   this.playerTrackingPointsMax;
   this.playerTrackingPoints;
+  this.playerActiveTracking;
 
   this.playerXStrikePointsMax;
   this.playerXStrikePoints;
@@ -626,6 +627,18 @@ Player.prototype.setPlayerTrackingPointsMax = function(newPlayerTrackingPointsMa
 Player.prototype.getPlayerTrackingPointsMax = function() {
 
   return this.playerTrackingPointsMax;
+
+}
+
+Player.prototype.setPlayerActiveTracking = function(newPlayerActiveTracking) {
+
+    this.playerActiveTracking = newPlayerActiveTracking;
+
+}
+
+Player.prototype.getPlayerActiveTracking = function() {
+
+    return this.playerActiveTracking;
 
 }
 
@@ -2930,4 +2943,411 @@ function released(name){
   var id = "#img_" + name;
   var src = "Bilddaten/Kampf/"+name + ".png";
   $(id).attr("src", src);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function checkTrackingAbility () {
+
+  currentPlayer = AllPlayers[currentPlayerNumber];
+  curTrack = currentPlayer.getPlayerActiveTracking();
+  alert(curTrack);
+  temp = 0;
+  trackResult = 0;
+
+  //Zufallszahl je nach activem Tracking bestimmen
+  //Je höher die Fähigkeit, desto wahrscheinlicher schafft man einen hohen Wert
+  //Muss noch verfeinert werden, aktuell sehr grob
+  //Ideen: Bei höheren Werten den Range zwischen beispielsweise 50 und 100 setzen 
+  //(somit hätte der Spieler immer garantiert ein moderates Monster)
+  if(curTrack == 0) {
+
+    temp = Math.floor(Math.random() * 21);
+
+  }
+
+  else if(curTrack > 0 &&  curTrack <= 2) {
+
+    temp = Math.floor(Math.random() * 41);
+
+  }
+
+  else if(curTrack > 2 &&  curTrack <= 4) {
+
+    temp = Math.floor(Math.random() * 61);
+
+  }
+
+  else if(curTrack > 4 &&  curTrack <= 6) {
+
+    temp = Math.floor(Math.random() * 81);
+
+  }
+
+  else if(curTrack > 6) {
+
+    temp = Math.floor(Math.random() * 101);
+
+  }
+  alert(temp);
+
+
+  //Setze den Schalter für den switchCase entsprechend der trackingAbility
+  if(temp <= 25) {
+
+    trackResult = 0;
+
+  }
+
+  else if (temp > 25 && temp <= 50) {
+
+    trackResult = 1;
+
+  }
+
+  else if (temp > 50 && temp <= 75) {
+
+    trackResult = 2;
+
+  }
+
+  else if (temp > 75) {
+
+    trackResult = 3;
+
+  }
+
+  alert(trackResult);
+  changeButtonsMonsterChooser(trackResult);
+
+}
+
+
+
+function changeButtonsMonsterChooser(trackResult) {
+
+  //Zeige Buttons entsprechend an
+  switch(trackResult) {
+
+    case 0:
+
+      showEasyKonfig();
+      break;
+
+    case 1:
+
+      showModerateKonfig();
+      break;
+
+    case 2:
+
+      showStrongKonfig();
+      break;
+
+    case 3:
+
+      showInsaneKonfig();
+      break;
+
+    default: alert("Schimpfen sie den Entwickler");
+
+  }
+
+}
+
+
+function showEasyKonfig () {
+
+alert("easy");
+
+  $(document).ready(function(){
+
+    $("#easyButton").css({"backgroundPosition": "-240px 0px"});
+    $("#moderateButton").css({"backgroundPosition": "0px -50px"});
+    $("#strongeButton").css({"backgroundPosition": "0px -100px"});
+    $("#insaneButton").css({"backgroundPosition": "0px -150px"});
+
+    var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
+
+      allButtonsMonsterDifficulty.mouseenter(function() {
+
+        switch(this.id) {
+
+          case "easyButton":
+
+            $(this).css({"backgroundPosition": "-480px 0px"});
+            break;
+
+          default: 
+
+        }
+
+      });
+
+      allButtonsMonsterDifficulty.mouseleave(function() {
+
+        switch(this.id) {
+
+          case "easyButton":
+
+            $(this).css({"backgroundPosition": "-240px 0px"});
+            break;
+
+          default: 
+
+        }
+        
+      });
+
+      allButtonsMonsterDifficulty.click(function() {
+        
+        startFight(this.id);
+        
+      });
+  })
+}
+
+function showModerateKonfig () {
+
+  alert("moderate");
+
+  $(document).ready(function(){
+
+    $("#easyButton").css({"backgroundPosition": "-240px 0px"});
+    $("#moderateButton").css({"backgroundPosition": "-240px -50px"});
+    $("#strongeButton").css({"backgroundPosition": "0px -100px"});
+    $("#insaneButton").css({"backgroundPosition": "0px -150px"});
+
+    var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
+
+      allButtonsMonsterDifficulty.mouseenter(function() {
+
+        switch(this.id) {
+
+          case "easyButton":
+
+            $(this).css({"backgroundPosition": "-480px 0px"});
+            break;
+
+          case "moderateButton":
+
+            $(this).css({"backgroundPosition": "-480px -50px"});
+            break;
+
+          default: 
+
+        }
+
+      });
+
+      allButtonsMonsterDifficulty.mouseleave(function() {
+
+        switch(this.id) {
+
+          case "easyButton":
+
+            $(this).css({"backgroundPosition": "-240px 0px"});
+            break;
+
+            case "moderateButton":
+
+            $(this).css({"backgroundPosition": "-240px -50px"});
+            break;
+
+          default: 
+
+        }
+        
+      });
+
+      allButtonsMonsterDifficulty.click(function() {
+        
+        startFight(moderate);
+        
+      });
+  })
+}
+
+function showStrongKonfig () {
+
+alert("strong");
+
+  $(document).ready(function(){
+
+    $("#easyButton").css({"backgroundPosition": "-240px 0px"});
+    $("#moderateButton").css({"backgroundPosition": "-240px -50px"});
+    $("#strongButton").css({"backgroundPosition": "-240px -100px"});
+    $("#insaneButton").css({"backgroundPosition": "0px -150px"});
+
+    var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
+
+      allButtonsMonsterDifficulty.mouseenter(function() {
+
+        switch(this.id) {
+
+          case "easyButton":
+
+            $(this).css({"backgroundPosition": "-480px 0px"});
+            break;
+
+          case "moderateButton":
+
+            $(this).css({"backgroundPosition": "-480px -50px"});
+            break;
+
+          case "strongButton":
+
+            $(this).css({"backgroundPosition": "-480px -100px"});
+            break;
+
+          default: 
+
+        }
+
+      });
+
+      allButtonsMonsterDifficulty.mouseleave(function() {
+
+        switch(this.id) {
+
+          case "easyButton":
+
+            $(this).css({"backgroundPosition": "-240px 0px"});
+            break;
+
+          case "moderateButton":
+
+            $(this).css({"backgroundPosition": "-240px -50px"});
+            break;
+
+          case "strongButton":
+
+            $(this).css({"backgroundPosition": "-240px -100px"});
+            break;
+
+          default: 
+
+        }
+        
+      });
+
+      allButtonsMonsterDifficulty.click(function() {
+        
+        startFight(strong);
+        
+      });
+  })
+}
+
+function showInsaneKonfig () {
+
+alert("insane");
+
+  $(document).ready(function(){
+
+    $("#easyButton").css({"backgroundPosition": "-240px 0px"});
+    $("#moderateButton").css({"backgroundPosition": "-240px -50px"});
+    $("#strongButton").css({"backgroundPosition": "-240px -100px"});
+    $("#insaneButton").css({"backgroundPosition": "-240px -150px"});
+
+    var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
+
+      allButtonsMonsterDifficulty.mouseenter(function() {
+
+        switch(this.id) {
+
+          case "easyButton":
+
+            $(this).css({"backgroundPosition": "-480px 0px"});
+            break;
+
+          case "moderateButton":
+
+            $(this).css({"backgroundPosition": "-480px -50px"});
+            break;
+
+          case "strongButton":
+
+            $(this).css({"backgroundPosition": "-480px -100px"});
+            break;
+
+          case "insaneButton":
+
+            $(this).css({"backgroundPosition": "-480px -150px"});
+            break;
+
+          default: 
+
+        }
+
+      });
+
+      allButtonsMonsterDifficulty.mouseleave(function() {
+
+        switch(this.id) {
+
+          case "easyButton":
+
+            $(this).css({"backgroundPosition": "-240px 0px"});
+            break;
+
+          case "moderateButton":
+
+            $(this).css({"backgroundPosition": "-240px -50px"});
+            break;
+
+          case "strongButton":
+
+            $(this).css({"backgroundPosition": "-240px -100px"});
+            break;
+
+          case "insaneButton":
+
+            $(this).css({"backgroundPosition": "-240px -150px"});
+            break;
+
+          default: 
+
+        }
+        
+      });
+
+      allButtonsMonsterDifficulty.click(function() {
+        
+        startFight(insane);
+        
+      });
+  })
 }
