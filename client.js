@@ -206,11 +206,10 @@ socket.on('41',function(anonym){
 	addTemplates(anonym);
 });
 
-/*
 //Server sendet EVENT 42
 socket.on('42',function(anonym){
 	alert(anonym);
-}); */
+});
 
 //Server sendet EVENT 43
 socket.on('43',function(anonym){
@@ -230,7 +229,6 @@ socket.on('45',function(anonym){
 //Server sendet EVENT 46
 socket.on('46',function(anonym){
 	// StabSound();
-	//alert('ELEMENTBYIDPROBLEM: ' + anonym.elementNumber);
     document.getElementById(anonym.elementNumber).src = "Bilddaten/Spielfeld/MonsterImg.png";
 });
 
@@ -246,11 +244,12 @@ socket.on('48',function(anonym){
 
 //Server sendet EVENT 49
 socket.on('49',function(anonym){
-	swordSound();
+	//swordSound(); //existiert nicht?! TO-DO
 });
 
 //Server sendet EVENT 50
 socket.on('50',function(anonym){
+	alert('anonym.srz: ' + anonym.srz);
 	changeTemplate(anonym);
 });
 

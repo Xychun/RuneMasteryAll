@@ -160,10 +160,10 @@ function setFieldParas2(newMonsterAnzahl) {
 }
 
 function startGame(anonym) {
-  setTimeout(function() {showMovementPhaseAnimation(); }, anonym.a);
+  setTimeout(function() {showMovementPhaseAnimation(anonym); }, anonym.a);
 }
 
-function showMovementPhaseAnimation(param) {    
+function showMovementPhaseAnimation(param) {
   var timeShowMovePhaseAnim = 0;
   // changePlayer(currentPlayerNumber); - NODE(38)
   // resetMovementRange(); - NODE(38)
@@ -178,7 +178,7 @@ function showMovementPhaseAnimation(param) {
       return function() {
 
         var movementMarker = document.createElement("div");
-        movementMarker.innerHTML = "PLAYER "+param.pCurrentPlayerNumber+" - YOUR TURN!";
+        movementMarker.innerHTML = "PLAYER "+param.cP+" - YOUR TURN!";
           //notwendig, damit alles VOR dem Spielfeld angezeigt wird.
           movementMarker.style.zIndex = "2";
           movementMarker.className = "phaseMarker";
@@ -408,15 +408,15 @@ function addTemplates(param) {
   }
 
 function changeTemplate(param){
-
-  //io.sockets.emit('50', {position: tile.getID(), source: "Bilddaten/Spielfeld/temp.png", difficultyValue: null, playersValue: null});
+  alert('CHANGE TEMPLATE(): position: ' + param.position + ', srz: ' + param.srz + ', difficultyValue: ' + param.difficultyValue + ', playersValue: ' + param.playersValue);
+  //io.sockets.emit('50', {position: tile.getID(), srz: "Bilddaten/Spielfeld/temp.png", difficultyValue: null, playersValue: null});
   if(param.difficultyValue == null && param.playersValue == null){
-    AllTemplatesIMG[param.position] = param.source;
+    AllTemplatesIMG[param.position] = param.srz;
   }
-  else if (param.source == null && param.playersValue == null){
+  else if (param.srz == null && param.playersValue == null){
     AllTemplatesIMG[param.position] = terrainsDifficulties[param.difficultyValue].src;
   } 
-  else if(param.source == null && param.difficultyValue == null){
+  else if(param.srz == null && param.difficultyValue == null){
     AllTemplatesIMG[param.position] = players[param.playersValue].src;
   }
   else{
@@ -517,9 +517,6 @@ function clickSound() {
   audio.CurrentTime=0;
   audio.play(); 
 }
-
-
-
 
 function dieSound() {
 
