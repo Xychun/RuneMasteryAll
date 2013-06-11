@@ -3150,7 +3150,7 @@ function showModerateKonfig () {
 
       allButtonsMonsterDifficulty.click(function() {
         
-        startFight(moderate);
+        startFight(this.id);
         
       });
   })
@@ -3221,7 +3221,7 @@ alert("strong");
 
       allButtonsMonsterDifficulty.click(function() {
         
-        startFight(strong);
+        startFight(this.id);
         
       });
   })
@@ -3302,7 +3302,7 @@ alert("insane");
 
       allButtonsMonsterDifficulty.click(function() {
         
-        startFight(insane);
+        startFight(this.id);
         
       });
   })
