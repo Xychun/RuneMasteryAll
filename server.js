@@ -98,6 +98,7 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('22', anonym);
   });
 
+  //reihenanzahl
   socket.on('23',function(anonym){
     io.sockets.emit('23', anonym);
   });
@@ -1587,7 +1588,17 @@ function initChangePlayer(){
   
   //Daten des jeweiligen Spielers reinladen
   //updateCharSheet(); - CLIENT(52) - TO-DO Parameter
-  io.sockets.emit('52', {aPCP: AllPlayers[currentPlayerNumber]});
+  var cP = AllPlayers[currentPlayerNumber];
+  io.sockets.emit('52', {cPPlayerSword: cP.getPlayerSword(), cPPlayerSwordDmg: cP.getPlayerSwordDmg(), 
+  cPPlayerBow: cP.getPlayerBow(), cPPlayerBowDmg: cP.getPlayerBowDmg(), 
+  cPPlayerMagic: cP.getPlayerMagic(), cPPlayerMagicDmg: cP.getPlayerMagicDmg(), 
+  cPPlayerLife: cP.getPlayerLife(), cPPlayerLifeMax: cP.getPlayerLifeMax(), 
+  cPPlayerHealPoints: cP.getPlayerHealPoints(), cPPlayerHealPointsMax: cP.getPlayerHealPointsMax(), 
+  cPPlayerBoost: cP.getPlayerBoost(), cPPlayerBoostMax: cP.getPlayerBoostMax(), 
+  cPPlayerTrackingPoints: cP.getPlayerTrackingPoints(), cPPlayerTrackingPointsMax: cP.getPlayerTrackingPointsMax(), 
+  cPPlayerXStrikePoints: cP.getPlayerXStrikePoints(), cPPlayerXStrikePointsMax: cP.getPlayerXStrikePointsMax(), 
+  cPPlayerMovementPoints: cP.getPlayerMovementPoints(), cPPlayerMovementPointsMax: cP.getPlayerMovementPointsMax(), 
+  cPPlayerLvl: cP.getPlayerLvl(), cPPlayerEXP: cP.getPlayerEXP()});
 
   currentMovementPoints = AllPlayers[currentPlayerNumber].getPlayerMovementPoints();
   currentPlayerPosition = AllPlayers[currentPlayerNumber].getPlayerPosition();

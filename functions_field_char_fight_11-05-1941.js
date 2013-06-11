@@ -467,25 +467,21 @@ function changePlayer(param){
 
 //TO-DO
 function updateCharSheet(param) {
-
-  var currentPlayer = param.aPCP;
-
   //STATS
-  $("#sword").html(currentPlayer.getPlayerSword()); $("#swordMax").html(currentPlayer.getPlayerSwordDmg());
-  $("#bow").html(currentPlayer.getPlayerBow()); $("#bowMax").html(currentPlayer.getPlayerBowDmg());
-  $("#magic").html(currentPlayer.getPlayerMagic()); $("#magicMax").html(currentPlayer.getPlayerMagicDmg());
-  $("#life").html(currentPlayer.getPlayerLife()); $("#lifeMax").html(currentPlayer.getPlayerLifeMax());
-
+  $("#sword").html(param.cPPlayerSword); $("#swordMax").html(param.cPPlayerSwordDmg);
+  $("#bow").html(param.cPPlayerBow); $("#bowMax").html(param.cPPlayerBowDmg);
+  $("#magic").html(param.cPPlayerMagic); $("#magicMax").html(param.cPPlayerMagicDmg);
+  $("#life").html(param.cPPlayerLife); $("#lifeMax").html(param.cPPlayerLifeMax);
+  
   //RUNES
-  $("#heal").html(currentPlayer.getPlayerHealPoints()); $("#healMax").html(currentPlayer.getPlayerHealPointsMax());
-  $("#pers").html(currentPlayer.getPlayerBoost()); $("#persMax").html(currentPlayer.getPlayerBoostMax());
-  $("#track").html(currentPlayer.getPlayerTrackingPoints()); $("#trackMax").html(currentPlayer.getPlayerTrackingPointsMax());
-  $("#xstrike").html(currentPlayer.getPlayerXStrikePoints()); $("#xstrikeMax").html(currentPlayer.getPlayerXStrikePointsMax());
-  $("#move").html(currentPlayer.getPlayerMovementPoints()); $("#moveMax").html(currentPlayer.getPlayerMovementPointsMax());
-
+  $("#heal").html(param.cPPlayerHealPoints); $("#healMax").html(param.cPPlayerHealPointsMax);
+  $("#pers").html(param.cPPlayerBoost); $("#persMax").html(param.cPPlayerBoostMax);
+  $("#track").html(param.cPPlayerTrackingPoints); $("#trackMax").html(param.cPPlayerTrackingPointsMax);
+  $("#xstrike").html(param.cPPlayerXStrikePoints); $("#xstrikeMax").html(param.cPPlayerXStrikePointsMax);
+  $("#move").html(param.cPPlayerMovementPoints); $("#moveMax").html(param.cPPlayerMovementPointsMax);
   //LVL + EXP
-  $("#levelCounter").html(currentPlayer.getPlayerLvl());
-  $("#LvlUpBarFill").css("width", currentPlayer.getPlayerEXP()+"%");
+  $("#levelCounter").html(param.cPPlayerLvl);
+  $("#LvlUpBarFill").css("width", param.cPPlayerEXP+"%");
 
 }
 
