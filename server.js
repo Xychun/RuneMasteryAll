@@ -9,10 +9,9 @@ var io = require('socket.io').listen(9000);
 var $ = require('jquery').create();
 //wenn eine neue verbindung mit einem neuen client entsteht
 io.sockets.on('connection', function (socket) {
-  
+
   socket.on('0',function(anonym){
   	initshowMovementPhaseAnimation();
-    io.sockets.emit('0', {pCurrentPlayerNumber: currentPlayerNumber});
   });
 
   socket.on('1',function(anonym){
@@ -112,6 +111,7 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('25', anonym);
   });
 
+  //START GAME
   socket.on('26',function(anonym){
     console.log('SOCKET.ON (OUT IF): 26; gameOn: ' + gameOn);
     if(gameOn == 0){
@@ -120,7 +120,7 @@ io.sockets.on('connection', function (socket) {
       initField();
       //Befehl zum Rendern an alle Clients senden
       var number = amountTiles*7 + 500 + amountMonsters*100 + 250 + 4*250 + 500 + 3500;
-      io.sockets.emit('26', {cP: currentPlayerNumber});
+      setTimeout(function() {initshowMovementPhaseAnimation();}, amountTiles*7 + 500 + amountMonsters*100 + 250 + 4*250 + 500 + 3500);
     }    
   });
 
@@ -128,9 +128,7 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('27');
   });
 
-  socket.on('28',function(anonym){
-    io.sockets.emit('28', {pCurrentPlayerNumber: currentPlayerNumber});
-  });
+    // DELETED SOCKET 28
 
   socket.on('29',function(anonym){
     io.sockets.emit('29');
@@ -168,9 +166,7 @@ io.sockets.on('connection', function (socket) {
     setAmountMonsters(anonym.amountMonsters);
   });
 
-  socket.on('38',function(anonym){
-    initshowMovementPhaseAnimation;
-  });
+  // DELETED SOCKET 38
 
   socket.on('39',function(anonym){
     showMovementRange();
@@ -198,44 +194,40 @@ io.sockets.on('connection', function (socket) {
 
   // SOCKET 50 - ActionEvent/MethodeEmit
 
-  socket.on('51',function(anonym){
-    showMovementRange();
-  });
+  // SOCKET 51 - ActionEvent/MethodeEmit
 
-  socket.on('52',function(anonym){
-    showMovementRange();
-  });
+  // SOCKET 52 - ActionEvent/MethodeEmit
 
   socket.on('53',function(anonym){
-    showMovementRange();
+    //
   });
 
   socket.on('54',function(anonym){
-    showMovementRange();
+    //
   });
 
   socket.on('55',function(anonym){
-    showMovementRange();
+    //
   });
 
   socket.on('56',function(anonym){
-    showMovementRange();
+    //
   });
 
   socket.on('57',function(anonym){
-    showMovementRange();
+    //
   });
 
   socket.on('58',function(anonym){
-    showMovementRange();
+    //
   });
 
   socket.on('59',function(anonym){
-    showMovementRange();
+    //
   });
 
   socket.on('60',function(anonym){
-    showMovementRange();
+    //
   });
 
   socket.on('1000',function(anonym){
@@ -319,9 +311,9 @@ var amountMonsters = 5; // standardmäßig im Fall, dass nichts eingestellt wird
 
 zwischenSpeicherRahmen = 0;
 
-currentPlayerNumber = 0;
-currentMovementPoints = 0;
-currentPlayerPosition = 0;
+var currentPlayerNumber = 0;
+var currentMovementPoints = 0;
+var currentPlayerPosition = 0;
 
 //////////////////////////////
 // Node benötigte Variablen //
@@ -873,7 +865,7 @@ function Template(id) {
 
   this.ID = id;
   this.IMG = null;
- 
+
 }
 
 ////////////////////////////
@@ -882,7 +874,7 @@ function Template(id) {
 
 Tile.prototype.setID = function(newID) {
 
-    this.ID = newID;
+  this.ID = newID;
 
 }
 
@@ -1188,10 +1180,10 @@ function summonMonsters () {
                       break;
 
                     default:
-                }*/
-        }
+                  }*/
+                }
 
-      } (i), timeSummonMonsters);
+              } (i), timeSummonMonsters);
 } 
 
 timeSummonMonsters = 0;
@@ -1528,46 +1520,8 @@ function summonPlayers() {
 
     } (i), timeSummonPlayers);
 
+  }
 }
-}
-
-var currentPlayer;
-function updateCharSheet() {
-
-  var currentPlayer = AllPlayers[currentPlayerNumber];
-
-  //STATS
-  $("#sword").html(currentPlayer.getPlayerSword()); $("#swordMax").html(currentPlayer.getPlayerSwordDmg());
-  $("#bow").html(currentPlayer.getPlayerBow()); $("#bowMax").html(currentPlayer.getPlayerBowDmg());
-  $("#magic").html(currentPlayer.getPlayerMagic()); $("#magicMax").html(currentPlayer.getPlayerMagicDmg());
-  $("#life").html(currentPlayer.getPlayerLife()); $("#lifeMax").html(currentPlayer.getPlayerLifeMax());
-
-  //RUNES
-  $("#heal").html(currentPlayer.getPlayerHealPoints()); $("#healMax").html(currentPlayer.getPlayerHealPointsMax());
-  $("#pers").html(currentPlayer.getPlayerBoost()); $("#persMax").html(currentPlayer.getPlayerBoostMax());
-  $("#track").html(currentPlayer.getPlayerTrackingPoints()); $("#trackMax").html(currentPlayer.getPlayerTrackingPointsMax());
-  $("#xstrike").html(currentPlayer.getPlayerXStrikePoints()); $("#xstrikeMax").html(currentPlayer.getPlayerXStrikePointsMax());
-  $("#move").html(currentPlayer.getPlayerMovementPoints()); $("#moveMax").html(currentPlayer.getPlayerMovementPointsMax());
-
-  //LVL + EXP
-  $("#levelCounter").html(currentPlayer.getPlayerLvl());
-  $("#LvlUpBarFill").css("width", currentPlayer.getPlayerEXP()+"%");
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ////////////////////////////////////////
@@ -1598,18 +1552,20 @@ function blockAction() {
 
 // aufgerufen von 38
 function initshowMovementPhaseAnimation(){
-  changePlayer(currentPlayerNumber);
+  initChangePlayer();
   resetMovementRange();
+  //showMovementPhaseAnimation(); - CLIENT(0)
+  io.sockets.emit('0', {pCurrentPlayerNumber: currentPlayerNumber});
 }
 
 ///////////////////// END showMovementPhaseAnimation ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
+///////////////////// changePlayer ////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 
-
-//Anzeigeelemente und stats für neuen Player laden
-function changePlayer () {
-
+// aufgerufen von XX - stats für neuen Player laden
+function initChangePlayer(){
   if(currentPlayerNumber != 0) { AllPlayers[currentPlayerNumber].setIsPlaying(false);}
 
   if(currentPlayerNumber < 4) {
@@ -1628,20 +1584,23 @@ function changePlayer () {
   refreshRunes();
   //Die Status-Werte des aktuellen Spielers reinladen
   loadStats();
-  //Spielerbild wechseln
-  document.images.charImg.src = "Bilddaten/CharSheet/Spieler"+currentPlayerNumber+".jpg";
-  document.images.charImg2.src = "Bilddaten/CharSheet/Spieler"+currentPlayerNumber+".jpg";
-  //Spielername wechseln
-  document.getElementById('playerName').innerHTML = AllPlayers[currentPlayerNumber].getPlayerName();
-  document.getElementById('playerName2').innerHTML = AllPlayers[currentPlayerNumber].getPlayerName();
+  
   //Daten des jeweiligen Spielers reinladen
-  updateCharSheet();
+  //updateCharSheet(); - CLIENT(52) - TO-DO Parameter
+  io.sockets.emit('52', {aPCP: AllPlayers[currentPlayerNumber]});
 
   currentMovementPoints = AllPlayers[currentPlayerNumber].getPlayerMovementPoints();
   currentPlayerPosition = AllPlayers[currentPlayerNumber].getPlayerPosition();
 
   AllPlayers[currentPlayerNumber].setIsPlaying(true);
+
+  //changePlayer() - CLIENT(51)
+  io.sockets.emit('51', {pCurrentPlayerNumber: currentPlayerNumber, currentPlayerName: AllPlayers[currentPlayerNumber].getPlayerName()});
 }
+
+///////////////////// END changePlayer ////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
 
 function showMonsterChooser () {    
 
@@ -1993,7 +1952,7 @@ function loadStats() {
   r_dmg_c = AllPlayers[currentPlayerNumber].getPlayerBowDmg();
 
   ma_attack_c = AllPlayers[currentPlayerNumber].getPlayerMagic();
-  ma_dmg_c = AllPlayers[currentPlayerNumber].getPlayerMagicDmg();
+  ma_dmg_c = AllPlayers[currentPlayerNumber].getPlayerMagicDmg()
 
   l_min_c = AllPlayers[currentPlayerNumber].getPlayerLife();
   l_max_c = AllPlayers[currentPlayerNumber].getPlayerLifeMax();
@@ -2268,7 +2227,6 @@ delete(tile);
 //Funktion, die anhand des tilesAroundPlayer-Arrays die Kacheln mit Bewegungskosten überzeichnet
 // !!!!! NOCH ABFRAGEN ERGÄNZEN, DAMIT KEINE SPIELER ODER MONSTER ÜBERZEICHNET WERDEN
 function showMovementRange() {
-
   var tile;
   var terrainDifficulty;
   var templateOverTile;
@@ -2281,7 +2239,6 @@ function showMovementRange() {
 
   //Neue Darstellung zeichnen
   for(i=0; i < tilesAroundPlayer.length; i++) {
-
     //Kachel aus Array holen
     tile = tilesAroundPlayer[i];
     //Schwierigkeit der Kachel holen
@@ -2292,7 +2249,6 @@ function showMovementRange() {
     //Falls die Kachel weder einen Spieler noch ein Monster hat...
     if(tile.getHasPlayer() == false && tile.getHasMonsters() == false) {
 
-    //TO DO - CLIENT?
     //... Das Template durch eine Zahl ersetzen
     // templateOverTile.src = terrainsDifficulties[terrainDifficulty].src;
     io.sockets.emit('50', {position: tile.getID(), srz: null, difficultyValue: terrainDifficulty, playersValue: null});

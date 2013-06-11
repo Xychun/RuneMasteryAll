@@ -135,10 +135,7 @@ socket.on('25',function(anonym){
 	setFieldParas2(anonym.monsterAnzahl);
 });
 
-//Server sendet EVENT 26 - angepasst
-socket.on('26',function(anonym){
-	startGame(anonym);
-});
+//EVENT 26 - ActionEvent/NoEmit
 
 //Server sendet EVENT 27
 socket.on('27',function(anonym){
@@ -148,12 +145,7 @@ socket.on('27',function(anonym){
 	document.getElementById('reihenLänge').value=''; 
 });
 
-//Server sendet EVENT 28
-socket.on('28',function(anonym){
-	alert('fuuu noob');
-	alert(anonym.pCurrentPlayerNumber);
-	showMovementPhaseAnimation(anonym);
-});
+  // DELETED EVENT 28
 
 //Server sendet EVENT 29
 socket.on('29',function(anonym){
@@ -191,7 +183,7 @@ socket.on('34',function(anonym){
 
 //EVENT 37 - ActionEvent/NoEmit
 
-//EVENT 38 - ActionEvent/NoEmit
+//EVENT 38 - DELETED
 
 //EVENT 39 - ActionEvent/NoEmit
 
@@ -249,18 +241,17 @@ socket.on('49',function(anonym){
 
 //Server sendet EVENT 50
 socket.on('50',function(anonym){
-	alert('anonym.srz: ' + anonym.srz);
 	changeTemplate(anonym);
 });
 
 //Server sendet EVENT 51
 socket.on('51',function(anonym){
-	showTiles(anonym.pAmountTiles, anonym.pNumberArrayTiles);
+	changePlayer(anonym);
 });
 
 //Server sendet EVENT 52
 socket.on('52',function(anonym){
-	showTiles(anonym.pAmountTiles, anonym.pNumberArrayTiles);
+	updateCharSheet(anonym);
 });
 
 //Server sendet EVENT 53

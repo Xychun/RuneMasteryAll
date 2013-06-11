@@ -159,15 +159,8 @@ function setFieldParas2(newMonsterAnzahl) {
 
 }
 
-function startGame(anonym) {
-  setTimeout(function() {showMovementPhaseAnimation(anonym); }, anonym.a);
-}
-
 function showMovementPhaseAnimation(param) {
   var timeShowMovePhaseAnim = 0;
-  // changePlayer(currentPlayerNumber); - NODE(38)
-  // resetMovementRange(); - NODE(38)
-  clixxx(38);  
 
   for(i=0; i <= 5; i++) {
 
@@ -178,7 +171,7 @@ function showMovementPhaseAnimation(param) {
       return function() {
 
         var movementMarker = document.createElement("div");
-        movementMarker.innerHTML = "PLAYER "+param.cP+" - YOUR TURN!";
+        movementMarker.innerHTML = "PLAYER "+param.pCurrentPlayerNumber+" - YOUR TURN!";
           //notwendig, damit alles VOR dem Spielfeld angezeigt wird.
           movementMarker.style.zIndex = "2";
           movementMarker.className = "phaseMarker";
@@ -408,16 +401,20 @@ function addTemplates(param) {
   }
 
 function changeTemplate(param){
-  alert('CHANGE TEMPLATE(): position: ' + param.position + ', srz: ' + param.srz + ', difficultyValue: ' + param.difficultyValue + ', playersValue: ' + param.playersValue);
+  // alert('CHANGE TEMPLATE(): position: ' + param.position + ', srz: ' + param.srz + ', difficultyValue: ' + param.difficultyValue + ', playersValue: ' + param.playersValue);
   //io.sockets.emit('50', {position: tile.getID(), srz: "Bilddaten/Spielfeld/temp.png", difficultyValue: null, playersValue: null});
+  
+  //platzhalter temp
   if(param.difficultyValue == null && param.playersValue == null){
-    AllTemplatesIMG[param.position] = param.srz;
+    AllTemplatesIMG[param.position].src = param.srz;
   }
+  //Standard herstellen
   else if (param.srz == null && param.playersValue == null){
-    AllTemplatesIMG[param.position] = terrainsDifficulties[param.difficultyValue].src;
+    AllTemplatesIMG[param.position].src = terrainsDifficulties[param.difficultyValue].src;
   } 
+  //Spielercoin setzen
   else if(param.srz == null && param.difficultyValue == null){
-    AllTemplatesIMG[param.position] = players[param.playersValue].src;
+    AllTemplatesIMG[param.position].src = players[param.playersValue].src;
   }
   else{
     alert('Problem: DefaultCase - changeTemplate()');
@@ -458,9 +455,39 @@ function showGameStartAnimation () {
   setTimeout(function() {document.getElementById("field").removeChild(document.getElementById("gameStartMarkerBackground"))}, 5000);
 }
 
+//Anzeigeelemente laden
+function changePlayer(param){
+  //Spielerbild wechseln
+  document.images.charImg.src = "Bilddaten/CharSheet/Spieler"+param.pCurrentPlayerNumber+".jpg";
+  document.images.charImg2.src = "Bilddaten/CharSheet/Spieler"+param.pCurrentPlayerNumber+".jpg";
+  //Spielername wechseln
+  document.getElementById('playerName').innerHTML = param.currentPlayerName;
+  document.getElementById('playerName2').innerHTML = param.currentPlayerName;
+}
 
+//TO-DO
+function updateCharSheet(param) {
 
+  var currentPlayer = param.aPCP;
 
+  //STATS
+  $("#sword").html(currentPlayer.getPlayerSword()); $("#swordMax").html(currentPlayer.getPlayerSwordDmg());
+  $("#bow").html(currentPlayer.getPlayerBow()); $("#bowMax").html(currentPlayer.getPlayerBowDmg());
+  $("#magic").html(currentPlayer.getPlayerMagic()); $("#magicMax").html(currentPlayer.getPlayerMagicDmg());
+  $("#life").html(currentPlayer.getPlayerLife()); $("#lifeMax").html(currentPlayer.getPlayerLifeMax());
+
+  //RUNES
+  $("#heal").html(currentPlayer.getPlayerHealPoints()); $("#healMax").html(currentPlayer.getPlayerHealPointsMax());
+  $("#pers").html(currentPlayer.getPlayerBoost()); $("#persMax").html(currentPlayer.getPlayerBoostMax());
+  $("#track").html(currentPlayer.getPlayerTrackingPoints()); $("#trackMax").html(currentPlayer.getPlayerTrackingPointsMax());
+  $("#xstrike").html(currentPlayer.getPlayerXStrikePoints()); $("#xstrikeMax").html(currentPlayer.getPlayerXStrikePointsMax());
+  $("#move").html(currentPlayer.getPlayerMovementPoints()); $("#moveMax").html(currentPlayer.getPlayerMovementPointsMax());
+
+  //LVL + EXP
+  $("#levelCounter").html(currentPlayer.getPlayerLvl());
+  $("#LvlUpBarFill").css("width", currentPlayer.getPlayerEXP()+"%");
+
+}
 
 
 
