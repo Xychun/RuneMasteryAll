@@ -204,15 +204,10 @@ function startFightRoutine(index, clickedTile) {
 }
 
 function movePlayer(param) {
-
   moveSound();
-  
   document.getElementById("movementPoints").innerHTML = param.pCurrentMovementPoints; //TESTZWECKE
   //Die Bewegungspunkte-Anzeige aktualisieren
-  $("#move").html(""+pCurrentMovementPoints); 
-
-  //neuen MovementRange nach Bewegung anzeigen
-  showMovementRange();
+  $("#move").html(""+param.pCurrentMovementPoints);
 }
 
 
@@ -341,13 +336,11 @@ function addTemplates(param) {
     templateIMG.style.top = yCounter+"px";
     field.appendChild(templateIMG); 
 
-    //TO-DO NODE 
-    /*
-    templateIMG.onclick = checkClickedTile;
-    templateIMG.onmouseover = bewegeRahmen;*/
+    //TO-DO
+    templateIMG.onclick = function(){clixxx(53, this.id);};
+    templateIMG.onmouseover = function(){clixxx(54, this.id);};
 
     AllTemplatesIMG[i] = templateIMG;
-
 
     if(evenColumn == true) {
 
@@ -400,7 +393,7 @@ function addTemplates(param) {
 
   }
 
-function changeTemplate(param){
+  function changeTemplate(param){
   // alert('CHANGE TEMPLATE(): position: ' + param.position + ', srz: ' + param.srz + ', difficultyValue: ' + param.difficultyValue + ', playersValue: ' + param.playersValue);
   //io.sockets.emit('50', {position: tile.getID(), srz: "Bilddaten/Spielfeld/temp.png", difficultyValue: null, playersValue: null});
   
@@ -486,6 +479,102 @@ function updateCharSheet(param) {
 }
 
 
+function showMonsterChooser () {    
+
+
+  $(document).ready(function(){
+
+    $("#monsterChooser").animate({top: '-20px'}, 1000);
+    chainSound();
+
+  });
+}
+
+function hideMonsterChooser () {
+
+  $(document).ready(function(){
+
+    $("#monsterChooser").animate({top: '-325px'}, 1000);
+    chainSound();
+
+  });
+}
+
+function showFightAnimation (Text) {
+
+  var roundMarker = document.createElement("div");
+  roundMarker.innerHTML = Text;
+  //notwendig, damit alles VOR dem Kampfbildschirm angezeigt wird.
+  roundMarker.style.zIndex = "7";
+  roundMarker.className = "roundMarker";
+  roundMarker.id = "roundMarker";
+  document.getElementById("fight").appendChild(roundMarker);
+
+  setTimeout(function() {document.getElementById("fight").removeChild(document.getElementById("roundMarker"))}, 3000);
+
+}
+
+var timeShowReincarnate = 0;
+function showReincarnationAnimation () {
+
+  monsterGrowlSound();
+  var grimReaper = document.createElement("div");
+  grimReaper.className = "grimReaper"
+  grimReaper.id = "grimReaper";
+  document.getElementById("field").appendChild(grimReaper);
+
+
+  for(i=0; i <= 2; i++) {
+
+    timeShowReincarnate += 200;
+
+    setTimeout(function(j) {
+
+      return function() {
+
+        var grimReaperText = document.createElement("div");
+        grimReaperText.innerHTML = "SECOND CHANCE";
+        grimReaperText.className = "grimReaperText";
+        grimReaperText.id = "grimReaperText";
+        document.getElementById("field").appendChild(grimReaperText);
+      }
+
+    } (i), timeShowReincarnate);
+
+  }
+
+  timeShowReincarnate = 0;
+  setTimeout(function() {document.getElementById("field").removeChild(document.getElementById("grimReaper"))}, 5000);
+  setTimeout(function() {document.getElementById("field").removeChild(document.getElementById("grimReaperText"))}, 5000);
+}
+
+function bewegeRahmen(param){
+  //letzten Rahmen wieder zurücksetzen
+  if(document.getElementById(param.lastBorder).src = terrainsAktuell[param.lastDifficulty].src){
+    document.getElementById(param.lastBorder).src = terrains[param.lastDifficulty].src;
+  }  
+  //setzt Rahmen
+  document.getElementById(param.pIndex2).src = terrainsAktuell[param.lastIndexDifficulty].src;
+}
+
+function startFight() {
+
+  hideMonsterChooser()
+  setTimeout(function() {
+
+    metalClashSound();
+    loadStats();
+    writeStats();
+    $("#fight").css("visibility", "visible");
+
+    $(".leftFight").hide();
+    $(".rightFight").hide();
+    $(".rightFight").animate({width:'toggle'}, 2500, "easeOutBounce");
+    $(".leftFight").animate({width:'toggle'}, 2500, "easeOutBounce");
+    setTimeout(function() {$("#phaseFrame").css("visibility", "visible");}, 2500);
+
+  }, 1000);
+}
 
 ////////////
 // SOUNDS //

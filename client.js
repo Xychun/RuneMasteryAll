@@ -198,7 +198,7 @@ socket.on('41',function(anonym){
 	addTemplates(anonym);
 });
 
-//Server sendet EVENT 42
+//Server sendet EVENT 42 - ALERTS
 socket.on('42',function(anonym){
 	alert(anonym);
 });
@@ -254,14 +254,11 @@ socket.on('52',function(anonym){
 	updateCharSheet(anonym);
 });
 
-//Server sendet EVENT 53
-socket.on('53',function(anonym){
-	showTiles(anonym.pAmountTiles, anonym.pNumberArrayTiles);
-});
+//EVENT 53 - ActionEvent/NoEmit
 
 //Server sendet EVENT 54
 socket.on('54',function(anonym){
-	showTiles(anonym.pAmountTiles, anonym.pNumberArrayTiles);
+	bewegeRahmen(anonym);
 });
 
 //Server sendet EVENT 55

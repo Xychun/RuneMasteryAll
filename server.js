@@ -131,41 +131,41 @@ io.sockets.on('connection', function (socket) {
 
     // DELETED SOCKET 28
 
-  socket.on('29',function(anonym){
-    io.sockets.emit('29');
-  });
+    socket.on('29',function(anonym){
+      io.sockets.emit('29');
+    });
 
-  socket.on('30',function(anonym){
-    io.sockets.emit('30');
-  });
+    socket.on('30',function(anonym){
+      io.sockets.emit('30');
+    });
 
-  socket.on('31',function(anonym){
-    io.sockets.emit('31');
-  });
+    socket.on('31',function(anonym){
+      io.sockets.emit('31');
+    });
 
-  socket.on('32',function(anonym){
-    io.sockets.emit('32');
-  });
+    socket.on('32',function(anonym){
+      io.sockets.emit('32');
+    });
 
-  socket.on('33',function(anonym){
-    io.sockets.emit('33', anonym);
-  });
+    socket.on('33',function(anonym){
+      io.sockets.emit('33', anonym);
+    });
 
-  socket.on('34',function(anonym){
-    io.sockets.emit('34');
-  });
+    socket.on('34',function(anonym){
+      io.sockets.emit('34');
+    });
 
-  socket.on('35',function(anonym){
-    setAmountFieldColumns(anonym.amountFieldColumns);
-  });
+    socket.on('35',function(anonym){
+      setAmountFieldColumns(anonym.amountFieldColumns);
+    });
 
-  socket.on('36',function(anonym){
-    setColumnLength(anonym.columnLength);
-  });
+    socket.on('36',function(anonym){
+      setColumnLength(anonym.columnLength);
+    });
 
-  socket.on('37',function(anonym){
-    setAmountMonsters(anonym.amountMonsters);
-  });
+    socket.on('37',function(anonym){
+      setAmountMonsters(anonym.amountMonsters);
+    });
 
   // DELETED SOCKET 38
 
@@ -200,11 +200,11 @@ io.sockets.on('connection', function (socket) {
   // SOCKET 52 - ActionEvent/MethodeEmit
 
   socket.on('53',function(anonym){
-    //
+    checkClickedTile(anonym);
   });
 
   socket.on('54',function(anonym){
-    //
+    initBewegeRahmen(anonym);
   });
 
   socket.on('55',function(anonym){
@@ -625,13 +625,13 @@ Player.prototype.getPlayerTrackingPointsMax = function() {
 
 Player.prototype.setPlayerActiveTracking = function(newPlayerActiveTracking) {
 
-    this.playerActiveTracking = newPlayerActiveTracking;
+  this.playerActiveTracking = newPlayerActiveTracking;
 
 }
 
 Player.prototype.getPlayerActiveTracking = function() {
 
-    return this.playerActiveTracking;
+  return this.playerActiveTracking;
 
 }
 
@@ -761,6 +761,7 @@ function Tile(id) {
   this.terrainDifficulty = Math.floor(Math.random() * 6);
   // TERRAIN MUSS CLIENT BEIM RENDERN SUCHEN
   // this.terrain = terrains[this.terrainDifficulty]; CLIENT(40)
+  // !WICHTIG! Client muss sich terrain über die difficulty holen
   this.terrain = null;
 
   this.hasMonsters = false;
@@ -866,7 +867,6 @@ function Template(id) {
 
   this.ID = id;
   this.IMG = null;
-
 }
 
 ////////////////////////////
@@ -933,21 +933,20 @@ function setColumnLength(param){
 function calculateFieldParas () {
 
   for(i=1; i <= amountFieldColumns; i++) {
+    //falls i gerade
+    if (i%2 == 0) {
 
-      //falls i gerade
-      if (i%2 == 0) {
+      amountTiles = amountTiles+(columnLength-1);
 
-        amountTiles = amountTiles+(columnLength-1);
+    }
 
-      }
+    else {
 
-      else {
+      amountTiles = amountTiles+columnLength;
 
-        amountTiles = amountTiles+columnLength;
-
-      }
     }
   }
+}
 
 //Erzeugt das Array BorderTilesID, das für die Bewegungsberechnung benötigt wird
 function calculateBorderTileIDs() {
@@ -1140,21 +1139,20 @@ function summonMonsters () {
   for(i=1; i <= amountMonsters; i++) {
 
     timeSummonMonsters += 100;
-
     setTimeout(function(j) {
 
       return function() {
 
-          // Der Kachel sagen, dass sie ein Monster hat
-          AllTiles[numberArrayMonsters[j]].setHasMonsters(true);
-          
-          var eNumb = numberArrayMonsters[j]+amountTiles+1;
-          //StabSound(); CLIENT(46)
-          //document.getElementById(numberArrayMonsters[j]+amountTiles+1).src = "Bilddaten/Spielfeld/MonsterImg.png"; CLIENT(46)
-          io.sockets.emit('46', {elementNumber: eNumb});
+        // Der Kachel sagen, dass sie ein Monster hat
+        AllTiles[numberArrayMonsters[j]].setHasMonsters(true);
 
-          // "1+" ist notwendig, weil die Random-Fkt. Werte zwischen 0 und Obergrenze erzeugen würde
-          // wir benötigen aber für den switch-case Werte zwischen 1 und 4. So kann man die 0 aussparen.
+        var eNumb = numberArrayMonsters[j]+amountTiles+1;
+        //StabSound(); CLIENT(46)
+        //document.getElementById(numberArrayMonsters[j]+amountTiles+1).src = "Bilddaten/Spielfeld/MonsterImg.png"; CLIENT(46)
+        io.sockets.emit('46', {elementNumber: eNumb});
+
+        // "1+" ist notwendig, weil die Random-Fkt. Werte zwischen 0 und Obergrenze erzeugen würde
+        // wir benötigen aber für den switch-case Werte zwischen 1 und 4. So kann man die 0 aussparen.
                 /*var randomNumber = 1+ Math.floor(Math.random() * (4));
 
                   switch (randomNumber) {
@@ -1182,12 +1180,10 @@ function summonMonsters () {
 
                     default:
                   }*/
-                }
-
-              } (i), timeSummonMonsters);
-} 
-
-timeSummonMonsters = 0;
+      }
+    } (i), timeSummonMonsters);
+  } 
+  timeSummonMonsters = 0;
 }
 
 
@@ -1521,7 +1517,7 @@ function summonPlayers() {
 
     } (i), timeSummonPlayers);
 
-  }
+}
 }
 
 
@@ -1590,15 +1586,15 @@ function initChangePlayer(){
   //updateCharSheet(); - CLIENT(52) - TO-DO Parameter
   var cP = AllPlayers[currentPlayerNumber];
   io.sockets.emit('52', {cPPlayerSword: cP.getPlayerSword(), cPPlayerSwordDmg: cP.getPlayerSwordDmg(), 
-  cPPlayerBow: cP.getPlayerBow(), cPPlayerBowDmg: cP.getPlayerBowDmg(), 
-  cPPlayerMagic: cP.getPlayerMagic(), cPPlayerMagicDmg: cP.getPlayerMagicDmg(), 
-  cPPlayerLife: cP.getPlayerLife(), cPPlayerLifeMax: cP.getPlayerLifeMax(), 
-  cPPlayerHealPoints: cP.getPlayerHealPoints(), cPPlayerHealPointsMax: cP.getPlayerHealPointsMax(), 
-  cPPlayerBoost: cP.getPlayerBoost(), cPPlayerBoostMax: cP.getPlayerBoostMax(), 
-  cPPlayerTrackingPoints: cP.getPlayerTrackingPoints(), cPPlayerTrackingPointsMax: cP.getPlayerTrackingPointsMax(), 
-  cPPlayerXStrikePoints: cP.getPlayerXStrikePoints(), cPPlayerXStrikePointsMax: cP.getPlayerXStrikePointsMax(), 
-  cPPlayerMovementPoints: cP.getPlayerMovementPoints(), cPPlayerMovementPointsMax: cP.getPlayerMovementPointsMax(), 
-  cPPlayerLvl: cP.getPlayerLvl(), cPPlayerEXP: cP.getPlayerEXP()});
+    cPPlayerBow: cP.getPlayerBow(), cPPlayerBowDmg: cP.getPlayerBowDmg(), 
+    cPPlayerMagic: cP.getPlayerMagic(), cPPlayerMagicDmg: cP.getPlayerMagicDmg(), 
+    cPPlayerLife: cP.getPlayerLife(), cPPlayerLifeMax: cP.getPlayerLifeMax(), 
+    cPPlayerHealPoints: cP.getPlayerHealPoints(), cPPlayerHealPointsMax: cP.getPlayerHealPointsMax(), 
+    cPPlayerBoost: cP.getPlayerBoost(), cPPlayerBoostMax: cP.getPlayerBoostMax(), 
+    cPPlayerTrackingPoints: cP.getPlayerTrackingPoints(), cPPlayerTrackingPointsMax: cP.getPlayerTrackingPointsMax(), 
+    cPPlayerXStrikePoints: cP.getPlayerXStrikePoints(), cPPlayerXStrikePointsMax: cP.getPlayerXStrikePointsMax(), 
+    cPPlayerMovementPoints: cP.getPlayerMovementPoints(), cPPlayerMovementPointsMax: cP.getPlayerMovementPointsMax(), 
+    cPPlayerLvl: cP.getPlayerLvl(), cPPlayerEXP: cP.getPlayerEXP()});
 
   currentMovementPoints = AllPlayers[currentPlayerNumber].getPlayerMovementPoints();
   currentPlayerPosition = AllPlayers[currentPlayerNumber].getPlayerPosition();
@@ -1612,76 +1608,7 @@ function initChangePlayer(){
 ///////////////////// END changePlayer ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
-
-function showMonsterChooser () {    
-
-
-  $(document).ready(function(){
-
-    $("#monsterChooser").animate({top: '-20px'}, 1000);
-    chainSound();
-
-  });
-}
-
-function hideMonsterChooser () {
-
-  $(document).ready(function(){
-
-    $("#monsterChooser").animate({top: '-325px'}, 1000);
-    chainSound();
-
-  });
-}
-
-function showFightAnimation (Text) {
-
-  var roundMarker = document.createElement("div");
-  roundMarker.innerHTML = Text;
-  //notwendig, damit alles VOR dem Kampfbildschirm angezeigt wird.
-  roundMarker.style.zIndex = "7";
-  roundMarker.className = "roundMarker";
-  roundMarker.id = "roundMarker";
-  document.getElementById("fight").appendChild(roundMarker);
-
-  setTimeout(function() {document.getElementById("fight").removeChild(document.getElementById("roundMarker"))}, 3000);
-
-}
-
-var timeShowReincarnate = 0;
-function showReincarnationAnimation () {
-
-  monsterGrowlSound();
-  var grimReaper = document.createElement("div");
-  grimReaper.className = "grimReaper"
-  grimReaper.id = "grimReaper";
-  document.getElementById("field").appendChild(grimReaper);
-
-
-  for(i=0; i <= 2; i++) {
-
-    timeShowReincarnate += 200;
-
-    setTimeout(function(j) {
-
-      return function() {
-
-        var grimReaperText = document.createElement("div");
-        grimReaperText.innerHTML = "SECOND CHANCE";
-        grimReaperText.className = "grimReaperText";
-        grimReaperText.id = "grimReaperText";
-        document.getElementById("field").appendChild(grimReaperText);
-      }
-
-    } (i), timeShowReincarnate);
-
-  }
-
-  timeShowReincarnate = 0;
-  setTimeout(function() {document.getElementById("field").removeChild(document.getElementById("grimReaper"))}, 5000);
-  setTimeout(function() {document.getElementById("field").removeChild(document.getElementById("grimReaperText"))}, 5000);
-}
-
+//TO-DO NODE
 var timeShowFieldWinAnim = 0;
 function showFieldWinAnimation (clickedTile) {
 
@@ -1773,28 +1700,6 @@ function showEXPGain (currentEXP, newEXP) {
 
 
 
-
-
-
-
-function startFight() {
-
-  hideMonsterChooser()
-  setTimeout(function() {
-
-    metalClashSound();
-    loadStats();
-    writeStats();
-    $("#fight").css("visibility", "visible");
-
-    $(".leftFight").hide();
-    $(".rightFight").hide();
-    $(".rightFight").animate({width:'toggle'}, 2500, "easeOutBounce");
-    $(".leftFight").animate({width:'toggle'}, 2500, "easeOutBounce");
-    setTimeout(function() {$("#phaseFrame").css("visibility", "visible");}, 2500);
-
-  }, 1000);
-}
 
 
 function reincarnatePlayer() {
@@ -2002,7 +1907,7 @@ function initField() {
   setTimeout(function() {io.sockets.emit('48'); }, amountTiles*7 + 500 + amountMonsters*100 + 250 + 4*250 + 500 + 4000);
     // $("#characterSheet").css("visibility", "visible")
 
-  }
+}
 
 
 
@@ -2276,10 +2181,10 @@ delete(tile, templateOverTile, terrainDifficulty);
 var idClickedTile;
 var clickedTile;
 
-function checkClickedTile() {
+function checkClickedTile(param) {
 
   //Die ID der Kachel, auf die geklickt wurde
-  idClickedTile = this.id - amountTiles-1;
+  idClickedTile = param - amountTiles-1;
   //Die Kachel, auf die geklickt wurde
   clickedTile = AllTiles[idClickedTile];
   //aktualisiere das tilesAroundPlayer-Array
@@ -2314,7 +2219,6 @@ function checkClickedTile() {
                   //MovePlayer nimmt als Argument die geklickte Kachel, sowie den idClickedTile (womit auf das Template geschlossen werden kann)
                   // movePlayer(idClickedTile, clickedTile); - CLIENT(43)
                   initMovePlayer(idClickedTile, clickedTile);
-                  io.sockets.emit('43', {pCurrentMovementPoints: currentMovementPoints});
                 }
 
 
@@ -2337,6 +2241,7 @@ function checkClickedTile() {
 
 // aufgerufen von XX
 function initMovePlayer(paramIdClickedTile, paramClickedTile){
+  var lastPlayerPosition = paramIdClickedTile;
   //Das Template, auf das geklickt wurde
   //var clickedTemplate = AllTemplates[lastPlayerPosition]; - CLIENT(50)
   //Der Kachel sagen, dass sie jetzt einen Spieler hat
@@ -2349,7 +2254,7 @@ function initMovePlayer(paramIdClickedTile, paramClickedTile){
   AllTiles[currentPlayerPosition].setHasPlayer(false);
   //Das Spieler-Symbol der alten Kachel durch Template ersetzen
   // AllTemplates[currentPlayerPosition].src = "Bilddaten/Spielfeld/temp.png"; - CLIENT(50)
-  io.sockets.emit('50', {position: currentplayerPosition, srz: "Bilddaten/Spielfeld/temp.png", difficultyValue: null, playersValue: null});
+  io.sockets.emit('50', {position: currentPlayerPosition, srz: "Bilddaten/Spielfeld/temp.png", difficultyValue: null, playersValue: null});
 
   // Position merken, auf die der Spieler gesprungen ist, damit diese bei der nächsten Bewegung wieder auf Template
   // gesetzt werden kann.
@@ -2358,33 +2263,38 @@ function initMovePlayer(paramIdClickedTile, paramClickedTile){
   //Bewegungspunkte abziehen, falls es sich nicht um ein Monster handelt
   if(clickedTile.getHasMonsters() == false) { currentMovementPoints = currentMovementPoints - (AllTiles[currentPlayerPosition].getTerrainDifficulty()+1); } //"+1" weil die Zählung bei 0 beginnt
   //Dem aktuellen Spieler die Bewegungspunkte abziehen
+  if(currentPlayerNumber == 0){
+    currentPlayerNumber = 1;
+  }
+
   AllPlayers[currentPlayerNumber].setPlayerMovementPoints(currentMovementPoints);
   //Dem aktuellen Spieler die neue Position zuweisen, auf die geklickt wurde
   AllPlayers[currentPlayerNumber].setPlayerPosition(currentPlayerPosition);
   
+  io.sockets.emit('43', {pCurrentMovementPoints: currentMovementPoints});
+  showMovementRange();
 }
 
 ///////////////////// END movePlayer ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
+///////////////////// bewegeRahmen ////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 
-function bewegeRahmen() {
+// aufgerufen von XX
+function initBewegeRahmen(param) {
+  console.log('param ' + param);
+  var index2 = param-amountTiles-1;
 
-  var index2 = this.id-amountTiles-1;
-  
-  if(document.getElementById(zwischenSpeicherRahmen).src = terrainsAktuell[AllTiles[zwischenSpeicherRahmen].getTerrainDifficulty()].src)
-  {
-    document.getElementById(zwischenSpeicherRahmen).src = AllTiles[zwischenSpeicherRahmen].getTerrain().src;
-  }
-  
-  //letzten Rahmen wieder zurücksetzen
-  document.getElementById(index2).src = terrainsAktuell[AllTiles[index2].getTerrainDifficulty()].src;
+  io.sockets.emit('54', {lastBorder: zwischenSpeicherRahmen, pIndex2: index2, lastDifficulty: AllTiles[zwischenSpeicherRahmen].getTerrainDifficulty(), lastIndexDifficulty: AllTiles[index2].getTerrainDifficulty()});
   //Id ist die index2 Nummer der gesamten Bilder im Dokument
   zwischenSpeicherRahmen= index2; 
   //speichern des aktuellen Rahmens für Änderung bei Neuaufruf
-
-
 }
+
+///////////////////// END bewegeRahmen ////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
 
 //Betrag, um den geheilt wird
 var healPower;
@@ -2890,7 +2800,7 @@ function fight(status)
     //Falls der Spieler gewonnen hat, wird Spielfigur bewegt
     //Die Variablen sind global definiert und ändern sich mit Aufruf der Funktion checkClickedTile
     //(Also bei jedem Klick für eine Bewegung)
-    movePlayer(idClickedTile, clickedTile);
+    initMovePlayer(idClickedTile, clickedTile);
     //Animation zeigen bei Sieg
     showFieldWinAnimation(clickedTile);
     //Dem Spieler die erhaltenen EXP gutschreiben
@@ -3030,23 +2940,23 @@ function changeButtonsMonsterChooser(trackResult) {
 
     case 0:
 
-      showEasyKonfig();
-      break;
+    showEasyKonfig();
+    break;
 
     case 1:
 
-      showModerateKonfig();
-      break;
+    showModerateKonfig();
+    break;
 
     case 2:
 
-      showStrongKonfig();
-      break;
+    showStrongKonfig();
+    break;
 
     case 3:
 
-      showInsaneKonfig();
-      break;
+    showInsaneKonfig();
+    break;
 
     default: alert("Schimpfen sie den Entwickler");
 
@@ -3057,7 +2967,7 @@ function changeButtonsMonsterChooser(trackResult) {
 
 function showEasyKonfig () {
 
-alert("easy");
+  alert("easy");
 
   $(document).ready(function(){
 
@@ -3068,41 +2978,41 @@ alert("easy");
 
     var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
 
-      allButtonsMonsterDifficulty.mouseenter(function() {
+    allButtonsMonsterDifficulty.mouseenter(function() {
 
-        switch(this.id) {
+      switch(this.id) {
 
-          case "easyButton":
+        case "easyButton":
 
-            $(this).css({"backgroundPosition": "-480px 0px"});
-            break;
+        $(this).css({"backgroundPosition": "-480px 0px"});
+        break;
 
-          default: 
+        default: 
 
-        }
+      }
 
-      });
+    });
 
-      allButtonsMonsterDifficulty.mouseleave(function() {
+    allButtonsMonsterDifficulty.mouseleave(function() {
 
-        switch(this.id) {
+      switch(this.id) {
 
-          case "easyButton":
+        case "easyButton":
 
-            $(this).css({"backgroundPosition": "-240px 0px"});
-            break;
+        $(this).css({"backgroundPosition": "-240px 0px"});
+        break;
 
-          default: 
+        default: 
 
-        }
-        
-      });
+      }
 
-      allButtonsMonsterDifficulty.click(function() {
-        
-        startFight(this.id);
-        
-      });
+    });
+
+    allButtonsMonsterDifficulty.click(function() {
+
+      startFight(this.id);
+
+    });
   })
 }
 
@@ -3119,57 +3029,57 @@ function showModerateKonfig () {
 
     var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
 
-      allButtonsMonsterDifficulty.mouseenter(function() {
+    allButtonsMonsterDifficulty.mouseenter(function() {
 
-        switch(this.id) {
+      switch(this.id) {
 
-          case "easyButton":
+        case "easyButton":
 
-            $(this).css({"backgroundPosition": "-480px 0px"});
-            break;
+        $(this).css({"backgroundPosition": "-480px 0px"});
+        break;
 
-          case "moderateButton":
+        case "moderateButton":
 
-            $(this).css({"backgroundPosition": "-480px -50px"});
-            break;
+        $(this).css({"backgroundPosition": "-480px -50px"});
+        break;
 
-          default: 
+        default: 
 
-        }
+      }
 
-      });
+    });
 
-      allButtonsMonsterDifficulty.mouseleave(function() {
+    allButtonsMonsterDifficulty.mouseleave(function() {
 
-        switch(this.id) {
+      switch(this.id) {
 
-          case "easyButton":
+        case "easyButton":
 
-            $(this).css({"backgroundPosition": "-240px 0px"});
-            break;
+        $(this).css({"backgroundPosition": "-240px 0px"});
+        break;
 
-            case "moderateButton":
+        case "moderateButton":
 
-            $(this).css({"backgroundPosition": "-240px -50px"});
-            break;
+        $(this).css({"backgroundPosition": "-240px -50px"});
+        break;
 
-          default: 
+        default: 
 
-        }
-        
-      });
+      }
 
-      allButtonsMonsterDifficulty.click(function() {
-        
-        startFight(this.id);
-        
-      });
+    });
+
+    allButtonsMonsterDifficulty.click(function() {
+
+      startFight(this.id);
+
+    });
   })
 }
 
 function showStrongKonfig () {
 
-alert("strong");
+  alert("strong");
 
   $(document).ready(function(){
 
@@ -3180,67 +3090,67 @@ alert("strong");
 
     var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
 
-      allButtonsMonsterDifficulty.mouseenter(function() {
+    allButtonsMonsterDifficulty.mouseenter(function() {
 
-        switch(this.id) {
+      switch(this.id) {
 
-          case "easyButton":
+        case "easyButton":
 
-            $(this).css({"backgroundPosition": "-480px 0px"});
-            break;
+        $(this).css({"backgroundPosition": "-480px 0px"});
+        break;
 
-          case "moderateButton":
+        case "moderateButton":
 
-            $(this).css({"backgroundPosition": "-480px -50px"});
-            break;
+        $(this).css({"backgroundPosition": "-480px -50px"});
+        break;
 
-          case "strongButton":
+        case "strongButton":
 
-            $(this).css({"backgroundPosition": "-480px -100px"});
-            break;
+        $(this).css({"backgroundPosition": "-480px -100px"});
+        break;
 
-          default: 
+        default: 
 
-        }
+      }
 
-      });
+    });
 
-      allButtonsMonsterDifficulty.mouseleave(function() {
+    allButtonsMonsterDifficulty.mouseleave(function() {
 
-        switch(this.id) {
+      switch(this.id) {
 
-          case "easyButton":
+        case "easyButton":
 
-            $(this).css({"backgroundPosition": "-240px 0px"});
-            break;
+        $(this).css({"backgroundPosition": "-240px 0px"});
+        break;
 
-          case "moderateButton":
+        case "moderateButton":
 
-            $(this).css({"backgroundPosition": "-240px -50px"});
-            break;
+        $(this).css({"backgroundPosition": "-240px -50px"});
+        break;
 
-          case "strongButton":
+        case "strongButton":
 
-            $(this).css({"backgroundPosition": "-240px -100px"});
-            break;
+        $(this).css({"backgroundPosition": "-240px -100px"});
+        break;
 
-          default: 
+        default: 
 
-        }
-        
-      });
+      }
 
-      allButtonsMonsterDifficulty.click(function() {
-        
-        startFight(this.id);
-        
-      });
+    });
+
+    allButtonsMonsterDifficulty.click(function() {
+
+      startFight(this.id);
+
+    });
   })
 }
 
 function showInsaneKonfig () {
 
-alert("insane");
+  alert("insane");
 
   $(document).ready(function(){
 
@@ -3251,70 +3161,70 @@ alert("insane");
 
     var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
 
-      allButtonsMonsterDifficulty.mouseenter(function() {
+    allButtonsMonsterDifficulty.mouseenter(function() {
 
-        switch(this.id) {
+      switch(this.id) {
 
-          case "easyButton":
+        case "easyButton":
 
-            $(this).css({"backgroundPosition": "-480px 0px"});
-            break;
+        $(this).css({"backgroundPosition": "-480px 0px"});
+        break;
 
-          case "moderateButton":
+        case "moderateButton":
 
-            $(this).css({"backgroundPosition": "-480px -50px"});
-            break;
+        $(this).css({"backgroundPosition": "-480px -50px"});
+        break;
 
-          case "strongButton":
+        case "strongButton":
 
-            $(this).css({"backgroundPosition": "-480px -100px"});
-            break;
+        $(this).css({"backgroundPosition": "-480px -100px"});
+        break;
 
-          case "insaneButton":
+        case "insaneButton":
 
-            $(this).css({"backgroundPosition": "-480px -150px"});
-            break;
+        $(this).css({"backgroundPosition": "-480px -150px"});
+        break;
 
-          default: 
+        default: 
 
-        }
+      }
 
-      });
+    });
 
-      allButtonsMonsterDifficulty.mouseleave(function() {
+    allButtonsMonsterDifficulty.mouseleave(function() {
 
-        switch(this.id) {
+      switch(this.id) {
 
-          case "easyButton":
+        case "easyButton":
 
-            $(this).css({"backgroundPosition": "-240px 0px"});
-            break;
+        $(this).css({"backgroundPosition": "-240px 0px"});
+        break;
 
-          case "moderateButton":
+        case "moderateButton":
 
-            $(this).css({"backgroundPosition": "-240px -50px"});
-            break;
+        $(this).css({"backgroundPosition": "-240px -50px"});
+        break;
 
-          case "strongButton":
+        case "strongButton":
 
-            $(this).css({"backgroundPosition": "-240px -100px"});
-            break;
+        $(this).css({"backgroundPosition": "-240px -100px"});
+        break;
 
-          case "insaneButton":
+        case "insaneButton":
 
-            $(this).css({"backgroundPosition": "-240px -150px"});
-            break;
+        $(this).css({"backgroundPosition": "-240px -150px"});
+        break;
 
-          default: 
+        default: 
 
-        }
-        
-      });
+      }
 
-      allButtonsMonsterDifficulty.click(function() {
-        
-        startFight(this.id);
-        
-      });
+    });
+
+    allButtonsMonsterDifficulty.click(function() {
+
+      startFight(this.id);
+
+    });
   })
 }
