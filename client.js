@@ -227,6 +227,7 @@ socket.on('46',function(anonym){
 //Server sendet EVENT 47
 socket.on('47',function(anonym){
 	showGameStartAnimation();
+
 });
 
 //Server sendet EVENT 48
@@ -298,7 +299,7 @@ socket.on('1000',function(anonym){
 
 //Server sendet EVENT 2000
 socket.on('2000',function(anonym){
-	startFight();
+	startFight(anonym);
 });
 
 

@@ -417,7 +417,7 @@ function addTemplates(param) {
 function showGameStartAnimation () {    
   var timeShowGameStartAnim = 100;
 
-  monsterGrowlSound();
+  // TO DO monsterGrowlSound();
   var gameStartMarkerBackground = document.createElement("div");
   gameStartMarkerBackground.className = "gameStartMarkerBackground"
   gameStartMarkerBackground.id = "gameStartMarkerBackground";
@@ -557,14 +557,13 @@ function bewegeRahmen(param){
   document.getElementById(param.pIndex2).src = terrainsAktuell[param.lastIndexDifficulty].src;
 }
 
-function startFight() {
+function startFight(param) {
 
   hideMonsterChooser()
   setTimeout(function() {
-
-    metalClashSound();
-    loadStats();
-    writeStats();
+ 
+    //metalClashSound();
+    writeStats(param); 
     $("#fight").css("visibility", "visible");
 
     $(".leftFight").hide();
@@ -574,6 +573,49 @@ function startFight() {
     setTimeout(function() {$("#phaseFrame").css("visibility", "visible");}, 2500);
 
   }, 1000);
+}
+
+
+function writeStats(param)
+{ 
+
+  //Werte eintragen
+  $("#me_attack_c").html(param.pMeAttackC);
+  $("#me_dmg_c").html(param.pMeDmgC);
+
+  $("#r_attack_c").html(param.pRAttackC);
+  $("#r_dmg_c").html(param.pRDmgC);
+
+  $("#ma_attack_c").html(param.pMaAttackC);
+  $("#ma_dmg_c").html(param.pMaDmgC);
+
+  $("#l_min_c").html(param.pLMinC);
+  $("#l_max_c").html(param.pLMaxC);
+
+  $("#me_attack_m").html(param.pMeAttackM);
+  $("#me_dmg_m").html(param.pMeDmgM);
+
+  $("#r_attack_m").html(param.pRAttackM);
+  $("#r_dmg_m").html(param.pRDmgM);
+
+  $("#ma_attack_m").html(param.pMaAttackM);
+  $("#ma_dmg_m").html(param.pMaDmgM);
+
+  $("#l_min_m").html(param.pLMinM);
+  $("#l_max_m").html(param.pLMaxM);
+
+  $("#dmin").html(param.pDim);
+  $("#dmax").html(param.pDmax);
+  $("#amin").html(param.pAmin);
+  $("#amax").html(param.pAmax);
+  $("#abmin").html(param.pAbmin);
+  $("#abmax").html(param.pAbmax);
+  $("#esmin").html(param.pEsmin);
+  $("#esmax").html(param.pEsmax);
+
+  $("#phaseFrame").css("left", 480+"px");
+  x = 480;
+
 }
 
 ////////////
@@ -721,7 +763,7 @@ function preloadSound(src) {
 }
 
 
-/*function monsterGrowlSound() {
+function monsterGrowlSound() {
 
     var audio = document.createElement("audio");
     audio.src = "Sounds/MonsterGrowl.mp3";
@@ -729,12 +771,7 @@ function preloadSound(src) {
     audio.CurrentTime=0;
     audio.play(); 
 
-  }*/
-
-
-
-////// NOCH ÜBERPRÜFEN - NODE
-
+  }
 
 
 
@@ -803,7 +840,6 @@ $(document).ready(function(){
   });
 
   allButtonsMonsterDifficulty.click(function() {
-    startFight();
     clixxx(2000);
   });
 })

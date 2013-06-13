@@ -236,7 +236,12 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('2000',function(anonym){
-    io.sockets.emit('2000');
+    loadStats();
+    io.sockets.emit('2000', {pMeAttackC: me_attack_c, pMeDmgC: me_dmg_c, pRAttackC: r_attack_c, 
+    pRDmgC: r_dmg_c, pMaAttackC: ma_attack_c, pMaDmgC: ma_dmg_c, pLMinC: l_min_c, pLMaxC: l_max_c,
+    pMeAttackM: me_attack_m, pMeDmgM: me_dmg_m, pRAttackM: r_attack_m, pRDmgM: r_dmg_m, pMaAttackM: ma_attack_m,
+    pMaDmgM: ma_dmg_m, pLMinM: l_min_m, pLMaxM: l_max_m, pDim: dmin, pDmax: dmax, pAmin: amin, pAmax: amax,
+    pAbmin: abmin, pAbmax: abmax, pEsmin: esmin, pEsmax: esmax}); 
   });
 });
 
@@ -2283,7 +2288,6 @@ function initMovePlayer(paramIdClickedTile, paramClickedTile){
 
 // aufgerufen von XX
 function initBewegeRahmen(param) {
-  console.log('param ' + param);
   var index2 = param-amountTiles-1;
 
   io.sockets.emit('54', {lastBorder: zwischenSpeicherRahmen, pIndex2: index2, lastDifficulty: AllTiles[zwischenSpeicherRahmen].getTerrainDifficulty(), lastIndexDifficulty: AllTiles[index2].getTerrainDifficulty()});
@@ -2553,47 +2557,6 @@ var l_max_m=10;
 var exp = 50;
 
 
-function writeStats()
-{ 
-
-  //Werte eintragen
-  $("#me_attack_c").html( me_attack_c);
-  $("#me_dmg_c").html( me_dmg_c);
-
-  $("#r_attack_c").html( r_attack_c);
-  $("#r_dmg_c").html( r_dmg_c);
-
-  $("#ma_attack_c").html( ma_attack_c);
-  $("#ma_dmg_c").html( ma_dmg_c);
-
-  $("#l_min_c").html( l_min_c);
-  $("#l_max_c").html( l_max_c);
-
-  $("#me_attack_m").html( me_attack_m);
-  $("#me_dmg_m").html( me_dmg_m);
-
-  $("#r_attack_m").html( r_attack_m);
-  $("#r_dmg_m").html( r_dmg_m);
-
-  $("#ma_attack_m").html( ma_attack_m);
-  $("#ma_dmg_m").html( ma_dmg_m);
-
-  $("#l_min_m").html( l_min_m);
-  $("#l_max_m").html( l_max_m);
-
-  $("#dmin").html( dmin);
-  $("#dmax").html( dmax);
-  $("#amin").html( amin);
-  $("#amax").html( amax);
-  $("#abmin").html( abmin);
-  $("#abmax").html( abmax);
-  $("#esmin").html( esmin);
-  $("#esmax").html( esmax);
-
-  $("#phaseFrame").css("left", 480+"px");
-  x = 480;
-
-}
 
 
 
