@@ -5,6 +5,14 @@
 
 // GLOBALE DATENFELDER
 
+////////////////////////////////
+// Eingabefelder Registration //
+////////////////////////////////
+
+var checkMail;
+var checkPW;
+var checkUser;
+
 //////////////////////
 // Benötigte Bilder //
 //////////////////////
@@ -204,7 +212,7 @@ function startFightRoutine(index, clickedTile) {
 }
 
 function movePlayer(param) {
-  //TO-DO moveSound();
+  moveSound();
   document.getElementById("movementPoints").innerHTML = param.pCurrentMovementPoints; //TESTZWECKE
   //Die Bewegungspunkte-Anzeige aktualisieren
   $("#move").html(""+param.pCurrentMovementPoints);
@@ -417,7 +425,7 @@ function addTemplates(param) {
 function showGameStartAnimation () {    
   var timeShowGameStartAnim = 100;
 
-  monsterGrowlSound();
+  // TO DO monsterGrowlSound();
   var gameStartMarkerBackground = document.createElement("div");
   gameStartMarkerBackground.className = "gameStartMarkerBackground"
   gameStartMarkerBackground.id = "gameStartMarkerBackground";
@@ -472,7 +480,6 @@ function updateCharSheet(param) {
   $("#track").html(param.cPPlayerTrackingPoints); $("#trackMax").html(param.cPPlayerTrackingPointsMax);
   $("#xstrike").html(param.cPPlayerXStrikePoints); $("#xstrikeMax").html(param.cPPlayerXStrikePointsMax);
   $("#move").html(param.cPPlayerMovementPoints); $("#moveMax").html(param.cPPlayerMovementPointsMax);
-  
   //LVL + EXP
   $("#levelCounter").html(param.cPPlayerLvl);
   $("#LvlUpBarFill").css("width", param.cPPlayerEXP+"%");
@@ -486,7 +493,7 @@ function showMonsterChooser () {
   $(document).ready(function(){
 
     $("#monsterChooser").animate({top: '-20px'}, 1000);
-    //TO-DO chainSound();
+    chainSound();
 
   });
 }
@@ -496,7 +503,7 @@ function hideMonsterChooser () {
   $(document).ready(function(){
 
     $("#monsterChooser").animate({top: '-325px'}, 1000);
-    //TO-DO chainSound();
+    chainSound();
 
   });
 }
@@ -518,7 +525,7 @@ function showFightAnimation (Text) {
 var timeShowReincarnate = 0;
 function showReincarnationAnimation () {
 
-  //TO-DO monsterGrowlSound();
+  monsterGrowlSound();
   var grimReaper = document.createElement("div");
   grimReaper.className = "grimReaper"
   grimReaper.id = "grimReaper";
@@ -559,11 +566,11 @@ function bewegeRahmen(param){
 }
 
 function startFight(param) {
-  alert('DIFFICULTY: ' + param.pDifficulty);
+
   hideMonsterChooser()
   setTimeout(function() {
-
-    //TO-DO metalClashSound();
+ 
+    //metalClashSound();
     writeStats(param); 
     $("#fight").css("visibility", "visible");
 
@@ -615,104 +622,8 @@ function writeStats(param)
   $("#esmax").html(param.pEsmax);
 
   $("#phaseFrame").css("left", 480+"px");
-}
+  x = 480;
 
-function pressed(param){
-  var id = "#img_" + param.ele_name;
-  var src = "Bilddaten/Kampf/"+param.ele_name + "_pressed.png"; 
-  $(id).attr("src", src);
-
-}
-function released(param){
-  var id = "#img_" + param.ele_name;
-  var src = "Bilddaten/Kampf/"+param.ele_name + ".png";
-  $(id).attr("src", src);
-}
-
-var timeShowEXPGain = 0;
-function showEXPGain (currentEXP, newEXP) {
-
-  for(i=currentEXP; i <= newEXP; i++) {
-
-    timeShowEXPGain += 15;
-
-    setTimeout(function(j) {
-
-      return function() {
-
-        $("#LvlUpBarFill").css("width", j+"%");
-
-        //Falls LvlUp erreicht
-        if(j == 100) {
-
-          //TO-DO lvlUpSound();
-          $("#LvlUpMarker").css("visibility", "visible");
-
-        }
-
-
-      }
-
-    } (i), timeShowEXPGain);
-  }
-
-
-  timeShowEXPGain = 0;
-}
-
-var timeShowFieldWinAnim = 0;
-function showFieldWinAnimation (clickedTile) {
-
-  //TO-DO choralSound();
-  var frame1 = document.createElement("div");
-  frame1.className = "winFrame1";
-  frame1.id = "winFrame1";
-  var x = clickedTile.getXPosition();
-  var y = clickedTile.getYPosition();
-  document.getElementById("field").appendChild(frame1);
-  document.getElementById("winFrame1").style.top=y+"px";
-  document.getElementById("winFrame1").style.left=x+"px";
-
-  var frame2 = document.createElement("div");
-  frame2.className = "winFrame2";
-  frame2.id = "winFrame2";
-  document.getElementById("field").appendChild(frame2);
-  document.getElementById("winFrame2").style.top=y+"px";
-  document.getElementById("winFrame2").style.left=x+"px";
-
-  for(i=0; i <= 10; i++) {
-
-    timeShowFieldWinAnim += 100;
-
-    setTimeout(function(j) {
-
-      return function() {
-
-        if(j%2 != 0) {
-
-          $("#winFrame1").css("visibility", "visible");
-          $("#winFrame2").css("visibility", "hidden");
-
-        }
-
-        else {
-
-          $("#winFrame2").css("visibility", "visible");
-          $("#winFrame1").css("visibility", "hidden");
-
-        }
-      }
-
-    } (i), timeShowFieldWinAnim);
-
-  }
-
-  $("#winFrame2").css("visibility", "hidden");
-  $("#winFrame2").css("visibility", "hidden");
-
-  timeShowFieldWinAnim = 0;
-  setTimeout(function() {document.getElementById("field").removeChild(document.getElementById("winFrame1"))}, 2000);
-  setTimeout(function() {document.getElementById("field").removeChild(document.getElementById("winFrame2"))}, 2000);
 }
 
 ////////////
@@ -844,7 +755,7 @@ function lvlUpSound() {
 
 function monsterGrowlSound() {
 
-  var audio = preloadSound("Sounds/MonsterGrowl.ogg");
+  var audio = preloadSound("Sounds/MonsterGrowl.mp3");
   audio.CurrentTime=0;
   audio.play(); 
 
@@ -862,13 +773,13 @@ function preloadSound(src) {
 
 function monsterGrowlSound() {
 
-  var audio = document.createElement("audio");
-  audio.src = "Sounds/MonsterGrowl.ogg";
+    var audio = document.createElement("audio");
+    audio.src = "Sounds/MonsterGrowl.mp3";
 
-  audio.CurrentTime=0;
-  audio.play(); 
+    audio.CurrentTime=0;
+    audio.play(); 
 
-}
+  }
 
 
 
@@ -935,269 +846,123 @@ $(document).ready(function(){
     }
 
   });
-});
 
+  allButtonsMonsterDifficulty.click(function() {
+    clixxx(2000);
+  });
+})
 
-function showEasyKonfig() {
-
-  alert("easy");
+function visibilitySwitcher(element1,element2) {
 
   $(document).ready(function(){
+    $(element1).css({'visibility': 'visible'}); 
+    $(element2).css({'visibility': 'hidden'});
+  });
 
-    $("#easyButton").css({"backgroundPosition": "-240px 0px"});
-    $("#moderateButton").css({"backgroundPosition": "0px -50px"});
-    $("#strongeButton").css({"backgroundPosition": "0px -100px"});
-    $("#insaneButton").css({"backgroundPosition": "0px -150px"});
-
-    var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
-
-    allButtonsMonsterDifficulty.mouseenter(function() {
-
-      switch(this.id) {
-
-        case "easyButton":
-
-        $(this).css({"backgroundPosition": "-480px 0px"});
-        break;
-
-        default: 
-
-      }
-
-    });
-
-    allButtonsMonsterDifficulty.mouseleave(function() {
-
-      switch(this.id) {
-
-        case "easyButton":
-
-        $(this).css({"backgroundPosition": "-240px 0px"});
-        break;
-
-        default: 
-
-      }
-
-    });
-
-    allButtonsMonsterDifficulty.click(function() {
-
-      clixxx('2000', {pDifficulty: this.id});
-
-    });
-  })
 }
 
-function showModerateKonfig() {
+function register_clicked(){
+  var username = $("#reg_username").val();
+  var email = $("#reg_email").val();
+  var password = $("#reg_password").val();
+  var confirm_password = $("#confirm_reg_password").val();
 
-  alert("moderate");
+  checkMail = checkEmail(email);
+  checkPW = checkPassword(password,confirm_password);
 
-  $(document).ready(function(){
+  if(username == "")
+  {
+    alert("Insert Username please!");
+  }
+  else if(email=="")
+  {
+    alert("Insert E-Mail Adress please!");
+  }
+  else if(password=="" || confirm_password=="")
+  {
+    alert("Insert Passwords please!");
+  }
+  else if(checkMail == false)
+  {
+    alert("Invalid E-Mail Adress!");
+  }
+  else if(checkPW == false)
+  {
+    alert("Passwords doesn't match!");
+  }
+  else
+  {
+    clixxx(5000,{u: username, e: email, p1: password, p2: confirm_password}); // Datenbank abfrage ob Username schon Existiert
+  }
 
-    $("#easyButton").css({"backgroundPosition": "-240px 0px"});
-    $("#moderateButton").css({"backgroundPosition": "-240px -50px"});
-    $("#strongeButton").css({"backgroundPosition": "0px -100px"});
-    $("#insaneButton").css({"backgroundPosition": "0px -150px"});
-
-    var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
-
-    allButtonsMonsterDifficulty.mouseenter(function() {
-
-      switch(this.id) {
-
-        case "easyButton":
-
-        $(this).css({"backgroundPosition": "-480px 0px"});
-        break;
-
-        case "moderateButton":
-
-        $(this).css({"backgroundPosition": "-480px -50px"});
-        break;
-
-        default: 
-
-      }
-
-    });
-
-    allButtonsMonsterDifficulty.mouseleave(function() {
-
-      switch(this.id) {
-
-        case "easyButton":
-
-        $(this).css({"backgroundPosition": "-240px 0px"});
-        break;
-
-        case "moderateButton":
-
-        $(this).css({"backgroundPosition": "-240px -50px"});
-        break;
-
-        default: 
-
-      }
-
-    });
-
-    allButtonsMonsterDifficulty.click(function() {
-
-      clixxx('2000', {pDifficulty: this.id});
-
-    });
-  })
 }
 
-function showStrongKonfig() {
+function checkEmail(email) {
 
-  alert("strong");
+  var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
-  $(document).ready(function(){
+  if (!filter.test(email)) 
+  {
+    return false;
+  }
+  else
+  {
+    return true;
+  }
 
-    $("#easyButton").css({"backgroundPosition": "-240px 0px"});
-    $("#moderateButton").css({"backgroundPosition": "-240px -50px"});
-    $("#strongButton").css({"backgroundPosition": "-240px -100px"});
-    $("#insaneButton").css({"backgroundPosition": "0px -150px"});
-
-    var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
-
-    allButtonsMonsterDifficulty.mouseenter(function() {
-
-      switch(this.id) {
-
-        case "easyButton":
-
-        $(this).css({"backgroundPosition": "-480px 0px"});
-        break;
-
-        case "moderateButton":
-
-        $(this).css({"backgroundPosition": "-480px -50px"});
-        break;
-
-        case "strongButton":
-
-        $(this).css({"backgroundPosition": "-480px -100px"});
-        break;
-
-        default: 
-
-      }
-
-    });
-
-    allButtonsMonsterDifficulty.mouseleave(function() {
-
-      switch(this.id) {
-
-        case "easyButton":
-
-        $(this).css({"backgroundPosition": "-240px 0px"});
-        break;
-
-        case "moderateButton":
-
-        $(this).css({"backgroundPosition": "-240px -50px"});
-        break;
-
-        case "strongButton":
-
-        $(this).css({"backgroundPosition": "-240px -100px"});
-        break;
-
-        default: 
-
-      }
-
-    });
-
-    allButtonsMonsterDifficulty.click(function() {
-
-     clixxx('2000', {pDifficulty: this.id});
-
-   });
-  })
 }
 
-function showInsaneKonfig() {
+function checkPassword(password1,password2) {
+  
+  if(password1 == password2)
+  {
+    return true;
+  }
+  else if (password1 != password2)
+  { 
+    return false;
+  }
 
-  alert("insane");
+}
 
-  $(document).ready(function(){
+function checkRegistration(dbcheck) {
 
-    $("#easyButton").css({"backgroundPosition": "-240px 0px"});
-    $("#moderateButton").css({"backgroundPosition": "-240px -50px"});
-    $("#strongButton").css({"backgroundPosition": "-240px -100px"});
-    $("#insaneButton").css({"backgroundPosition": "-240px -150px"});
+  if(dbcheck.userExist==false)
+  {
+    var username = $("#reg_username").val();
+    var email = $("#reg_email").val();
+    var password = $("#reg_password").val();
+    var confirm_password = $("#confirm_reg_password").val();
+    clixxx('5001', {u: username, e: email, p1: password, p2: confirm_password});
+  }
+  else if(dbcheck.userExist==true)
+  {
+    alert("Username already exist!");
+  }
+  
+}
 
-    var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
+function registration(dbcheck){
+    if(dbcheck.check==true)
+    { 
+      alert("Registration successfully!"); 
+      visibilitySwitcher("#login","#register");
+    }
+    else
+    { alert("Error! " + dbcheck.errorMsg); }
+}
 
-    allButtonsMonsterDifficulty.mouseenter(function() {
+function login_clicked(){
+  var username = $("#username").val();
+  var password = $("#password").val();
 
-      switch(this.id) {
-
-        case "easyButton":
-
-        $(this).css({"backgroundPosition": "-480px 0px"});
-        break;
-
-        case "moderateButton":
-
-        $(this).css({"backgroundPosition": "-480px -50px"});
-        break;
-
-        case "strongButton":
-
-        $(this).css({"backgroundPosition": "-480px -100px"});
-        break;
-
-        case "insaneButton":
-
-        $(this).css({"backgroundPosition": "-480px -150px"});
-        break;
-
-        default: 
-
-      }
-
-    });
-
-    allButtonsMonsterDifficulty.mouseleave(function() {
-
-      switch(this.id) {
-
-        case "easyButton":
-
-        $(this).css({"backgroundPosition": "-240px 0px"});
-        break;
-
-        case "moderateButton":
-
-        $(this).css({"backgroundPosition": "-240px -50px"});
-        break;
-
-        case "strongButton":
-
-        $(this).css({"backgroundPosition": "-240px -100px"});
-        break;
-
-        case "insaneButton":
-
-        $(this).css({"backgroundPosition": "-240px -150px"});
-        break;
-
-        default: 
-
-      }
-
-    });
-
-    allButtonsMonsterDifficulty.click(function() {
-
-      clixxx('2000', {pDifficulty: this.id});
-
-    });
-  })
+  if(username==""){
+    alert("Insert Username please!");
+  }
+  else if(password==""){
+    alert("Insert Password please!");
+  }
+  else{
+    clixxx('5002', {u : username, p : password});
+  }
 }

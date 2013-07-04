@@ -7,6 +7,10 @@
 //Start auf port 9000
 var io = require('socket.io').listen(9000);
 var $ = require('jquery').create();
+
+// mysql ansteuerung über die variable mysql
+var mysql = require('mysql');
+
 //wenn eine neue verbindung mit einem neuen client entsteht
 io.sockets.on('connection', function (socket) {
 
@@ -50,31 +54,33 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('10');
   });
 
-  // 11-22 Kampf
   socket.on('11',function(anonym){
-    console.log('PARAMETER ele_name:' + anonym.ele_name);
-    check(anonym.ele_name);
+    io.sockets.emit('11');
   });
 
   socket.on('12',function(anonym){
-    io.sockets.emit('12', anonym);
+    io.sockets.emit('12');
   });
 
   socket.on('13',function(anonym){
-    io.sockets.emit('13', anonym);
+    io.sockets.emit('13');
   });
 
-  //DELETED SOCKET 14
+  socket.on('14',function(anonym){
+    io.sockets.emit('14');
+  });
 
   socket.on('15',function(anonym){
-    io.sockets.emit('15', anonym);
+    io.sockets.emit('15');
   });
 
   socket.on('16',function(anonym){
-    io.sockets.emit('16', anonym);
+    io.sockets.emit('16');
   });
 
-  //DELETED SOCKET 17
+  socket.on('17',function(anonym){
+    io.sockets.emit('17', anonym);
+  });
 
   socket.on('18',function(anonym){
     io.sockets.emit('18', anonym);
@@ -92,7 +98,9 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('21', anonym);
   });
 
-  //DELETED SOCKET 22
+  socket.on('22',function(anonym){
+    io.sockets.emit('22', anonym);
+  });
 
   //reihenanzahl
   socket.on('23',function(anonym){
@@ -110,6 +118,7 @@ io.sockets.on('connection', function (socket) {
 
   //START GAME
   socket.on('26',function(anonym){
+    console.log('SOCKET.ON (OUT IF): 26; gameOn: ' + gameOn);
     if(gameOn == 0){
       gameOn = 1;
       //Spiellogik aufbauen
@@ -199,81 +208,97 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('54',function(anonym){
-    //TO-DO funktioniert aber deaktiviert wegen consolen spamm: initBewegeRahmen(anonym);
+    initBewegeRahmen(anonym);
   });
 
-  // SOCKET 55 - ActionEvent/MethodeEmit
+  socket.on('55',function(anonym){
+    //
+  });
 
-  // SOCKET 56 - ActionEvent/MethodeEmit
+  socket.on('56',function(anonym){
+    //
+  });
 
-  // SOCKET 57 - ActionEvent/MethodeEmit
+  socket.on('57',function(anonym){
+    //
+  });
 
-  // SOCKET 58 - ActionEvent/MethodeEmit
+  socket.on('58',function(anonym){
+    //
+  });
 
-  // SOCKET 58 - ActionEvent/MethodeEmit
+  socket.on('59',function(anonym){
+    //
+  });
 
   socket.on('60',function(anonym){
     //
   });
-
-  socket.on('61',function(anonym){
-    //
-  });
-
-  socket.on('62',function(anonym){
-    //
-  });
-
-  socket.on('63',function(anonym){
-    //
-  });
-
-  socket.on('64',function(anonym){
-    //
-  });
-
-  socket.on('65',function(anonym){
-    //
-  });
-
-  socket.on('66',function(anonym){
-    //
-  });
-
-  socket.on('67',function(anonym){
-    //
-  });
-
-  socket.on('68',function(anonym){
-    //
-  });
-
-  socket.on('69',function(anonym){
-    //
-  });
-
-  socket.on('70',function(anonym){
-    //
-  });
-
 
   socket.on('1000',function(anonym){
     io.sockets.emit('1000');
   });
 
   socket.on('2000',function(anonym){
-    startFightDifficulty = anonym.pDifficulty;
     loadStats();
     io.sockets.emit('2000', {pMeAttackC: me_attack_c, pMeDmgC: me_dmg_c, pRAttackC: r_attack_c, 
     pRDmgC: r_dmg_c, pMaAttackC: ma_attack_c, pMaDmgC: ma_dmg_c, pLMinC: l_min_c, pLMaxC: l_max_c,
     pMeAttackM: me_attack_m, pMeDmgM: me_dmg_m, pRAttackM: r_attack_m, pRDmgM: r_dmg_m, pMaAttackM: ma_attack_m,
     pMaDmgM: ma_dmg_m, pLMinM: l_min_m, pLMaxM: l_max_m, pDim: dmin, pDmax: dmax, pAmin: amin, pAmax: amax,
-    pAbmin: abmin, pAbmax: abmax, pEsmin: esmin, pEsmax: esmax, pDifficulty: startFightDifficulty});
-
-    x = 480; 
+    pAbmin: abmin, pAbmax: abmax, pEsmin: esmin, pEsmax: esmax}); 
   });
-});
 
+  socket.on('5000',function(anonym){ // Username überprüfen
+    sql = "SELECT name FROM user WHERE name="+mysql.escape(anonym.u);
+
+    selectDB(sql);
+    setTimeout(function(){
+
+      var check = false;
+      if (mysql.escape(anonym.u)=="'"+getName(0)+"'")
+      { check = true; }
+
+      socket.emit('5000',{userExist: check});
+    },300);    
+  });
+
+  socket.on('5001',function(anonym){ // Neuen User in die Datenbank speichern
+
+    var falseData=checkFalseInsertReg(anonym);
+
+    if(falseData==false)
+    {
+      sql = "INSERT INTO user (name, email, password) VALUES ("+mysql.escape(anonym.u)+", '"+anonym.e+"', '"+anonym.p1+"')";
+
+      insertDB(sql); // Übergibt die Daten an die Datenbank-Funktion()
+
+      setTimeout(function(){socket.emit('5001',{check: getQueryCheck(), errorMsg: getQueryError});
+      },300); 
+
+    }
+  });
+
+  socket.on('5002',function(anonym){ // Versuche User einzuloggen
+
+    var falseData=checkFalseInsertLogin(anonym);
+
+    if(falseData==false)
+    {
+      sql = "SELECT name,password FROM user WHERE name="+mysql.escape(anonym.u)+" AND password="+mysql.escape(anonym.p);
+
+      selectDB(sql); // Übergibt die Daten an die Datenbank-Funktion()
+      setTimeout(function(){
+
+        var check = false;
+        if (mysql.escape(anonym.u)=="'"+getName(0)+"'" && mysql.escape(anonym.p)=="'"+getPassword(0)+"'")
+        { check = true; }
+
+        socket.emit('5002',{check: check});
+      },300); 
+    }    
+  });
+
+});
 
 
 ///////////////////////////////////////////////
@@ -310,6 +335,15 @@ io.sockets.on('connection', function (socket) {
 
 
 /* GLOBALE DATENFELDER */
+
+/////////////////////////////////
+// Globale Datenbank Variablen //
+/////////////////////////////////
+
+var Username = new Array();
+var Password = new Array();
+var queryCheck = false;
+var queryError = null;
 
 //////////////////////////////
 // Benötigt für Spiel-Logik //
@@ -354,9 +388,6 @@ var currentPlayerPosition = 0;
 // Node benötigte Variablen //
 //////////////////////////////
 
-//Monsterschwierigkeit
-var startFightDifficulty = "easyButton";
-
 //Abfrage, ob Spiel gestartet wurde
 var gameOn = 0;
 
@@ -391,7 +422,7 @@ function Player(number) {
 
   this.playerTrackingPointsMax;
   this.playerTrackingPoints;
-  this.playerActiveTracking = 0;
+  this.playerActiveTracking;
 
   this.playerXStrikePointsMax;
   this.playerXStrikePoints;
@@ -1620,7 +1651,7 @@ function initChangePlayer(){
   loadStats();
   
   //Daten des jeweiligen Spielers reinladen
-  //updateCharSheet(); CLIENT(52)
+  //updateCharSheet(); - CLIENT(52) - TO-DO Parameter
   var cP = AllPlayers[currentPlayerNumber];
   io.sockets.emit('52', {cPPlayerSword: cP.getPlayerSword(), cPPlayerSwordDmg: cP.getPlayerSwordDmg(), 
     cPPlayerBow: cP.getPlayerBow(), cPPlayerBowDmg: cP.getPlayerBowDmg(), 
@@ -1646,12 +1677,103 @@ function initChangePlayer(){
 ////////////////////////////////////////////////////////////////////////////
 
 //TO-DO NODE
+var timeShowFieldWinAnim = 0;
+function showFieldWinAnimation (clickedTile) {
+
+  choralSound();
+  var frame1 = document.createElement("div");
+  frame1.className = "winFrame1";
+  frame1.id = "winFrame1";
+  var x = clickedTile.getXPosition();
+  var y = clickedTile.getYPosition();
+  document.getElementById("field").appendChild(frame1);
+  document.getElementById("winFrame1").style.top=y+"px";
+  document.getElementById("winFrame1").style.left=x+"px";
+
+  var frame2 = document.createElement("div");
+  frame2.className = "winFrame2";
+  frame2.id = "winFrame2";
+  document.getElementById("field").appendChild(frame2);
+  document.getElementById("winFrame2").style.top=y+"px";
+  document.getElementById("winFrame2").style.left=x+"px";
+
+  for(i=0; i <= 10; i++) {
+
+    timeShowFieldWinAnim += 100;
+
+    setTimeout(function(j) {
+
+      return function() {
+
+        if(j%2 != 0) {
+
+          $("#winFrame1").css("visibility", "visible");
+          $("#winFrame2").css("visibility", "hidden");
+
+        }
+
+        else {
+
+          $("#winFrame2").css("visibility", "visible");
+          $("#winFrame1").css("visibility", "hidden");
+
+        }
+      }
+
+    } (i), timeShowFieldWinAnim);
+
+  }
+
+  $("#winFrame2").css("visibility", "hidden");
+  $("#winFrame2").css("visibility", "hidden");
+
+  timeShowFieldWinAnim = 0;
+  setTimeout(function() {document.getElementById("field").removeChild(document.getElementById("winFrame1"))}, 2000);
+  setTimeout(function() {document.getElementById("field").removeChild(document.getElementById("winFrame2"))}, 2000);
+}
+
+
+var timeShowEXPGain = 0;
+function showEXPGain (currentEXP, newEXP) {
+
+  for(i=currentEXP; i <= newEXP; i++) {
+
+    timeShowEXPGain += 15;
+
+    setTimeout(function(j) {
+
+      return function() {
+
+        $("#LvlUpBarFill").css("width", j+"%");
+
+        //Falls LvlUp erreicht
+        if(j == 100) {
+
+          lvlUpSound();
+          $("#LvlUpMarker").css("visibility", "visible");
+
+        }
+
+
+      }
+
+    } (i), timeShowEXPGain);
+  }
+
+
+  timeShowEXPGain = 0;
+}
 
 
 
 
 
-function reincarnatePlayer(){
+
+
+function reincarnatePlayer() {
+
+
+  showReincarnationAnimation();
 
   AllPlayers[currentPlayerNumber].setPlayerLife(AllPlayers[currentPlayerNumber].getPlayerLifeMax());
 
@@ -1661,62 +1783,61 @@ function reincarnatePlayer(){
   AllPlayers[currentPlayerNumber].setPlayerXStrikePoints(0);
   AllPlayers[currentPlayerNumber].setPlayerMovementPoints(0);
 
-  //updateCharSheet(); CLIENT(52)
-  var cP = AllPlayers[currentPlayerNumber];
-  io.sockets.emit('52', {cPPlayerSword: cP.getPlayerSword(), cPPlayerSwordDmg: cP.getPlayerSwordDmg(), 
-    cPPlayerBow: cP.getPlayerBow(), cPPlayerBowDmg: cP.getPlayerBowDmg(), 
-    cPPlayerMagic: cP.getPlayerMagic(), cPPlayerMagicDmg: cP.getPlayerMagicDmg(), 
-    cPPlayerLife: cP.getPlayerLife(), cPPlayerLifeMax: cP.getPlayerLifeMax(), 
-    cPPlayerHealPoints: cP.getPlayerHealPoints(), cPPlayerHealPointsMax: cP.getPlayerHealPointsMax(), 
-    cPPlayerBoost: cP.getPlayerBoost(), cPPlayerBoostMax: cP.getPlayerBoostMax(), 
-    cPPlayerTrackingPoints: cP.getPlayerTrackingPoints(), cPPlayerTrackingPointsMax: cP.getPlayerTrackingPointsMax(), 
-    cPPlayerXStrikePoints: cP.getPlayerXStrikePoints(), cPPlayerXStrikePointsMax: cP.getPlayerXStrikePointsMax(), 
-    cPPlayerMovementPoints: cP.getPlayerMovementPoints(), cPPlayerMovementPointsMax: cP.getPlayerMovementPointsMax(), 
-    cPPlayerLvl: cP.getPlayerLvl(), cPPlayerEXP: cP.getPlayerEXP()});
+  //STATS
+  $("#sword").html(AllPlayers[currentPlayerNumber].getPlayerSword()); $("#swordMax").html(AllPlayers[currentPlayerNumber].getPlayerSwordDmg());
+  $("#bow").html(AllPlayers[currentPlayerNumber].getPlayerBow()); $("#bowMax").html(AllPlayers[currentPlayerNumber].getPlayerBowDmg());
+  $("#magic").html(AllPlayers[currentPlayerNumber].getPlayerMagic()); $("#magicMax").html(AllPlayers[currentPlayerNumber].getPlayerMagicDmg());
+  $("#life").html(AllPlayers[currentPlayerNumber].getPlayerLife()); $("#lifeMax").html(AllPlayers[currentPlayerNumber].getPlayerLifeMax());
 
-  // showReincarnationAnimation(); CLIENT(61)
-  io.sockets.emit('61');
+  //RUNES
+  $("#heal").html(AllPlayers[currentPlayerNumber].getPlayerHealPoints()); $("#healMax").html(AllPlayers[currentPlayerNumber].getPlayerHealPointsMax());
+  $("#pers").html(AllPlayers[currentPlayerNumber].getPlayerBoost()); $("#persMax").html(AllPlayers[currentPlayerNumber].getPlayerBoostMax());
+  $("#track").html(AllPlayers[currentPlayerNumber].getPlayerTrackingPoints()); $("#trackMax").html(AllPlayers[currentPlayerNumber].getPlayerTrackingPointsMax());
+  $("#xstrike").html(AllPlayers[currentPlayerNumber].getPlayerXStrikePoints()); $("#xstrikeMax").html(AllPlayers[currentPlayerNumber].getPlayerXStrikePointsMax());
+  $("#move").html(AllPlayers[currentPlayerNumber].getPlayerMovementPoints()); $("#moveMax").html(AllPlayers[currentPlayerNumber].getPlayerMovementPointsMax());
+
 }
-
-
-
-
 
 function EXPGain (gainedEXP) {
 
   var currentEXP = AllPlayers[currentPlayerNumber].getPlayerEXP();
   var newEXP = currentEXP+gainedEXP;
 
-      //Falls Erfahrungspunkte über oder gleich 100 --> Lvl Up
+  //Falls Erfahrungspunkte über oder gleich 100 --> Lvl Up
   if (newEXP >= 100) {
 
-        //überschüssige EXP zwischenspeichern
+    //überschüssige EXP zwischenspeichern
     var overrunEXP = newEXP - 100;
-        //Animation mit 100 ausführen
-    // showEXPGain(currentEXP, 100); CLIENT(64)
-    io.sockets.emit('64', {pCurrentEXP: currentEXP});
-        //Level des Spielers erhöhen
+    //Animation mit 100 ausführen
+    showEXPGain(currentEXP, 100);
+    //Level des Spielers erhöhen
     AllPlayers[currentPlayerNumber].setPlayerLvl(AllPlayers[currentPlayerNumber].getPlayerLvl()+1);
-        //EXP des Spielers wieder auf Wert der überschüssigen EXP setzen
+    //EXP des Spielers wieder auf Wert der überschüssigen EXP setzen
     AllPlayers[currentPlayerNumber].setPlayerEXP(overrunEXP);
 
-    // setTimeout function CLIENT(65)
-    io.sockets.emit('65', {pPlayerLvl: AllPlayers[currentPlayerNumber].getPlayerLvl(), pOverrunEXP: overrunEXP, pCurrentEXP: currentEXP});
+    setTimeout(function() {   
+
+    //Neues Level im CharSheet sichtbarmachen
+    $("#levelCounter").html(""+AllPlayers[currentPlayerNumber].getPlayerLvl());
+    //Animation erneut mit überschüssigen EXP ausführen
+    showEXPGain(0, overrunEXP);
+
+  }, (100-currentEXP)*15);
+
   }
 
-      //Spieler ist kein Level aufgestiegen
+  //Spieler ist kein Level aufgestiegen
   else {
 
-    // showEXPGain(currentEXP, newEXP); CLIENT(66)
-    io.sockets.emit('66', {pCurrentEXP: currentEXP, pNewEXP: newEXP});
-        //EXP des Spielers auf neuen Wert setzen
+    showEXPGain(currentEXP, newEXP);
+    //EXP des Spielers auf neuen Wert setzen
     AllPlayers[currentPlayerNumber].setPlayerEXP(newEXP);
 
   }
 
 }
 
-//TO-DO NODE
+
 function LevelUp() {
 
   $("#LvlUpMarker").css("visibility", "hidden");
@@ -2156,7 +2277,6 @@ function checkClickedTile(param) {
               if(clickedTile.getHasMonsters() == true) {
 
                 //Kämpfen
-                checkTrackingAbility();
                 //startFightRoutine(idClickedTile, clickedTile); CLIENT(1000)
                 io.sockets.emit('1000');
               }
@@ -2538,25 +2658,21 @@ function check(status)
   
   if(status=="defence")
   {
-    //TO-DO NODE
-    //blockSound();
+    blockSound();
     if(dmin>0)
     {
       dmin=dmin-1;
-      // document.getElementById("dmin").innerHTML = dmin; - CLIENT(11)
-      io.sockets.emit('11', {pDmin: dmin});
+      document.getElementById("dmin").innerHTML = dmin;
       fight(status);
     } 
   }
   if(status=="attack")
   {
-    //TO-DO NODE
-    //swordDrawSound();
+    swordDrawSound();
     if(amin>0)
     {
       amin=amin-1;
-      // document.getElementById("amin").innerHTML = amin; CLIENT(14)
-      io.sockets.emit('14', {pAmin: amin});
+      document.getElementById("amin").innerHTML = amin;
       fight(status);
     }
   }
@@ -2566,8 +2682,7 @@ function check(status)
     {
       abmin=abmin-1;
       AllPlayers[currentPlayerNumber].setPlayerBoost(abmin);
-      // document.getElementById("abmin").innerHTML = abmin; CLIENT(17)
-      io.sockets.emit('17', {pAbmin: abmin});
+      document.getElementById("abmin").innerHTML = abmin;
       if(count3==0)
       {
         if(check_ab==0)
@@ -2599,8 +2714,7 @@ function check(status)
         attack_c=ma_attack_c;
       }
       check_ab=1;
-      // document.getElementById(attackboost).innerHTML = attack_c; CLIENT(55)
-      io.sockets.emit('55', {pInput: attackboost, pAttackC: attack_c});
+      document.getElementById(attackboost).innerHTML = attack_c;
       
     }
   }
@@ -2609,30 +2723,27 @@ function check(status)
     if(esmin!=0)
     {
       esmin=esmin-1;
-      amin=amin+1;
       AllPlayers[currentPlayerNumber].setPlayerBoost(esmin);
-      // document.getElementById("esmin").innerHTML = esmin; CLIENT(20)
-      // document.getElementById("amin").innerHTML = amin; CLIENT(20)
-      io.sockets.emit('20', {pEsmin: esmin, pAmin: amin});
+      document.getElementById("esmin").innerHTML = esmin;
+      amin=amin+1;
+      document.getElementById("amin").innerHTML = amin;
     }
   }
   
   
   if(count3==3)
   {
-    // showFightAnimation("NEXT ROUND"); CLIENT(62)
-    io.sockets.emit('62', {pInput: "NEXT ROUND", pTime: 0});
+    showFightAnimation("NEXT ROUND");
     count3=0;
     dmin=dmax;
     amin=amax;
-    // document.getElementById("dmin").innerHTML = dmin; CLIENT(56)
-    // document.getElementById("amin").innerHTML = amin; CLIENT(56)
-    io.sockets.emit('56', {pDmin: dmin, pAmin: amin});
+    document.getElementById("dmin").innerHTML = dmin;
+    document.getElementById("amin").innerHTML = amin;
   }
 
 }
-
-function fight(status){
+function fight(status)
+{
   wuerfel= Math.floor(Math.random() * 12 + 1);
 
   //Falls der AttackWurf nicht ausreicht, um das Monster zu treffen
@@ -2640,34 +2751,33 @@ function fight(status){
   {
     l_min_c=l_min_c - dmg_m;
     AllPlayers[currentPlayerNumber].setPlayerLife(l_min_c);
-    // document.getElementById("l_min_c").innerHTML = l_min_c; CLIENT(57)
-    // setTimeout(function(){$(".c").toggleClass("ca");},1000); CLIENT(57)
-    // $(".c").toggleClass("ca"); CLIENT(57)
-        //auditives Feedback
-    //gotHitSound(); CLIENT(57)
-    io.sockets.emit('57', {pLminC: l_min_c});
+    document.getElementById("l_min_c").innerHTML = l_min_c;
+    setTimeout(function(){$(".c").toggleClass("ca");},1000);
+    $(".c").toggleClass("ca");
+
+    //auditives Feedback
+    gotHitSound();
     
   }
 
   //Falls doch und man gerade angreift und nicht verteidigt...
-  else if(status=="attack"){
+  else if(status=="attack")
+  {
+
     l_min_m=l_min_m - dmg_c;
     /*$("#l_min_m").text = l_min_m;*/
+    document.getElementById("l_min_m").innerHTML = l_min_m;
+    setTimeout(function(){$(".m").toggleClass("ma");},1000);
+    $(".m").toggleClass("ma");
 
-    // document.getElementById("l_min_m").innerHTML = l_min_m; CLIENT(58)
-    // setTimeout(function(){$(".m").toggleClass("ma");},1000); CLIENT(58)
-    // $(".m").toggleClass("ma"); CLIENT(58)
-
-      //auditives+visuelles Feedback
-    // batGotHitSound(); CLIENT(58)
-    // showFightAnimation("HIT"); CLIENT(58)
-    io.sockets.emit('58', {pLminM: l_min_m});
+    //auditives+visuelles Feedback
+    batGotHitSound();
+    showFightAnimation("HIT");
   }
   
   if(check_ab==1)
   {
-    // document.getElementById(attackboost).innerHTML = zw; CLIENT(55)
-    io.sockets.emit('55', {pInput: zw});
+    document.getElementById(attackboost).innerHTML = zw;
     check_ab=0;
   }
 
@@ -2677,37 +2787,24 @@ function fight(status){
 
   x = x + 60;
   if(x == 660) { x = 480 };
-  //$("#phaseFrame").css("left", x+"px"); CLIENT(59)
-  io.sockets.emit('59', {pX: x});
+  $("#phaseFrame").css("left", x+"px");
   /*  document.getElementById("rahmen").style.left = x + "%";*/
 
   if(l_min_c<=0)
   {
 
-    // dieSound(); CLIENT(60)
-    // showFightAnimation("!! LOST !!"); CLIENT(60)
-    //updateCharSheet(); CLIENT(52)
-    var cP = AllPlayers[currentPlayerNumber];
-    io.sockets.emit('52', {cPPlayerSword: cP.getPlayerSword(), cPPlayerSwordDmg: cP.getPlayerSwordDmg(), 
-    cPPlayerBow: cP.getPlayerBow(), cPPlayerBowDmg: cP.getPlayerBowDmg(), 
-    cPPlayerMagic: cP.getPlayerMagic(), cPPlayerMagicDmg: cP.getPlayerMagicDmg(), 
-    cPPlayerLife: cP.getPlayerLife(), cPPlayerLifeMax: cP.getPlayerLifeMax(), 
-    cPPlayerHealPoints: cP.getPlayerHealPoints(), cPPlayerHealPointsMax: cP.getPlayerHealPointsMax(), 
-    cPPlayerBoost: cP.getPlayerBoost(), cPPlayerBoostMax: cP.getPlayerBoostMax(), 
-    cPPlayerTrackingPoints: cP.getPlayerTrackingPoints(), cPPlayerTrackingPointsMax: cP.getPlayerTrackingPointsMax(), 
-    cPPlayerXStrikePoints: cP.getPlayerXStrikePoints(), cPPlayerXStrikePointsMax: cP.getPlayerXStrikePointsMax(), 
-    cPPlayerMovementPoints: cP.getPlayerMovementPoints(), cPPlayerMovementPointsMax: cP.getPlayerMovementPointsMax(), 
-    cPPlayerLvl: cP.getPlayerLvl(), cPPlayerEXP: cP.getPlayerEXP()});
+    dieSound();
+    showFightAnimation("!! LOST !!");
+    updateCharSheet();
 
     l_min_m=l_max_m;
     count3 = 0;
 
-    // $(".rightFight").animate({width:'toggle'}, 2500, "easeOutExpo"); CLIENT(60)
-    // $(".leftFight").animate({width:'toggle'}, 2500, "easeOutExpo"); CLIENT(60)
-    // setTimeout(function(){$("#fight").css("visibility", "hidden"); $("#phaseFrame").css("visibility", "hidden");}, 2500); CLIENT(60)
-    io.sockets.emit('60');
+    $(".rightFight").animate({width:'toggle'}, 2500, "easeOutExpo");
+    $(".leftFight").animate({width:'toggle'}, 2500, "easeOutExpo");
+    setTimeout(function(){$("#fight").css("visibility", "hidden"); $("#phaseFrame").css("visibility", "hidden");}, 2500);
 
-      //Falls der Spieler verliert, Status zurücksetzen
+    //Falls der Spieler verliert, Status zurücksetzen
     reincarnatePlayer();
 
   }
@@ -2715,52 +2812,81 @@ function fight(status){
   else if(l_min_m<=0)
   {
 
-    // showFightAnimation("!! WIN !!"); CLIENT(62)
-    io.sockets.emit('62', {pInput: "!! WIN !!", pTime: 0});
-    //updateCharSheet(); CLIENT(52)
-    var cP = AllPlayers[currentPlayerNumber];
-    io.sockets.emit('52', {cPPlayerSword: cP.getPlayerSword(), cPPlayerSwordDmg: cP.getPlayerSwordDmg(), 
-    cPPlayerBow: cP.getPlayerBow(), cPPlayerBowDmg: cP.getPlayerBowDmg(), 
-    cPPlayerMagic: cP.getPlayerMagic(), cPPlayerMagicDmg: cP.getPlayerMagicDmg(), 
-    cPPlayerLife: cP.getPlayerLife(), cPPlayerLifeMax: cP.getPlayerLifeMax(), 
-    cPPlayerHealPoints: cP.getPlayerHealPoints(), cPPlayerHealPointsMax: cP.getPlayerHealPointsMax(), 
-    cPPlayerBoost: cP.getPlayerBoost(), cPPlayerBoostMax: cP.getPlayerBoostMax(), 
-    cPPlayerTrackingPoints: cP.getPlayerTrackingPoints(), cPPlayerTrackingPointsMax: cP.getPlayerTrackingPointsMax(), 
-    cPPlayerXStrikePoints: cP.getPlayerXStrikePoints(), cPPlayerXStrikePointsMax: cP.getPlayerXStrikePointsMax(), 
-    cPPlayerMovementPoints: cP.getPlayerMovementPoints(), cPPlayerMovementPointsMax: cP.getPlayerMovementPointsMax(), 
-    cPPlayerLvl: cP.getPlayerLvl(), cPPlayerEXP: cP.getPlayerEXP()});
-    // setTimeout(function(){showFightAnimation("GAINED "+exp+" EXP")}, 1000); CLIENT(62)
-    io.sockets.emit('62', {pInput: "GAINED "+exp+" EXP", pTime: 1000});
+    showFightAnimation("!! WIN !!");
+    updateCharSheet();
+    setTimeout(function(){showFightAnimation("GAINED "+exp+" EXP")}, 1000);
 
     l_min_m=l_max_m;
     count3 = 0;
 
-    // $(".rightFight").animate({width:'toggle'}, 2500, "easeOutExpo"); CLIENT(63)
-    // $(".leftFight").animate({width:'toggle'}, 2500, "easeOutExpo"); CLIENT(63)
-    // setTimeout(function(){$("#fight").css("visibility", "hidden"); $("#phaseFrame").css("visibility", "hidden");}, 2500); CLIENT(63)
-    io.sockets.emit('63');
+    $(".rightFight").animate({width:'toggle'}, 2500, "easeOutExpo");
+    $(".leftFight").animate({width:'toggle'}, 2500, "easeOutExpo");
+    setTimeout(function(){$("#fight").css("visibility", "hidden"); $("#phaseFrame").css("visibility", "hidden");}, 2500);
 
-        //Falls der Spieler gewonnen hat, wird Spielfigur bewegt
-        //Die Variablen sind global definiert und ändern sich mit Aufruf der Funktion checkClickedTile
-        //(Also bei jedem Klick für eine Bewegung)
+    //Falls der Spieler gewonnen hat, wird Spielfigur bewegt
+    //Die Variablen sind global definiert und ändern sich mit Aufruf der Funktion checkClickedTile
+    //(Also bei jedem Klick für eine Bewegung)
     initMovePlayer(idClickedTile, clickedTile);
-        //Animation zeigen bei Sieg
-    // showFieldWinAnimation(clickedTile); CLIENT(67)
-    io.sockets.emit('67', {pClickedTile: clickedTile});
-        //Dem Spieler die erhaltenen EXP gutschreiben
+    //Animation zeigen bei Sieg
+    showFieldWinAnimation(clickedTile);
+    //Dem Spieler die erhaltenen EXP gutschreiben
     setTimeout(function(){EXPGain(exp);}, 2500);
-        //Der Kachel sagen, dass sie nun kein Monster mehr hat
+    //Der Kachel sagen, dass sie nun kein Monster mehr hat
     clickedTile.setHasMonsters(false);
 
   }
 }
+function pressed(name){
+  var id = "#img_" + name;
+  var src = "Bilddaten/Kampf/"+name + "_pressed.png"; 
+  $(id).attr("src", src);
+
+}
+function released(name){
+  var id = "#img_" + name;
+  var src = "Bilddaten/Kampf/"+name + ".png";
+  $(id).attr("src", src);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 function checkTrackingAbility () {
-  console.log('checkTrackingAbility');
+
   currentPlayer = AllPlayers[currentPlayerNumber];
   curTrack = currentPlayer.getPlayerActiveTracking();
+  alert(curTrack);
   temp = 0;
   trackResult = 0;
 
@@ -2798,6 +2924,7 @@ function checkTrackingAbility () {
     temp = Math.floor(Math.random() * 101);
 
   }
+  alert(temp);
 
 
   //Setze den Schalter für den switchCase entsprechend der trackingAbility
@@ -2825,44 +2952,416 @@ function checkTrackingAbility () {
 
   }
 
+  alert(trackResult);
   changeButtonsMonsterChooser(trackResult);
-
 
 }
 
 
 
 function changeButtonsMonsterChooser(trackResult) {
-  console.log('changeButtonsMonsterChooser');
+
   //Zeige Buttons entsprechend an
   switch(trackResult) {
 
     case 0:
 
-    // showEasyKonfig(); CLIENT(68)
-    io.sockets.emit('68');
+    showEasyKonfig();
     break;
 
     case 1:
 
-    // showModerateKonfig(); CLIENT(69)
-    io.sockets.emit('69');
+    showModerateKonfig();
     break;
 
     case 2:
 
-    // showStrongKonfig(); CLIENT(70)
-    io.sockets.emit('70');
+    showStrongKonfig();
     break;
 
     case 3:
 
-    // showInsaneKonfig(); CLIENT(71)
-    io.sockets.emit('71');
+    showInsaneKonfig();
     break;
 
-    default: console.log("Schimpfen Sie den Entwickler");
+    default: alert("Schimpfen sie den Entwickler");
 
   }
 
+}
+
+
+function showEasyKonfig () {
+
+  alert("easy");
+
+  $(document).ready(function(){
+
+    $("#easyButton").css({"backgroundPosition": "-240px 0px"});
+    $("#moderateButton").css({"backgroundPosition": "0px -50px"});
+    $("#strongeButton").css({"backgroundPosition": "0px -100px"});
+    $("#insaneButton").css({"backgroundPosition": "0px -150px"});
+
+    var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
+
+    allButtonsMonsterDifficulty.mouseenter(function() {
+
+      switch(this.id) {
+
+        case "easyButton":
+
+        $(this).css({"backgroundPosition": "-480px 0px"});
+        break;
+
+        default: 
+
+      }
+
+    });
+
+    allButtonsMonsterDifficulty.mouseleave(function() {
+
+      switch(this.id) {
+
+        case "easyButton":
+
+        $(this).css({"backgroundPosition": "-240px 0px"});
+        break;
+
+        default: 
+
+      }
+
+    });
+
+    allButtonsMonsterDifficulty.click(function() {
+
+      startFight(this.id);
+
+    });
+  })
+}
+
+function showModerateKonfig () {
+
+  alert("moderate");
+
+  $(document).ready(function(){
+
+    $("#easyButton").css({"backgroundPosition": "-240px 0px"});
+    $("#moderateButton").css({"backgroundPosition": "-240px -50px"});
+    $("#strongeButton").css({"backgroundPosition": "0px -100px"});
+    $("#insaneButton").css({"backgroundPosition": "0px -150px"});
+
+    var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
+
+    allButtonsMonsterDifficulty.mouseenter(function() {
+
+      switch(this.id) {
+
+        case "easyButton":
+
+        $(this).css({"backgroundPosition": "-480px 0px"});
+        break;
+
+        case "moderateButton":
+
+        $(this).css({"backgroundPosition": "-480px -50px"});
+        break;
+
+        default: 
+
+      }
+
+    });
+
+    allButtonsMonsterDifficulty.mouseleave(function() {
+
+      switch(this.id) {
+
+        case "easyButton":
+
+        $(this).css({"backgroundPosition": "-240px 0px"});
+        break;
+
+        case "moderateButton":
+
+        $(this).css({"backgroundPosition": "-240px -50px"});
+        break;
+
+        default: 
+
+      }
+
+    });
+
+    allButtonsMonsterDifficulty.click(function() {
+
+      startFight(this.id);
+
+    });
+  })
+}
+
+function showStrongKonfig () {
+
+  alert("strong");
+
+  $(document).ready(function(){
+
+    $("#easyButton").css({"backgroundPosition": "-240px 0px"});
+    $("#moderateButton").css({"backgroundPosition": "-240px -50px"});
+    $("#strongButton").css({"backgroundPosition": "-240px -100px"});
+    $("#insaneButton").css({"backgroundPosition": "0px -150px"});
+
+    var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
+
+    allButtonsMonsterDifficulty.mouseenter(function() {
+
+      switch(this.id) {
+
+        case "easyButton":
+
+        $(this).css({"backgroundPosition": "-480px 0px"});
+        break;
+
+        case "moderateButton":
+
+        $(this).css({"backgroundPosition": "-480px -50px"});
+        break;
+
+        case "strongButton":
+
+        $(this).css({"backgroundPosition": "-480px -100px"});
+        break;
+
+        default: 
+
+      }
+
+    });
+
+    allButtonsMonsterDifficulty.mouseleave(function() {
+
+      switch(this.id) {
+
+        case "easyButton":
+
+        $(this).css({"backgroundPosition": "-240px 0px"});
+        break;
+
+        case "moderateButton":
+
+        $(this).css({"backgroundPosition": "-240px -50px"});
+        break;
+
+        case "strongButton":
+
+        $(this).css({"backgroundPosition": "-240px -100px"});
+        break;
+
+        default: 
+
+      }
+
+    });
+
+    allButtonsMonsterDifficulty.click(function() {
+
+      startFight(this.id);
+
+    });
+  })
+}
+
+function showInsaneKonfig () {
+
+  alert("insane");
+
+  $(document).ready(function(){
+
+    $("#easyButton").css({"backgroundPosition": "-240px 0px"});
+    $("#moderateButton").css({"backgroundPosition": "-240px -50px"});
+    $("#strongButton").css({"backgroundPosition": "-240px -100px"});
+    $("#insaneButton").css({"backgroundPosition": "-240px -150px"});
+
+    var allButtonsMonsterDifficulty = $(".buttons_Monster_Difficulty");
+
+    allButtonsMonsterDifficulty.mouseenter(function() {
+
+      switch(this.id) {
+
+        case "easyButton":
+
+        $(this).css({"backgroundPosition": "-480px 0px"});
+        break;
+
+        case "moderateButton":
+
+        $(this).css({"backgroundPosition": "-480px -50px"});
+        break;
+
+        case "strongButton":
+
+        $(this).css({"backgroundPosition": "-480px -100px"});
+        break;
+
+        case "insaneButton":
+
+        $(this).css({"backgroundPosition": "-480px -150px"});
+        break;
+
+        default: 
+
+      }
+
+    });
+
+    allButtonsMonsterDifficulty.mouseleave(function() {
+
+      switch(this.id) {
+
+        case "easyButton":
+
+        $(this).css({"backgroundPosition": "-240px 0px"});
+        break;
+
+        case "moderateButton":
+
+        $(this).css({"backgroundPosition": "-240px -50px"});
+        break;
+
+        case "strongButton":
+
+        $(this).css({"backgroundPosition": "-240px -100px"});
+        break;
+
+        case "insaneButton":
+
+        $(this).css({"backgroundPosition": "-240px -150px"});
+        break;
+
+        default: 
+
+      }
+
+    });
+
+    allButtonsMonsterDifficulty.click(function() {
+
+      startFight(this.id);
+
+    });
+  })
+}
+
+function selectDB(sql){
+  var connection = mysql.createConnection('mysql://user:123@localhost/runemastery');
+  connection.connect();
+  
+  connection.query(sql, function(err, rows, fields) {
+      if (err) throw err;
+      
+      for (var i in rows) {
+          setName(rows[i].name,i);
+          setPassword(rows[i].password,i);
+      }
+  });
+  connection.end();
+}
+
+function select_Monster_DB(sql){
+  var connection = mysql.createConnection('mysql://user:123@localhost/runemastery');
+  connection.connect();
+  
+  connection.query(sql, function(err, rows, fields) {
+      if (err) throw err;
+      
+      for (var i in rows) {
+          setName(rows[i].name,i);
+          setPassword(rows[i].password,i);
+      }
+  });
+  connection.end();
+}
+
+function insertDB(sql){
+  var connection = mysql.createConnection('mysql://user:123@localhost/runemastery');
+  connection.connect();
+  
+  connection.query(sql, function(err, rows, fields) {
+      if (err) 
+      {
+        setQueryCheck(false);
+        setQueryError(err);
+        throw err;
+      }
+      else
+      { setQueryCheck(true); }
+  });
+  connection.end();
+}
+
+function checkFalseInsertReg(insert) {
+  var check = false;
+  var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  if(insert.e=="")
+  { return true; }
+  if(!filter.test(insert.e)) 
+  { return true; }  
+  if(insert.p1=="" || insert.p2=="")
+  { return true; }
+  if(insert.p1 != insert.p2)
+  { return true; }
+  if(insert.u=="")
+  { return true; }
+
+  return check;
+}
+
+function checkFalseInsertLogin(insert) {
+  var check = false;
+ 
+  if(insert.u=="")
+  { return true; }
+  if(insert.p=="")
+  { return true; }
+
+  return check;
+}
+
+function setName(name,i) {
+    Username[i]=name;
+}
+
+function getName(i) {
+    return Username[i];
+}
+
+function setPassword(password,i) {
+    Password[i]=password;
+}
+
+function getPassword(i) {
+    return Password[i];
+}
+
+function getDataCount() {
+    return Data.length;
+}
+
+function setQueryCheck(check){
+  queryCheck=check;
+}
+
+function getQueryCheck(){
+  return queryCheck;
+}
+
+function setQueryError(error){
+  queryError=error;
+}
+
+function getQueryError(){
+  return queryError;
 }

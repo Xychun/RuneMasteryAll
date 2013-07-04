@@ -17,11 +17,66 @@ background-color: black;
 height: 100%;
 }
 
-button{ margin: 10px 10px;}
+button{ 
+margin: 10px 10px;
+border-style: solid;
+border-width: 1px;
+}
 
 #endTurnButton {visibility: hidden;}
 
-#interface {
+input{ 
+margin: 10px 10px;
+border-style: solid;
+border-width: 1px;
+}
+
+
+
+
+.center{
+text-align: center;
+padding-top:320px;
+}
+
+.bg_login{
+background-image: url('Background_Login.jpg');
+background-repeat: no-repeat;
+}
+
+/*#list{
+background-color: red;
+position:absolute;
+left:960px;
+height:640px;
+width:240px;
+}*/
+
+#register {visibility: hidden;}
+#loged_in {visibility: hidden;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#game{
+background-image: url("Bilddaten/Spielfeld/Background_Game_New2.jpg");
+background-repeat: no-repeat;
+visibility: hidden;
+}
+
+.interface {
 
 	width: 1200px;
 	height: 640px;
@@ -30,8 +85,6 @@ button{ margin: 10px 10px;}
 	top: 50%;
 	left: 50%;
 	position: absolute;
-	background-image: url("Bilddaten/Spielfeld/Background_Game_New2.jpg");
-
 
 }
 
@@ -461,7 +514,7 @@ button{ margin: 10px 10px;}
 	width:240px;
 	height:50px;
 	margin-left: 60px;
-	background-image:url(Bilddaten/Spielfeld/Buttons/SS_Buttons_MonsterDifficultySW.jpg);
+	background-image:url(Bilddaten/Spielfeld/Buttons/SS_Buttons_MonsterDifficulty.jpg);
 	background-repeat:no-repeat;
 	z-index: 3;
 }
