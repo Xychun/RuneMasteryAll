@@ -350,7 +350,7 @@ socket.on('66',function(anonym){
 
 //Server sendet EVENT 67
 socket.on('67',function(anonym){
-	showFieldWinAnimation(anonym.pClickedTile);
+	showFieldWinAnimation(anonym);
 });
 
 //Server sendet EVENT 68
