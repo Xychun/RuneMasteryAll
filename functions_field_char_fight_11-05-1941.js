@@ -661,14 +661,13 @@ function showEXPGain (currentEXP, newEXP) {
 }
 
 var timeShowFieldWinAnim = 0;
-function showFieldWinAnimation (clickedTile) {
-
+function showFieldWinAnimation (param) {
   //TO-DO choralSound();
   var frame1 = document.createElement("div");
   frame1.className = "winFrame1";
   frame1.id = "winFrame1";
-  var x = clickedTile.getXPosition();
-  var y = clickedTile.getYPosition();
+  var x = param.pXPosition;
+  var y = param.pYPosition;
   document.getElementById("field").appendChild(frame1);
   document.getElementById("winFrame1").style.top=y+"px";
   document.getElementById("winFrame1").style.left=x+"px";
@@ -940,8 +939,6 @@ $(document).ready(function(){
 
 function showEasyKonfig() {
 
-  alert("easy");
-
   $(document).ready(function(){
 
     $("#easyButton").css({"backgroundPosition": "-240px 0px"});
@@ -990,8 +987,6 @@ function showEasyKonfig() {
 }
 
 function showModerateKonfig() {
-
-  alert("moderate");
 
   $(document).ready(function(){
 
@@ -1051,8 +1046,6 @@ function showModerateKonfig() {
 }
 
 function showStrongKonfig() {
-
-  alert("strong");
 
   $(document).ready(function(){
 
@@ -1122,8 +1115,6 @@ function showStrongKonfig() {
 }
 
 function showInsaneKonfig() {
-
-  alert("insane");
 
   $(document).ready(function(){
 
